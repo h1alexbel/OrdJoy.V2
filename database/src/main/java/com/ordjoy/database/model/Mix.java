@@ -18,9 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -50,7 +48,7 @@ public class Mix {
             inverseJoinColumns = @JoinColumn(name = "track_id"))
     @ToString.Exclude
     @Builder.Default
-    private Set<Track> tracks = new HashSet<>();
+    private List<Track> tracks = new ArrayList<>();
 
     @OneToMany(mappedBy = "mix")
     @ToString.Exclude

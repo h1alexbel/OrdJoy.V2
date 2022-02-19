@@ -15,9 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -39,7 +37,7 @@ public class Album {
     @OneToMany(mappedBy = "album")
     @Builder.Default
     @ToString.Exclude
-    private Set<Track> tracks = new HashSet<>();
+    private List<Track> tracks = new ArrayList<>();
 
     @OneToMany(mappedBy = "album")
     @Builder.Default
