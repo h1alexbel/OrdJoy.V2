@@ -8,13 +8,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -27,31 +28,30 @@ import java.util.List;
 @Builder
 @ToString
 @Entity
-@Table(name = "user_account", schema = "user_storage")
-public class User {
+@Table(name = "track", schema = "audio_storage")
+public class Track {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 128, unique = true, nullable = false)
-    private String login;
+    @Column(length = 512, nullable = false)
+    private String title;
 
-    @Column(length = 64, unique = true, nullable = false)
-    private String email;
+    @Column(length = 512, nullable = false, unique = true)
+    private String url;
 
-    @Column(length = 128, nullable = false)
-    private String password;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "album_id")
+    private Album album;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", length = 16, nullable = false)
-    private Role role;
-
-    @Embedded
-    private UserData userData;
-
-    @OneToMany(mappedBy = "user")
+    @ManyToMany(mappedBy = "tracks")
     @Builder.Default
     @ToString.Exclude
-    private List<Review<Long>> reviews = new ArrayList<>();
+    private List<Mix> mixes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "track")
+    @Builder.Default
+    @ToString.Exclude
+    private List<TrackReview> trackReviews = new ArrayList<>();
 }
