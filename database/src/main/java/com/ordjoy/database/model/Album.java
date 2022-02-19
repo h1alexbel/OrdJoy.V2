@@ -8,17 +8,16 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,31 +26,23 @@ import java.util.List;
 @Builder
 @ToString
 @Entity
-@Table(name = "user_account", schema = "user_storage")
-public class User {
+@Table(name = "album", schema = "audio_storage")
+public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 128, unique = true, nullable = false)
-    private String login;
+    @Column(length = 128, nullable = false, unique = true)
+    private String title;
 
-    @Column(length = 64, unique = true, nullable = false)
-    private String email;
-
-    @Column(length = 128, nullable = false)
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", length = 16, nullable = false)
-    private Role role;
-
-    @Embedded
-    private UserData userData;
-
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "album")
     @Builder.Default
     @ToString.Exclude
-    private List<Review<Long>> reviews = new ArrayList<>();
+    private Set<Track> tracks = new HashSet<>();
+
+    @OneToMany(mappedBy = "album")
+    @Builder.Default
+    @ToString.Exclude
+    private List<AlbumReview> albumReviews = new ArrayList<>();
 }
