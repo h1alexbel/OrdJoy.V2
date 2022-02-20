@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -27,6 +28,9 @@ public class UserData {
 
     @Column(name = "card_number", length = 32)
     private String cardNumber;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
 
     @Column(name = "discount_percentage_level")
     private Integer discountPercentageLevel;
