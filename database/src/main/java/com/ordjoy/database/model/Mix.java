@@ -54,4 +54,9 @@ public class Mix {
     @ToString.Exclude
     @Builder.Default
     private List<MixReview> mixReviews = new ArrayList<>();
+
+    public void addTrack(Track track) {
+        tracks.add(track);
+        track.getMixes().add(this);
+    }
 }
