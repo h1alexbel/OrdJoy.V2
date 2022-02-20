@@ -1,11 +1,11 @@
 V1.2 Stack :
 Build system: Maven
 
-Spring Framework 5, Srping Boot 2
+Spring Framework 5, Spring Boot 2
 
 Spring Web MVC
 
-Spring Data JPA
+Spring Data JPA(Hibernate)
 
 Spring Security
 
