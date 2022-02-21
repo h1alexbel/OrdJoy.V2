@@ -44,7 +44,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", length = 16, nullable = false)
+    @Column(length = 16, nullable = false)
     private Role role;
 
     @Embedded
