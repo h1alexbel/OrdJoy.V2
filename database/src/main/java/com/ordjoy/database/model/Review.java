@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -18,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -27,7 +29,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "review", schema = "review_storage")
 @Inheritance
-@DiscriminatorColumn(name = "reviewType")
+@DiscriminatorColumn(name = "review_type")
 public abstract class Review<K extends Serializable> {
 
     @Id
@@ -40,4 +42,17 @@ public abstract class Review<K extends Serializable> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     protected User user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Review<?> review = (Review<?>) o;
+        return id != null && Objects.equals(id, review.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
