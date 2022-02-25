@@ -1,7 +1,6 @@
 package com.ordjoy.database.dto;
 
 import com.ordjoy.database.model.Role;
-import com.ordjoy.database.model.UserData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +19,6 @@ public class UserDto implements Serializable {
     private String login;
     private String email;
     private Role role;
-    private UserData userData;
+    private UserPersonalInfo personalInfo;
     private List<ReviewDto> reviews;
 }
