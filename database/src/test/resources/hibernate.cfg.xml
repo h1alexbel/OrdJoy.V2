@@ -4,7 +4,8 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:h2:mem:ordjoy;INIT=CREATE SCHEMA IF NOT EXISTS user_storage
+        <property name="connection.url">jdbc:h2:mem:ordjoy;INIT=CREATE SCHEMA IF NOT EXISTS user_storage\;CREATE SCHEMA
+            IF NOT EXISTS review_storage\;CREATE SCHEMA IF NOT EXISTS audio_storage
         </property>
         <property name="connection.username"/>
         <property name="connection.password"/>
