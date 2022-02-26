@@ -18,5 +18,4 @@ public class MixDto implements Serializable {
     private String title;
     private String description;
     private List<TrackDto> tracks;
-    private List<MixReviewDto> mixReviews;
 }

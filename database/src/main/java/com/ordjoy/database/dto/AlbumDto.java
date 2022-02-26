@@ -17,5 +17,4 @@ public class AlbumDto implements Serializable {
     private Long id;
     private String title;
     private List<TrackDto> tracks;
-    private List<AlbumReviewDto> albumReviews;
 }

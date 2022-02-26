@@ -17,7 +17,7 @@ public class OrderDto implements Serializable {
 
     private Long id;
     private BigDecimal price;
-    private UserDto user;
     private OrderStatus status;
+    private UserDto user;
     private TrackDto track;
 }
