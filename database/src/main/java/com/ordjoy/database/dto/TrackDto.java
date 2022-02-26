@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +16,4 @@ public class TrackDto implements Serializable {
     private Long id;
     private String title;
     private String url;
-    private AlbumDto album;
-    private List<MixDto> mixes;
-    private List<TrackReviewDto> trackReviews;
 }
