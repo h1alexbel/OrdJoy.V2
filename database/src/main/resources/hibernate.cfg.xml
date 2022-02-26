@@ -12,14 +12,15 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.current_session_context_class">thread</property>
 
-        <mapping class="com.ordjoy.database.model.User"/>
-        <mapping class="com.ordjoy.database.model.Album"/>
-        <mapping class="com.ordjoy.database.model.Mix"/>
-        <mapping class="com.ordjoy.database.model.Track"/>
-        <mapping class="com.ordjoy.database.model.UserTrackOrder"/>
-        <mapping class="com.ordjoy.database.model.TrackReview"/>
-        <mapping class="com.ordjoy.database.model.AlbumReview"/>
-        <mapping class="com.ordjoy.database.model.MixReview"/>
+        <mapping class="com.ordjoy.database.model.user.User"/>
+        <mapping class="com.ordjoy.database.model.track.Album"/>
+        <mapping class="com.ordjoy.database.model.track.Mix"/>
+        <mapping class="com.ordjoy.database.model.track.Track"/>
+        <mapping class="com.ordjoy.database.model.order.UserTrackOrder"/>
+        <mapping class="com.ordjoy.database.model.review.TrackReview"/>
+        <mapping class="com.ordjoy.database.model.review.AlbumReview"/>
+        <mapping class="com.ordjoy.database.model.review.MixReview"/>
     </session-factory>
 </hibernate-configuration>
