@@ -19,7 +19,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -31,11 +30,11 @@ import java.util.Objects;
 @Table(name = "review", schema = "review_storage")
 @Inheritance
 @DiscriminatorColumn(name = "review_type")
-public abstract class Review<K extends Serializable> {
+public abstract class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected K id;
+    protected Long id;
 
     @Column(name = "review_text", length = 512, nullable = false)
     protected String reviewText;
@@ -48,7 +47,7 @@ public abstract class Review<K extends Serializable> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Review<?> review = (Review<?>) o;
+        Review review = (Review) o;
         return id != null && Objects.equals(id, review.id);
     }
 

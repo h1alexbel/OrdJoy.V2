@@ -56,7 +56,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Builder.Default
     @ToString.Exclude
-    private List<Review<Long>> reviews = new ArrayList<>();
+    private List<Review> reviews = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
