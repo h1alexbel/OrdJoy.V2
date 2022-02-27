@@ -2,12 +2,11 @@ package com.ordjoy.database.repository.order;
 
 import com.ordjoy.database.model.order.OrderStatus;
 import com.ordjoy.database.model.order.UserTrackOrder;
-import com.ordjoy.database.repository.GenericCRUDRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface OrderRepository extends GenericCRUDRepository<UserTrackOrder, Long> {
+public interface OrderRepository {
 
     void updateOrderStatus(OrderStatus status, Long id);
 
