@@ -2,12 +2,11 @@ package com.ordjoy.database.repository.user;
 
 import com.ordjoy.database.model.review.Review;
 import com.ordjoy.database.model.user.User;
-import com.ordjoy.database.repository.GenericCRUDRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends GenericCRUDRepository<User, Long> {
+public interface UserRepository {
 
     void updateDiscountLevel(Integer newDiscountLevelToSet, Long userId);
 
@@ -17,5 +16,5 @@ public interface UserRepository extends GenericCRUDRepository<User, Long> {
 
     Optional<User> findUserByLoginAndPassword(String login, String password);
 
-    List<Review<Long>> findReviewsByUserLogin(String login);
+    List<Review> findReviewsByUserLogin(String login);
 }
