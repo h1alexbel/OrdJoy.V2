@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,14 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
         Session session = sessionFactory.getCurrentSession();
         session.createQuery("update User u set u.userData.discountPercentageLevel = :discountPercentageLevel")
                 .setParameter("discountPercentageLevel", newDiscountLevelToSet)
+                .executeUpdate();
+    }
+
+    @Override
+    public void updateBalanceAmount(BigDecimal newBalanceValueToSet, Long userId) {
+        Session session = sessionFactory.getCurrentSession();
+        session.createQuery("update User u set u.userData.amount = u.userData.amount + :amount")
+                .setParameter("amount", newBalanceValueToSet)
                 .executeUpdate();
     }
 
