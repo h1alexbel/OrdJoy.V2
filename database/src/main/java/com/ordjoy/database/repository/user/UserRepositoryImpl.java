@@ -33,16 +33,20 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
     @Override
     public void updateDiscountLevel(Integer newDiscountLevelToSet, Long userId) {
         Session session = sessionFactory.getCurrentSession();
-        session.createQuery("update User u set u.userData.discountPercentageLevel = :discountPercentageLevel")
+        session.createQuery("update User u set u.userData.discountPercentageLevel = :discountPercentageLevel" +
+                            " where u.id = :userId")
                 .setParameter("discountPercentageLevel", newDiscountLevelToSet)
+                .setParameter("userId", userId)
                 .executeUpdate();
     }
 
     @Override
     public void updateBalanceAmount(BigDecimal newBalanceValueToSet, Long userId) {
         Session session = sessionFactory.getCurrentSession();
-        session.createQuery("update User u set u.userData.amount = u.userData.amount + :amount")
+        session.createQuery("update User u set u.userData.amount = u.userData.amount + :amount" +
+                            " where u.id = :userId")
                 .setParameter("amount", newBalanceValueToSet)
+                .setParameter("userId", userId)
                 .executeUpdate();
     }
 
