@@ -32,7 +32,8 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
     @Override
     public Optional<Album> findAlbumByTitle(String title) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select a from Album a where a.title = :albumName", Album.class)
+        return session.createQuery("select a from Album a where a.title = :albumName",
+                        Album.class)
                 .setParameter("albumName", title)
                 .setMaxResults(1)
                 .getResultList()
