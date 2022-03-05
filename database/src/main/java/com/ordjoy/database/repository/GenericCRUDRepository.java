@@ -16,5 +16,5 @@ public interface GenericCRUDRepository<E extends BaseEntity<K>, K extends Serial
 
     void update(E entity);
 
-    void deleteById(K id);
+    void deleteById(E entity);
 }
