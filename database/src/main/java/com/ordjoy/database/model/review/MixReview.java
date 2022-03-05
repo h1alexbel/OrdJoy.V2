@@ -31,8 +31,8 @@ public class MixReview extends Review {
     private Mix mix;
 
     @Builder
-    public MixReview(Long id, String reviewText, User user, Mix mix) {
-        super(id, reviewText, user);
+    public MixReview(String reviewText, User user, Mix mix) {
+        super(reviewText, user);
         this.mix = mix;
     }
 

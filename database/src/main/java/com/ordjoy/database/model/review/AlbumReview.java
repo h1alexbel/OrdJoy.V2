@@ -31,8 +31,8 @@ public class AlbumReview extends Review {
     private Album album;
 
     @Builder
-    public AlbumReview(Long id, String reviewText, User user, Album album) {
-        super(id, reviewText, user);
+    public AlbumReview(String reviewText, User user, Album album) {
+        super(reviewText, user);
         this.album = album;
     }
 

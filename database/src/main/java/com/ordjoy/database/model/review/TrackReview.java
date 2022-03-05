@@ -31,8 +31,8 @@ public class TrackReview extends Review {
     private Track track;
 
     @Builder
-    public TrackReview(Long id, String reviewText, User user, Track track) {
-        super(id, reviewText, user);
+    public TrackReview(String reviewText, User user, Track track) {
+        super(reviewText, user);
         this.track = track;
     }
 

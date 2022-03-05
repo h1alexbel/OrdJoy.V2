@@ -1,5 +1,7 @@
 package com.ordjoy.database.model.order;
 
+import com.ordjoy.database.model.AuditableEntity;
+import com.ordjoy.database.model.BaseEntity;
 import com.ordjoy.database.model.track.Track;
 import com.ordjoy.database.model.user.User;
 import lombok.AllArgsConstructor;
@@ -14,9 +16,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -31,11 +30,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "user_track_order", schema = "user_storage")
-public class UserTrackOrder {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class UserTrackOrder extends AuditableEntity<Long> {
 
     private BigDecimal price;
 

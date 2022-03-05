@@ -1,5 +1,7 @@
 package com.ordjoy.database.model.review;
 
+import com.ordjoy.database.model.AuditableEntity;
+import com.ordjoy.database.model.BaseEntity;
 import com.ordjoy.database.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,9 +14,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,11 +29,7 @@ import java.util.Objects;
 @Table(name = "review", schema = "review_storage")
 @Inheritance
 @DiscriminatorColumn(name = "review_type")
-public abstract class Review {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+public abstract class Review extends AuditableEntity<Long> {
 
     @Column(name = "review_text", length = 512, nullable = false)
     protected String reviewText;

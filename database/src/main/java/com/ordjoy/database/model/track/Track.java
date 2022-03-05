@@ -1,5 +1,6 @@
 package com.ordjoy.database.model.track;
 
+import com.ordjoy.database.model.BaseEntity;
 import com.ordjoy.database.model.review.TrackReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +13,6 @@ import org.hibernate.Hibernate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -32,11 +30,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "track", schema = "audio_storage")
-public class Track {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Track extends BaseEntity<Long> {
 
     @Column(length = 512, nullable = false)
     private String title;
