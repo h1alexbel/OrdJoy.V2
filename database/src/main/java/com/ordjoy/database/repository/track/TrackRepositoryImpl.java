@@ -4,8 +4,6 @@ import com.ordjoy.database.model.track.Mix;
 import com.ordjoy.database.model.track.Track;
 import com.ordjoy.database.repository.AbstractGenericCRUDRepository;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,15 +12,6 @@ import java.util.Optional;
 @Repository
 public class TrackRepositoryImpl extends AbstractGenericCRUDRepository<Track, Long>
         implements TrackRepository {
-
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public TrackRepositoryImpl(SessionFactory sessionFactory) {
-        super(Track.class, sessionFactory);
-        this.sessionFactory = sessionFactory;
-    }
-
 
     @Override
     public void addTrackToMix(Track track, Mix mix) {
@@ -36,7 +25,7 @@ public class TrackRepositoryImpl extends AbstractGenericCRUDRepository<Track, Lo
     }
 
     @Override
-    public Optional<Track> findTrackByTitle(String title) {
+    public Optional<Track> findByTitle(String title) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select t from Track t where t.title = :title",
                         Track.class)

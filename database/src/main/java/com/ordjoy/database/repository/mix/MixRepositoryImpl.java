@@ -1,13 +1,12 @@
 package com.ordjoy.database.repository.mix;
 
+import com.ordjoy.database.model.BaseEntity_;
 import com.ordjoy.database.model.review.MixReview;
 import com.ordjoy.database.model.review.MixReview_;
 import com.ordjoy.database.model.track.Mix;
 import com.ordjoy.database.model.track.Mix_;
 import com.ordjoy.database.repository.AbstractGenericCRUDRepository;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,16 +20,8 @@ import java.util.Optional;
 public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
         implements MixRepository {
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public MixRepositoryImpl(SessionFactory sessionFactory) {
-        super(Mix.class, sessionFactory);
-        this.sessionFactory = sessionFactory;
-    }
-
     @Override
-    public Optional<Mix> findMixByTitle(String title) {
+    public Optional<Mix> findByTitle(String title) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select m from Mix m where m.title = :mixTitle", Mix.class)
                 .setParameter("mixTitle", title)
@@ -60,7 +51,7 @@ public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
         Root<MixReview> root = criteria.from(MixReview.class);
         Join<MixReview, Mix> mixJoin = root.join(MixReview_.mix);
         criteria.select(root)
-                .where(cb.equal(mixJoin.get(Mix_.id), mixId));
+                .where(cb.equal(mixJoin.get(BaseEntity_.id), mixId));
         return session.createQuery(criteria).getResultList();
     }
 }

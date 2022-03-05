@@ -1,5 +1,6 @@
 package com.ordjoy.database.repository.order;
 
+import com.ordjoy.database.model.BaseEntity_;
 import com.ordjoy.database.model.order.OrderStatus;
 import com.ordjoy.database.model.order.UserTrackOrder;
 import com.ordjoy.database.model.order.UserTrackOrder_;
@@ -9,8 +10,6 @@ import com.ordjoy.database.model.user.User;
 import com.ordjoy.database.model.user.User_;
 import com.ordjoy.database.repository.AbstractGenericCRUDRepository;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -24,16 +23,8 @@ import java.util.List;
 public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrackOrder, Long>
         implements OrderRepository {
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public OrderRepositoryImpl(SessionFactory sessionFactory) {
-        super(UserTrackOrder.class, sessionFactory);
-        this.sessionFactory = sessionFactory;
-    }
-
     @Override
-    public void updateOrderStatus(OrderStatus status, Long id) {
+    public void updateStatus(OrderStatus status, Long id) {
         Session session = sessionFactory.getCurrentSession();
         session.createQuery("update UserTrackOrder o set o.status = :status" +
                             " where o.id = :orderId")
@@ -43,7 +34,7 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
     }
 
     @Override
-    public void updateOrderPrice(BigDecimal price, Long orderId) {
+    public void updatePrice(BigDecimal price, Long orderId) {
         Session session = sessionFactory.getCurrentSession();
         session.createQuery("update UserTrackOrder o set o.price = :price" +
                             " where o.id = :orderId")
@@ -69,7 +60,7 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
         Root<UserTrackOrder> root = criteria.from(UserTrackOrder.class);
         Join<UserTrackOrder, User> userJoin = root.join(UserTrackOrder_.user);
         criteria.select(root)
-                .where(cb.equal(userJoin.get(User_.id), userId));
+                .where(cb.equal(userJoin.get(BaseEntity_.id), userId));
         return session.createQuery(criteria).getResultList();
     }
 
@@ -105,7 +96,7 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
         Root<UserTrackOrder> root = criteria.from(UserTrackOrder.class);
         Join<UserTrackOrder, Track> trackJoin = root.join(UserTrackOrder_.track);
         criteria.select(root)
-                .where(cb.equal(trackJoin.get(Track_.id), trackId));
+                .where(cb.equal(trackJoin.get(BaseEntity_.id), trackId));
         return session.createQuery(criteria).getResultList();
     }
 
