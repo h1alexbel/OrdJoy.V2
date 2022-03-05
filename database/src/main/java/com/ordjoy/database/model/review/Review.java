@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -28,6 +31,9 @@ import java.util.Objects;
 @Table(name = "review", schema = "review_storage")
 @Inheritance
 @DiscriminatorColumn(name = "review_type")
+@SQLDelete(sql = "UPDATE review_storage.review SET state = 'NOT_ACTIVE' WHERE id = ?",
+        check = ResultCheckStyle.COUNT)
+@Where(clause = "state = 'ACTIVE'")
 public abstract class Review extends AuditableEntity<Long> {
 
     @Column(name = "review_text", length = 512, nullable = false)

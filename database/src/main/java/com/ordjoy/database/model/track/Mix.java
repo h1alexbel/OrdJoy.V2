@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +32,9 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "mix", schema = "audio_storage")
+@SQLDelete(sql = "UPDATE audio_storage.mix SET state = 'NOT_ACTIVE' WHERE id = ?",
+        check = ResultCheckStyle.COUNT)
+@Where(clause = "state = 'ACTIVE'")
 public class Mix extends BaseEntity<Long> {
 
     @Column(length = 128, nullable = false, unique = true)

@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -29,6 +32,9 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "user_track_order", schema = "user_storage")
+@SQLDelete(sql = "UPDATE user_storage.user_track_order SET state = 'NOT_ACTIVE' WHERE id = ?",
+        check = ResultCheckStyle.COUNT)
+@Where(clause = "state = 'ACTIVE'")
 public class UserTrackOrder extends AuditableEntity<Long> {
 
     private BigDecimal price;
