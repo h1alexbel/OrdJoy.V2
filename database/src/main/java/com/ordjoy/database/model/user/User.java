@@ -1,5 +1,7 @@
 package com.ordjoy.database.model.user;
 
+import com.ordjoy.database.model.AuditableEntity;
+import com.ordjoy.database.model.BaseEntity;
 import com.ordjoy.database.model.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,9 +16,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -31,11 +30,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "user_account", schema = "user_storage")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends AuditableEntity<Long> {
 
     @Column(length = 128, unique = true, nullable = false)
     private String login;
