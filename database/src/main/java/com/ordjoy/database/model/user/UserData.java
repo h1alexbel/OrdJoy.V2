@@ -29,9 +29,9 @@ public class UserData {
     @Column(name = "card_number", length = 32)
     private String cardNumber;
 
-    @Column(name = "account_balance")
+    @Column(name = "account_balance", nullable = false)
     private BigDecimal accountBalance;
 
-    @Column(name = "discount_percentage_level")
+    @Column(name = "discount_percentage_level", nullable = false)
     private Integer discountPercentageLevel;
 }
