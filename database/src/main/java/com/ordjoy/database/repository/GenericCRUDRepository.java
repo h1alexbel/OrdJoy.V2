@@ -1,10 +1,12 @@
 package com.ordjoy.database.repository;
 
+import com.ordjoy.database.model.BaseEntity;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface GenericCRUDRepository<E, K extends Serializable> {
+public interface GenericCRUDRepository<E extends BaseEntity<K>, K extends Serializable> {
 
     E add(E entity);
 
@@ -12,7 +14,7 @@ public interface GenericCRUDRepository<E, K extends Serializable> {
 
     List<E> findAll();
 
-    void update(E newEntityValue);
+    void update(E entity);
 
     void deleteById(K id);
 }
