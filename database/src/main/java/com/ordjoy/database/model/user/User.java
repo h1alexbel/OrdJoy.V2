@@ -1,7 +1,6 @@
 package com.ordjoy.database.model.user;
 
 import com.ordjoy.database.model.AuditableEntity;
-import com.ordjoy.database.model.BaseEntity;
 import com.ordjoy.database.model.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

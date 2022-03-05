@@ -6,7 +6,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Permission {
-    READ("user:read"), WRITE("user:write");
+    READ("user:read"),
+    WRITE("user:write"),
+    BACK_UP("user:backup"),
+    HARD_DELETE("user:delete");
 
     private final String permissionName;
 }
