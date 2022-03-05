@@ -1,6 +1,7 @@
 package com.ordjoy.database.repository;
 
 import com.ordjoy.database.model.BaseEntity;
+import com.ordjoy.database.model.EntityState;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
 
     protected AbstractGenericCRUDRepository() {
         Type genericSuperclass = getClass().getGenericSuperclass();
-        clazz = (Class<E>) ((ParameterizedType) genericSuperclass).getActualTypeArguments()[1];
+        clazz = (Class<E>) ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
     }
 
     @Override
@@ -45,6 +46,7 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
     @Override
     public E add(E entity) {
         Session session = sessionFactory.getCurrentSession();
+        entity.setEntityState(EntityState.ACTIVE);
         session.save(entity);
         return entity;
     }
@@ -56,8 +58,8 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
     }
 
     @Override
-    public void deleteById(K id) {
+    public void deleteById(E entity) {
         Session session = sessionFactory.getCurrentSession();
-        session.delete(id);
+        session.delete(entity);
     }
 }
