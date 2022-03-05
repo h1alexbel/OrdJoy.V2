@@ -6,8 +6,6 @@ import com.ordjoy.database.model.user.User;
 import com.ordjoy.database.model.user.User_;
 import com.ordjoy.database.repository.AbstractGenericCRUDRepository;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,14 +20,6 @@ import java.util.Optional;
 public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long>
         implements UserRepository {
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public UserRepositoryImpl(SessionFactory sessionFactory) {
-        super(User.class, sessionFactory);
-        this.sessionFactory = sessionFactory;
-    }
-
     @Override
     public void updateDiscountLevel(Integer newDiscountLevelToSet, Long userId) {
         Session session = sessionFactory.getCurrentSession();
@@ -43,7 +33,8 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
     @Override
     public void updateBalanceAmount(BigDecimal newBalanceValueToSet, Long userId) {
         Session session = sessionFactory.getCurrentSession();
-        session.createQuery("update User u set u.userData.amount = u.userData.amount + :amount" +
+        session.createQuery("update User u " +
+                            "set u.userData.accountBalance = u.userData.accountBalance + :amount" +
                             " where u.id = :userId")
                 .setParameter("amount", newBalanceValueToSet)
                 .setParameter("userId", userId)
@@ -51,7 +42,7 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
     }
 
     @Override
-    public Optional<User> findUserByLogin(String login) {
+    public Optional<User> findByLogin(String login) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select u from User u where u.login = :login", User.class)
                 .setParameter("login", login)
@@ -62,7 +53,7 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select u from User u where u.email = :email", User.class)
                 .setParameter("email", email)
@@ -73,7 +64,7 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
     }
 
     @Override
-    public Optional<User> findUserByLoginAndPassword(String login, String password) {
+    public Optional<User> findByLoginAndPassword(String login, String password) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select u from User u where u.login = :login and u.password = :password",
                         User.class)
