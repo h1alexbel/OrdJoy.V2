@@ -1,13 +1,12 @@
 package com.ordjoy.database.repository.album;
 
+import com.ordjoy.database.model.BaseEntity_;
 import com.ordjoy.database.model.review.AlbumReview;
 import com.ordjoy.database.model.review.AlbumReview_;
 import com.ordjoy.database.model.track.Album;
 import com.ordjoy.database.model.track.Album_;
 import com.ordjoy.database.repository.AbstractGenericCRUDRepository;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,16 +20,8 @@ import java.util.Optional;
 public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Long>
         implements AlbumRepository {
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public AlbumRepositoryImpl(SessionFactory sessionFactory) {
-        super(Album.class, sessionFactory);
-        this.sessionFactory = sessionFactory;
-    }
-
     @Override
-    public Optional<Album> findAlbumByTitle(String title) {
+    public Optional<Album> findByTitle(String title) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select a from Album a where a.title = :albumName",
                         Album.class)
@@ -61,7 +52,7 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
         Root<AlbumReview> root = criteria.from(AlbumReview.class);
         Join<AlbumReview, Album> albumJoin = root.join(AlbumReview_.album);
         criteria.select(root)
-                .where(cb.equal(albumJoin.get(Album_.id), albumJoin));
+                .where(cb.equal(albumJoin.get(BaseEntity_.id), albumJoin));
         return session.createQuery(criteria).getResultList();
     }
 }

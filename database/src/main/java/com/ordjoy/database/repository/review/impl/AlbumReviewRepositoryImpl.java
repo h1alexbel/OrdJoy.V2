@@ -4,8 +4,6 @@ import com.ordjoy.database.model.review.AlbumReview;
 import com.ordjoy.database.repository.AbstractGenericCRUDRepository;
 import com.ordjoy.database.repository.review.AlbumReviewRepository;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,14 +11,6 @@ import java.util.List;
 @Repository
 public class AlbumReviewRepositoryImpl extends AbstractGenericCRUDRepository<AlbumReview, Long>
         implements AlbumReviewRepository {
-
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public AlbumReviewRepositoryImpl(SessionFactory sessionFactory) {
-        super(AlbumReview.class, sessionFactory);
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public List<AlbumReview> findAlbumReviewsByUserLogin(String login) {
