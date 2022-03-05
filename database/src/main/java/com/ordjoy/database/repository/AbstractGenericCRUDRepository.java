@@ -54,7 +54,7 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
     @Override
     public void update(E entity) {
         Session session = sessionFactory.getCurrentSession();
-        session.update(entity);
+        session.merge(entity);
     }
 
     @Override
