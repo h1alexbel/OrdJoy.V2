@@ -59,8 +59,8 @@ class AlbumRepositoryImplTest {
     @Test
     @DisplayName("find album reviews by album id test case")
     void findAlbumReviewsByAlbumId() {
-        List<AlbumReview> reviewsByAlbumTitle =
-                albumRepository.findAlbumReviewsByAlbumId(1L);
-        assertThat(reviewsByAlbumTitle).isNotEmpty();
+        Optional<Album> maybeAlbum = albumRepository.findById(1L);
+        maybeAlbum.ifPresent(album -> assertThat(albumRepository.findAlbumReviewsByAlbumId(album.getId()))
+                .isNotEmpty());
     }
 }
