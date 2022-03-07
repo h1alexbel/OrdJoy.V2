@@ -52,7 +52,7 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
         Root<AlbumReview> root = criteria.from(AlbumReview.class);
         Join<AlbumReview, Album> albumJoin = root.join(AlbumReview_.album);
         criteria.select(root)
-                .where(cb.equal(albumJoin.get(BaseEntity_.id), albumJoin));
+                .where(cb.equal(albumJoin.get(BaseEntity_.id), albumId));
         return session.createQuery(criteria).getResultList();
     }
 }
