@@ -22,6 +22,10 @@ public interface UserService {
 
     Optional<UserDto> findUserById(Long id);
 
+    Optional<UserDto> findUserByEmail(String email);
+
+    Optional<UserDto> findUserByLogin(String login);
+
     List<ReviewDto> findReviewsByUserLogin(String login);
 
     boolean isEmailExists(String email);
