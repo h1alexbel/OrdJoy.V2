@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -16,5 +17,6 @@ public class UserPersonalInfo {
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
+    private BigDecimal accountBalance;
     private Integer discountPercentageLevel;
 }
