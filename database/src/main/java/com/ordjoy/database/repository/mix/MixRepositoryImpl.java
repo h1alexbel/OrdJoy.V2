@@ -5,6 +5,7 @@ import com.ordjoy.database.model.review.MixReview;
 import com.ordjoy.database.model.review.MixReview_;
 import com.ordjoy.database.model.track.Mix;
 import com.ordjoy.database.model.track.Mix_;
+import com.ordjoy.database.model.track.Track;
 import com.ordjoy.database.repository.AbstractGenericCRUDRepository;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -32,7 +33,16 @@ public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
     }
 
     @Override
-    public List<MixReview> findMixReviewsByMixName(String mixName) {
+    public List<Track> findTracksByMixTitle(String mixTitle) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select t from Mix m join m.tracks t where m.title = :title",
+                        Track.class)
+                .setParameter("title", mixTitle)
+                .getResultList();
+    }
+
+    @Override
+    public List<MixReview> findMixReviewsByMixTitle(String mixName) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<MixReview> criteria = cb.createQuery(MixReview.class);
