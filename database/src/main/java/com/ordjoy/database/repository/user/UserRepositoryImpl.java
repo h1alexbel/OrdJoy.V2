@@ -31,12 +31,12 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
     }
 
     @Override
-    public void updateBalanceAmount(BigDecimal newBalanceValueToSet, Long userId) {
+    public void updateBalanceAmount(BigDecimal balanceToAdd, Long userId) {
         Session session = sessionFactory.getCurrentSession();
         session.createQuery("update User u " +
                             "set u.userData.accountBalance = u.userData.accountBalance + :amount" +
                             " where u.id = :userId")
-                .setParameter("amount", newBalanceValueToSet)
+                .setParameter("amount", balanceToAdd)
                 .setParameter("userId", userId)
                 .executeUpdate();
     }

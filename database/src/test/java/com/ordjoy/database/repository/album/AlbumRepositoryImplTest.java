@@ -3,6 +3,7 @@ package com.ordjoy.database.repository.album;
 import com.ordjoy.database.config.HibernateConfigTest;
 import com.ordjoy.database.model.review.AlbumReview;
 import com.ordjoy.database.model.track.Album;
+import com.ordjoy.database.model.track.Track;
 import com.ordjoy.database.util.TestDataImporter;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,5 +63,20 @@ class AlbumRepositoryImplTest {
         Optional<Album> maybeAlbum = albumRepository.findById(1L);
         maybeAlbum.ifPresent(album -> assertThat(albumRepository.findAlbumReviewsByAlbumId(album.getId()))
                 .isNotEmpty());
+    }
+
+    @Test
+    @DisplayName("find Tracks by album id test case")
+    void findTracksByAlbumId() {
+        Optional<Album> byId = albumRepository.findById(1L);
+        byId.ifPresent(album -> assertThat(albumRepository.findTracksByAlbumId(album.getId()))
+                .isNotEmpty());
+    }
+
+    @Test
+    @DisplayName("find tracks by album name test case")
+    void findTracksByAlbumName() {
+        List<Track> tracks = albumRepository.findTracksByAlbumTitle("Post Malone - Beerbongs & Bentleys");
+        assertThat(tracks).isNotEmpty();
     }
 }

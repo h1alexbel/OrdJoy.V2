@@ -13,24 +13,6 @@ public class TrackReviewRepositoryImpl extends AbstractGenericCRUDRepository<Tra
         implements TrackReviewRepository {
 
     @Override
-    public List<TrackReview> findTrackReviewsByTrackTitle(String title) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select tr from TrackReview tr join tr.track t where t.title = :trackTitle",
-                        TrackReview.class)
-                .setParameter("trackTitle", title)
-                .getResultList();
-    }
-
-    @Override
-    public List<TrackReview> findTrackReviewsByTrackId(Long trackId) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select tr from TrackReview tr join tr.track t where t.id = :trackId",
-                        TrackReview.class)
-                .setParameter("trackId", trackId)
-                .getResultList();
-    }
-
-    @Override
     public List<TrackReview> findTrackReviewsByUserLogin(String login) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select tr from TrackReview tr join tr.user u where u.login = :login",

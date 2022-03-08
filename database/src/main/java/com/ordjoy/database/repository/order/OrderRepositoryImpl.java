@@ -34,12 +34,23 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
     }
 
     @Override
-    public void updatePrice(BigDecimal price, Long orderId) {
+    public void updatePrice(BigDecimal price, Long id) {
         Session session = sessionFactory.getCurrentSession();
         session.createQuery("update UserTrackOrder o set o.price = :price" +
                             " where o.id = :orderId")
                 .setParameter("price", price)
-                .setParameter("orderId", orderId)
+                .setParameter("orderId", id)
+                .executeUpdate();
+    }
+
+    @Override
+    public void subtractBalance(BigDecimal orderCost, Long userId) {
+        Session session = sessionFactory.getCurrentSession();
+        session.createQuery("update User u " +
+                            "set u.userData.accountBalance = u.userData.accountBalance - :cost" +
+                            " where u.id = :userId")
+                .setParameter("cost", orderCost)
+                .setParameter("userId", userId)
                 .executeUpdate();
     }
 
