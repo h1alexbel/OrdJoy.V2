@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    List<UserDto> findAll();
+    List<UserDto> listUsers();
 
     UserDto saveUser(User user);
 
