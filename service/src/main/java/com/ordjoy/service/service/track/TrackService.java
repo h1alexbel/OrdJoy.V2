@@ -28,5 +28,5 @@ public interface TrackService {
 
     void updateTrack(Track track);
 
-    void deleteTrackById(Long id);
+    void deleteTrack(Track track);
 }

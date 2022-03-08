@@ -20,7 +20,7 @@ public interface ReviewService<D extends ReviewDto, R extends Review, K> {
 
     Optional<D> findReviewById(K key);
 
-    void deleteReviewById(K key);
+    void deleteReview(R review);
 
     void updateReview(R rev);
 }
