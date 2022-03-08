@@ -26,7 +26,7 @@ public interface OrderService {
 
     BigDecimal calculateOrderPrice(Long orderId);
 
-    void deleteOrderById(Long id);
+    void deleteOrder(UserTrackOrder order);
 
     List<UserTrackOrderDto> findOrdersByPrice(BigDecimal price);
 
