@@ -3,6 +3,7 @@ package com.ordjoy.database.repository.mix;
 import com.ordjoy.database.config.HibernateConfigTest;
 import com.ordjoy.database.model.review.MixReview;
 import com.ordjoy.database.model.track.Mix;
+import com.ordjoy.database.model.track.Track;
 import com.ordjoy.database.util.TestDataImporter;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,10 +50,17 @@ class MixRepositoryImplTest {
     }
 
     @Test
+    @DisplayName("find tracks by mix title test case")
+    void findTracksByMixTitle() {
+        List<Track> tracksByMixTitle = mixRepository.findTracksByMixTitle("Jazz hits");
+        assertThat(tracksByMixTitle).hasSize(1).isNotEmpty();
+    }
+
+    @Test
     @DisplayName("find mix reviews by mix name test case")
     void findMixReviewsByMixName() {
         List<MixReview> mixReviewsByMixName =
-                mixRepository.findMixReviewsByMixName("Travis scott hits");
+                mixRepository.findMixReviewsByMixTitle("Travis scott hits");
         assertThat(mixReviewsByMixName).isNotEmpty();
     }
 

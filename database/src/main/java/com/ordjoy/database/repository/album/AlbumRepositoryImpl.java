@@ -5,6 +5,7 @@ import com.ordjoy.database.model.review.AlbumReview;
 import com.ordjoy.database.model.review.AlbumReview_;
 import com.ordjoy.database.model.track.Album;
 import com.ordjoy.database.model.track.Album_;
+import com.ordjoy.database.model.track.Track;
 import com.ordjoy.database.repository.AbstractGenericCRUDRepository;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -54,5 +55,23 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
         criteria.select(root)
                 .where(cb.equal(albumJoin.get(BaseEntity_.id), albumId));
         return session.createQuery(criteria).getResultList();
+    }
+
+    @Override
+    public List<Track> findTracksByAlbumId(Long albumId) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select t from Track t join t.album a where a.id = :id",
+                        Track.class)
+                .setParameter("id", albumId)
+                .getResultList();
+    }
+
+    @Override
+    public List<Track> findTracksByAlbumTitle(String albumTitle) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select t from Track t join t.album a where a.title = :albumName",
+                        Track.class)
+                .setParameter("albumName", albumTitle)
+                .getResultList();
     }
 }

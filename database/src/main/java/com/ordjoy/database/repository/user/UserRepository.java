@@ -12,7 +12,7 @@ public interface UserRepository extends GenericCRUDRepository<User, Long> {
 
     void updateDiscountLevel(Integer newDiscountLevelToSet, Long userId);
 
-    void updateBalanceAmount(BigDecimal balance, Long userId);
+    void updateBalanceAmount(BigDecimal balanceToAdd, Long userId);
 
     Optional<User> findByLogin(String login);
 

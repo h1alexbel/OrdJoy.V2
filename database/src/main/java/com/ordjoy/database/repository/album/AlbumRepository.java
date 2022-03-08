@@ -2,6 +2,7 @@ package com.ordjoy.database.repository.album;
 
 import com.ordjoy.database.model.review.AlbumReview;
 import com.ordjoy.database.model.track.Album;
+import com.ordjoy.database.model.track.Track;
 import com.ordjoy.database.repository.GenericCRUDRepository;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface AlbumRepository extends GenericCRUDRepository<Album, Long> {
     List<AlbumReview> findAlbumReviewsByAlbumTitle(String title);
 
     List<AlbumReview> findAlbumReviewsByAlbumId(Long albumId);
+
+    List<Track> findTracksByAlbumId(Long albumId);
+
+    List<Track> findTracksByAlbumTitle(String albumTitle);
 }

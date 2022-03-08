@@ -11,7 +11,9 @@ public interface OrderRepository extends GenericCRUDRepository<UserTrackOrder, L
 
     void updateStatus(OrderStatus status, Long id);
 
-    void updatePrice(BigDecimal price, Long orderId);
+    void updatePrice(BigDecimal price, Long id);
+
+    void subtractBalance(BigDecimal cost, Long userId);
 
     List<UserTrackOrder> findOrdersByPrice(BigDecimal price);
 

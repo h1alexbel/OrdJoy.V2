@@ -71,6 +71,11 @@ public final class TestDataImporter {
 
         saveMixReview(session, travisScottMix, alex, "To be honest not the best songs pick. This artist has more crutial songs");
         saveMixReview(session, hipHopMix, johnDoe, "I love this mix.");
+
+        Mix mix = saveMix(session, "Jazz hits", "Best of jazz");
+        Album album = saveAlbum(session, "Jazz 2022");
+        Track track = saveTrack(session, "https://www.youtube.com/watch?v=neV3EPgvZ3g", "Relaxing jazz", album);
+        mix.addTrack(track);
     }
 
     private static User saveUser(Session session,

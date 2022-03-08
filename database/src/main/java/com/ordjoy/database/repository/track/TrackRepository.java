@@ -1,5 +1,6 @@
 package com.ordjoy.database.repository.track;
 
+import com.ordjoy.database.model.review.TrackReview;
 import com.ordjoy.database.model.track.Mix;
 import com.ordjoy.database.model.track.Track;
 import com.ordjoy.database.repository.GenericCRUDRepository;
@@ -13,7 +14,7 @@ public interface TrackRepository extends GenericCRUDRepository<Track, Long> {
 
     Optional<Track> findByTitle(String title);
 
-    List<Track> findTracksByAlbumId(Long albumId);
+    List<TrackReview> findTrackReviewsByTrackTitle(String title);
 
-    List<Track> findTracksByAlbumName(String albumName);
+    List<TrackReview> findTrackReviewsByTrackId(Long trackId);
 }
