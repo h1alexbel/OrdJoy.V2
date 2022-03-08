@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDto implements Serializable {
+public class UserTrackOrderDto implements Serializable {
 
     private Long id;
     private BigDecimal price;
