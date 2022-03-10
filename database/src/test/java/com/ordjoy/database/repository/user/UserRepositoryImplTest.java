@@ -59,7 +59,7 @@ class UserRepositoryImplTest {
     @DisplayName("delete user test case")
     void deleteUser() {
         Optional<User> maybeUser = userRepository.findById(1L);
-        maybeUser.ifPresent(user -> userRepository.deleteById(user));
+        maybeUser.ifPresent(user -> userRepository.delete(user));
         assertThat(userRepository.findById(1L)).isEmpty();
     }
 

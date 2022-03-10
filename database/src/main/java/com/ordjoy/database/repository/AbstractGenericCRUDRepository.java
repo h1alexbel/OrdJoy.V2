@@ -58,7 +58,7 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
     }
 
     @Override
-    public void deleteById(E entity) {
+    public void delete(E entity) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(entity);
     }
