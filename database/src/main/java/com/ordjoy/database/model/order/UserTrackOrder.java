@@ -14,6 +14,7 @@ import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -37,6 +38,7 @@ import java.util.Objects;
 @Where(clause = "state = 'ACTIVE'")
 public class UserTrackOrder extends AuditableEntity<Long> {
 
+    @Column(nullable = false)
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,6 +46,7 @@ public class UserTrackOrder extends AuditableEntity<Long> {
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
