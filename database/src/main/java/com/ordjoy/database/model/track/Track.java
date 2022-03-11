@@ -38,7 +38,7 @@ import java.util.Objects;
 @Where(clause = "state = 'ACTIVE'")
 public class Track extends BaseEntity<Long> {
 
-    @Column(length = 512, nullable = false)
+    @Column(length = 512, nullable = false, unique = true)
     private String title;
 
     @Column(length = 512, nullable = false, unique = true)

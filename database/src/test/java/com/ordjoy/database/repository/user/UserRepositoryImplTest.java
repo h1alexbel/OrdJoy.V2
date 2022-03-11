@@ -48,10 +48,11 @@ class UserRepositoryImplTest {
         Optional<User> maybeUser = userRepository.findById(1L);
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
-            user.setLogin("logg");
+            user.getUserData().setCardNumber("12867541892");
             userRepository.update(user);
             Optional<User> updatedByEmail = userRepository.findByEmail("johndow@gmail.com");
-            updatedByEmail.ifPresent(it -> assertThat(it.getLogin()).isEqualTo("logg"));
+            updatedByEmail.ifPresent(it -> assertThat(it.getUserData().getCardNumber())
+                    .isEqualTo("12867541892"));
         }
     }
 
