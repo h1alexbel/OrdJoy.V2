@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ReviewService<D extends ReviewDto, R extends Review, K> {
 
-    D saveReview(R rev);
+    D saveReview(R review);
 
     Optional<D> findReviewById(Long reviewId);
 
