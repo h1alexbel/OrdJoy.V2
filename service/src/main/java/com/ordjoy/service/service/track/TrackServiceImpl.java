@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class TrackServiceImpl implements TrackService {
 
     private final TrackRepository trackRepository;
