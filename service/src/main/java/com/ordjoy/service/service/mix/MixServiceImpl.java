@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class MixServiceImpl implements MixService {
 
     private final MixRepository mixRepository;
