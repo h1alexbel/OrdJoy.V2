@@ -1,19 +1,11 @@
 package com.ordjoy.database.repository.user;
 
-import com.ordjoy.database.model.review.Review;
-import com.ordjoy.database.model.review.Review_;
 import com.ordjoy.database.model.user.User;
-import com.ordjoy.database.model.user.User_;
 import com.ordjoy.database.repository.AbstractGenericCRUDRepository;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -74,17 +66,5 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
                 .getResultList()
                 .stream()
                 .findFirst();
-    }
-
-    @Override
-    public List<Review> findReviewsByUserLogin(String login) {
-        Session session = sessionFactory.getCurrentSession();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Review> criteria = cb.createQuery(Review.class);
-        Root<Review> root = criteria.from(Review.class);
-        Join<Review, User> userJoin = root.join(Review_.user);
-        criteria.select(root)
-                .where(cb.equal(userJoin.get(User_.login), login));
-        return session.createQuery(criteria).getResultList();
     }
 }

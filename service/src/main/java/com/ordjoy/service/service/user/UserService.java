@@ -1,7 +1,6 @@
 package com.ordjoy.service.service.user;
 
 import com.ordjoy.database.model.user.User;
-import com.ordjoy.service.dto.ReviewDto;
 import com.ordjoy.service.dto.UserDto;
 
 import java.math.BigDecimal;
@@ -25,8 +24,6 @@ public interface UserService {
     Optional<UserDto> findUserByEmail(String email);
 
     Optional<UserDto> findUserByLogin(String login);
-
-    List<ReviewDto> findReviewsByUserLogin(String login);
 
     boolean isEmailExists(String email);
 

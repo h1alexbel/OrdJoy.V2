@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Transactional(readOnly = true)
@@ -73,14 +74,12 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public boolean isAlbumTitleExists(String title) {
-        boolean result = false;
+        AtomicBoolean result = new AtomicBoolean(false);
         if (title != null) {
-            Optional<Album> maybeAlbum = albumRepository.findByTitle(title);
-            if (maybeAlbum.isPresent()) {
-                result = true;
-            }
+            albumRepository.findByTitle(title)
+                    .ifPresent(album -> result.set(true));
         }
-        return result;
+        return result.get();
     }
 
     @Override
@@ -92,6 +91,10 @@ public class AlbumServiceImpl implements AlbumService {
                             .reviewText(albumReview.getReviewText())
                             .user(UserDto.builder()
                                     .login(albumReview.getUser().getLogin())
+                                    .build())
+                            .album(AlbumDto.builder()
+                                    .id(albumReview.getAlbum().getId())
+                                    .title(albumReview.getAlbum().getTitle())
                                     .build())
                             .build())
                     .toList();
@@ -109,6 +112,10 @@ public class AlbumServiceImpl implements AlbumService {
                             .user(UserDto.builder()
                                     .id(albumReview.getUser().getId())
                                     .login(albumReview.getUser().getLogin())
+                                    .build())
+                            .album(AlbumDto.builder()
+                                    .id(albumReview.getAlbum().getId())
+                                    .title(albumReview.getAlbum().getTitle())
                                     .build())
                             .build())
                     .toList();

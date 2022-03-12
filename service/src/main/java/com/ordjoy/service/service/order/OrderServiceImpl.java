@@ -33,29 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<UserTrackOrderDto> listOrders() {
         return orderRepository.findAll().stream()
-                .map(order -> UserTrackOrderDto.builder()
-                        .id(order.getId())
-                        .price(order.getPrice())
-                        .status(order.getStatus())
-                        .track(TrackDto.builder()
-                                .id(order.getTrack().getId())
-                                .title(order.getTrack().getTitle())
-                                .url(order.getTrack().getUrl())
-                                .album(AlbumDto.builder()
-                                        .id(order.getTrack().getAlbum().getId())
-                                        .title(order.getTrack().getAlbum().getTitle())
-                                        .build())
-                                .build())
-                        .user(UserDto.builder()
-                                .id(order.getUser().getId())
-                                .login(order.getUser().getLogin())
-                                .email(order.getUser().getEmail())
-                                .personalInfo(UserPersonalInfo.builder()
-                                        .discountPercentageLevel(order.getUser().getUserData()
-                                                .getDiscountPercentageLevel())
-                                        .build())
-                                .build())
-                        .build())
+                .map(this::mapOrderToDto)
                 .toList();
     }
 
@@ -63,58 +41,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public UserTrackOrderDto makeOrder(UserTrackOrder order) {
         UserTrackOrder savedOrder = orderRepository.add(order);
-        return UserTrackOrderDto.builder()
-                .id(savedOrder.getId())
-                .price(savedOrder.getPrice())
-                .status(savedOrder.getStatus())
-                .track(TrackDto.builder()
-                        .id(savedOrder.getTrack().getId())
-                        .title(savedOrder.getTrack().getTitle())
-                        .url(savedOrder.getTrack().getUrl())
-                        .album(AlbumDto.builder()
-                                .id(savedOrder.getTrack().getAlbum().getId())
-                                .title(savedOrder.getTrack().getAlbum().getTitle())
-                                .build())
-                        .build())
-                .user(UserDto.builder()
-                        .id(savedOrder.getUser().getId())
-                        .login(savedOrder.getUser().getLogin())
-                        .email(savedOrder.getUser().getEmail())
-                        .personalInfo(UserPersonalInfo.builder()
-                                .discountPercentageLevel(savedOrder.getUser().getUserData()
-                                        .getDiscountPercentageLevel())
-                                .build())
-                        .build())
-                .build();
+        return mapOrderToDto(savedOrder);
     }
 
     @Override
     public Optional<UserTrackOrderDto> findOrderById(Long orderId) {
         if (orderId != null) {
             return orderRepository.findById(orderId).stream()
-                    .map(order -> UserTrackOrderDto.builder()
-                            .id(order.getId())
-                            .price(order.getPrice())
-                            .status(order.getStatus())
-                            .track(TrackDto.builder()
-                                    .id(order.getTrack().getId())
-                                    .title(order.getTrack().getTitle())
-                                    .url(order.getTrack().getUrl())
-                                    .album(AlbumDto.builder()
-                                            .id(order.getTrack().getAlbum().getId())
-                                            .title(order.getTrack().getAlbum().getTitle())
-                                            .build())
-                                    .build())
-                            .user(UserDto.builder()
-                                    .id(order.getUser().getId())
-                                    .login(order.getUser().getLogin())
-                                    .email(order.getUser().getEmail())
-                                    .personalInfo(UserPersonalInfo.builder()
-                                            .discountPercentageLevel(order.getUser().getUserData()
-                                                    .getDiscountPercentageLevel())
-                                            .build())
-                                    .build())
-                            .build())
+                    .map(this::mapOrderToDto)
                     .findFirst();
         }
         return Optional.empty();
@@ -184,29 +118,7 @@ public class OrderServiceImpl implements OrderService {
     public List<UserTrackOrderDto> findOrdersByPrice(BigDecimal price) {
         if (price != null) {
             return orderRepository.findOrdersByPrice(price).stream()
-                    .map(order -> UserTrackOrderDto.builder()
-                            .id(order.getId())
-                            .price(order.getPrice())
-                            .status(order.getStatus())
-                            .track(TrackDto.builder()
-                                    .id(order.getTrack().getId())
-                                    .title(order.getTrack().getTitle())
-                                    .url(order.getTrack().getUrl())
-                                    .album(AlbumDto.builder()
-                                            .id(order.getTrack().getAlbum().getId())
-                                            .title(order.getTrack().getAlbum().getTitle())
-                                            .build())
-                                    .build())
-                            .user(UserDto.builder()
-                                    .id(order.getUser().getId())
-                                    .login(order.getUser().getLogin())
-                                    .email(order.getUser().getEmail())
-                                    .personalInfo(UserPersonalInfo.builder()
-                                            .discountPercentageLevel(order.getUser().getUserData()
-                                                    .getDiscountPercentageLevel())
-                                            .build())
-                                    .build())
-                            .build())
+                    .map(this::mapOrderToDto)
                     .toList();
         }
         return Collections.emptyList();
@@ -216,29 +128,7 @@ public class OrderServiceImpl implements OrderService {
     public List<UserTrackOrderDto> findOrdersByUserId(Long userId) {
         if (userId != null) {
             return orderRepository.findOrdersByUserId(userId).stream()
-                    .map(order -> UserTrackOrderDto.builder()
-                            .id(order.getId())
-                            .price(order.getPrice())
-                            .status(order.getStatus())
-                            .track(TrackDto.builder()
-                                    .id(order.getTrack().getId())
-                                    .title(order.getTrack().getTitle())
-                                    .url(order.getTrack().getUrl())
-                                    .album(AlbumDto.builder()
-                                            .id(order.getTrack().getAlbum().getId())
-                                            .title(order.getTrack().getAlbum().getTitle())
-                                            .build())
-                                    .build())
-                            .user(UserDto.builder()
-                                    .id(order.getUser().getId())
-                                    .login(order.getUser().getLogin())
-                                    .email(order.getUser().getEmail())
-                                    .personalInfo(UserPersonalInfo.builder()
-                                            .discountPercentageLevel(order.getUser().getUserData()
-                                                    .getDiscountPercentageLevel())
-                                            .build())
-                                    .build())
-                            .build())
+                    .map(this::makeOrder)
                     .toList();
         }
         return Collections.emptyList();
@@ -248,29 +138,7 @@ public class OrderServiceImpl implements OrderService {
     public List<UserTrackOrderDto> findOrdersByUserEmail(String email) {
         if (email != null) {
             return orderRepository.findOrdersByUserEmail(email).stream()
-                    .map(order -> UserTrackOrderDto.builder()
-                            .id(order.getId())
-                            .price(order.getPrice())
-                            .status(order.getStatus())
-                            .track(TrackDto.builder()
-                                    .id(order.getTrack().getId())
-                                    .title(order.getTrack().getTitle())
-                                    .url(order.getTrack().getUrl())
-                                    .album(AlbumDto.builder()
-                                            .id(order.getTrack().getAlbum().getId())
-                                            .title(order.getTrack().getAlbum().getTitle())
-                                            .build())
-                                    .build())
-                            .user(UserDto.builder()
-                                    .id(order.getUser().getId())
-                                    .login(order.getUser().getLogin())
-                                    .email(order.getUser().getEmail())
-                                    .personalInfo(UserPersonalInfo.builder()
-                                            .discountPercentageLevel(order.getUser().getUserData()
-                                                    .getDiscountPercentageLevel())
-                                            .build())
-                                    .build())
-                            .build())
+                    .map(this::mapOrderToDto)
                     .toList();
         }
         return Collections.emptyList();
@@ -280,29 +148,7 @@ public class OrderServiceImpl implements OrderService {
     public List<UserTrackOrderDto> findOrdersByUserLogin(String login) {
         if (login != null) {
             return orderRepository.findOrdersByUserLogin(login).stream()
-                    .map(order -> UserTrackOrderDto.builder()
-                            .id(order.getId())
-                            .price(order.getPrice())
-                            .status(order.getStatus())
-                            .track(TrackDto.builder()
-                                    .id(order.getTrack().getId())
-                                    .title(order.getTrack().getTitle())
-                                    .url(order.getTrack().getUrl())
-                                    .album(AlbumDto.builder()
-                                            .id(order.getTrack().getAlbum().getId())
-                                            .title(order.getTrack().getAlbum().getTitle())
-                                            .build())
-                                    .build())
-                            .user(UserDto.builder()
-                                    .id(order.getUser().getId())
-                                    .login(order.getUser().getLogin())
-                                    .email(order.getUser().getEmail())
-                                    .personalInfo(UserPersonalInfo.builder()
-                                            .discountPercentageLevel(order.getUser().getUserData()
-                                                    .getDiscountPercentageLevel())
-                                            .build())
-                                    .build())
-                            .build())
+                    .map(this::mapOrderToDto)
                     .toList();
         }
         return Collections.emptyList();
@@ -312,29 +158,7 @@ public class OrderServiceImpl implements OrderService {
     public List<UserTrackOrderDto> findOrdersByTrackId(Long trackId) {
         if (trackId != null) {
             return orderRepository.findOrdersByTrackId(trackId).stream()
-                    .map(order -> UserTrackOrderDto.builder()
-                            .id(order.getId())
-                            .price(order.getPrice())
-                            .status(order.getStatus())
-                            .track(TrackDto.builder()
-                                    .id(order.getTrack().getId())
-                                    .title(order.getTrack().getTitle())
-                                    .url(order.getTrack().getUrl())
-                                    .album(AlbumDto.builder()
-                                            .id(order.getTrack().getAlbum().getId())
-                                            .title(order.getTrack().getAlbum().getTitle())
-                                            .build())
-                                    .build())
-                            .user(UserDto.builder()
-                                    .id(order.getUser().getId())
-                                    .login(order.getUser().getLogin())
-                                    .email(order.getUser().getEmail())
-                                    .personalInfo(UserPersonalInfo.builder()
-                                            .discountPercentageLevel(order.getUser().getUserData()
-                                                    .getDiscountPercentageLevel())
-                                            .build())
-                                    .build())
-                            .build())
+                    .map(this::makeOrder)
                     .toList();
         }
         return Collections.emptyList();
@@ -344,29 +168,7 @@ public class OrderServiceImpl implements OrderService {
     public List<UserTrackOrderDto> findOrdersByTrackTitle(String title) {
         if (title != null) {
             return orderRepository.findOrdersByTrackTitle(title).stream()
-                    .map(order -> UserTrackOrderDto.builder()
-                            .id(order.getId())
-                            .price(order.getPrice())
-                            .status(order.getStatus())
-                            .track(TrackDto.builder()
-                                    .id(order.getTrack().getId())
-                                    .title(order.getTrack().getTitle())
-                                    .url(order.getTrack().getUrl())
-                                    .album(AlbumDto.builder()
-                                            .id(order.getTrack().getAlbum().getId())
-                                            .title(order.getTrack().getAlbum().getTitle())
-                                            .build())
-                                    .build())
-                            .user(UserDto.builder()
-                                    .id(order.getUser().getId())
-                                    .login(order.getUser().getLogin())
-                                    .email(order.getUser().getEmail())
-                                    .personalInfo(UserPersonalInfo.builder()
-                                            .discountPercentageLevel(order.getUser().getUserData()
-                                                    .getDiscountPercentageLevel())
-                                            .build())
-                                    .build())
-                            .build())
+                    .map(this::mapOrderToDto)
                     .toList();
         }
         return Collections.emptyList();
@@ -376,31 +178,37 @@ public class OrderServiceImpl implements OrderService {
     public List<UserTrackOrderDto> findOrdersByStatus(OrderStatus status) {
         if (status != null) {
             return orderRepository.findOrdersByStatus(status).stream()
-                    .map(order -> UserTrackOrderDto.builder()
-                            .id(order.getId())
-                            .price(order.getPrice())
-                            .status(order.getStatus())
-                            .track(TrackDto.builder()
-                                    .id(order.getTrack().getId())
-                                    .title(order.getTrack().getTitle())
-                                    .url(order.getTrack().getUrl())
-                                    .album(AlbumDto.builder()
-                                            .id(order.getTrack().getAlbum().getId())
-                                            .title(order.getTrack().getAlbum().getTitle())
-                                            .build())
-                                    .build())
-                            .user(UserDto.builder()
-                                    .id(order.getUser().getId())
-                                    .login(order.getUser().getLogin())
-                                    .email(order.getUser().getEmail())
-                                    .personalInfo(UserPersonalInfo.builder()
-                                            .discountPercentageLevel(order.getUser().getUserData()
-                                                    .getDiscountPercentageLevel())
-                                            .build())
-                                    .build())
-                            .build())
+                    .map(this::mapOrderToDto)
                     .toList();
         }
         return Collections.emptyList();
+    }
+
+    private UserTrackOrderDto mapOrderToDto(UserTrackOrder order) {
+        return UserTrackOrderDto.builder()
+                .id(order.getId())
+                .price(order.getPrice())
+                .status(order.getStatus())
+                .track(TrackDto.builder()
+                        .id(order.getTrack().getId())
+                        .title(order.getTrack().getTitle())
+                        .url(order.getTrack().getUrl())
+                        .album(AlbumDto.builder()
+                                .id(order.getTrack().getAlbum().getId())
+                                .title(order.getTrack().getAlbum().getTitle())
+                                .build())
+                        .build())
+                .user(UserDto.builder()
+                        .id(order.getUser().getId())
+                        .login(order.getUser().getLogin())
+                        .email(order.getUser().getEmail())
+                        .personalInfo(UserPersonalInfo.builder()
+                                .accountBalance(order.getUser().getUserData()
+                                        .getAccountBalance())
+                                .discountPercentageLevel(order.getUser().getUserData()
+                                        .getDiscountPercentageLevel())
+                                .build())
+                        .build())
+                .build();
     }
 }

@@ -1,7 +1,6 @@
 package com.ordjoy.database.repository.user;
 
 import com.ordjoy.database.config.HibernateConfigTest;
-import com.ordjoy.database.model.review.Review;
 import com.ordjoy.database.model.user.User;
 import com.ordjoy.database.util.TestDataImporter;
 import org.hibernate.SessionFactory;
@@ -16,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -115,12 +113,5 @@ class UserRepositoryImplTest {
         assertAll(() -> maybeUser.ifPresent(user -> assertThat(user.getLogin()).isEqualTo("alex_0921")),
                 () -> maybeUser.ifPresent(user -> assertThat(user.getPassword()).isEqualTo("1231bkjg"))
         );
-    }
-
-    @Test
-    @DisplayName("find Reviews by user login test case")
-    void findReviewsByUserLogin() {
-        List<Review> reviews = userRepository.findReviewsByUserLogin("johnyy66");
-        assertThat(reviews).isNotEmpty();
     }
 }

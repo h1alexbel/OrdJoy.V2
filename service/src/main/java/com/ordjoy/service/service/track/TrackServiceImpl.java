@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Transactional(readOnly = true)
@@ -102,14 +103,12 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public boolean isTracksTitleExists(String title) {
-        boolean result = false;
+        AtomicBoolean result = new AtomicBoolean(false);
         if (title != null) {
-            Optional<TrackDto> maybeTrack = findTrackByTitle(title);
-            if (maybeTrack.isPresent()) {
-                result = true;
-            }
+            trackRepository.findByTitle(title)
+                    .ifPresent(track -> result.set(true));
         }
-        return result;
+        return result.get();
     }
 
     @Override
@@ -122,6 +121,11 @@ public class TrackServiceImpl implements TrackService {
                             .user(UserDto.builder()
                                     .id(trackReview.getUser().getId())
                                     .login(trackReview.getUser().getLogin())
+                                    .build())
+                            .track(TrackDto.builder()
+                                    .id(trackReview.getTrack().getId())
+                                    .title(trackReview.getTrack().getTitle())
+                                    .url(trackReview.getTrack().getUrl())
                                     .build())
                             .build())
                     .toList();
@@ -139,6 +143,11 @@ public class TrackServiceImpl implements TrackService {
                             .user(UserDto.builder()
                                     .id(trackReview.getUser().getId())
                                     .login(trackReview.getUser().getLogin())
+                                    .build())
+                            .track(TrackDto.builder()
+                                    .id(trackReview.getTrack().getId())
+                                    .title(trackReview.getTrack().getTitle())
+                                    .url(trackReview.getTrack().getUrl())
                                     .build())
                             .build())
                     .toList();
