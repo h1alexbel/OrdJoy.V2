@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Transactional(readOnly = true)
@@ -78,14 +79,12 @@ public class MixServiceImpl implements MixService {
 
     @Override
     public boolean isMixTitleExists(String title) {
-        boolean result = false;
+        AtomicBoolean result = new AtomicBoolean(false);
         if (title != null) {
-            Optional<Mix> maybeMix = mixRepository.findByTitle(title);
-            if (maybeMix.isPresent()) {
-                result = true;
-            }
+            mixRepository.findByTitle(title)
+                    .ifPresent(mix -> result.set(true));
         }
-        return result;
+        return result.get();
     }
 
     @Override
@@ -117,6 +116,10 @@ public class MixServiceImpl implements MixService {
                                     .id(mixReview.getUser().getId())
                                     .login(mixReview.getUser().getLogin())
                                     .build())
+                            .mix(MixDto.builder()
+                                    .id(mixReview.getMix().getId())
+                                    .title(mixReview.getMix().getTitle())
+                                    .build())
                             .build())
                     .toList();
         }
@@ -133,6 +136,10 @@ public class MixServiceImpl implements MixService {
                             .user(UserDto.builder()
                                     .id(mixReview.getUser().getId())
                                     .login(mixReview.getUser().getLogin())
+                                    .build())
+                            .mix(MixDto.builder()
+                                    .id(mixReview.getMix().getId())
+                                    .title(mixReview.getMix().getTitle())
                                     .build())
                             .build())
                     .toList();
