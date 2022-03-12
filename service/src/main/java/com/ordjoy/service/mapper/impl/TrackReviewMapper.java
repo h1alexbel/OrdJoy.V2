@@ -6,6 +6,7 @@ import com.ordjoy.service.mapper.Mapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+@Deprecated(since = "1.2")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TrackReviewMapper implements Mapper<TrackReview, TrackReviewDto> {
 

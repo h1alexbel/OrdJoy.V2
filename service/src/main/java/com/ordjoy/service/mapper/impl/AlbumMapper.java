@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated(since = "1.2")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AlbumMapper implements Mapper<Album, AlbumDto> {
 
