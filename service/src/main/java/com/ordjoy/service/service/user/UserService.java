@@ -11,6 +11,8 @@ public interface UserService {
 
     List<UserDto> listUsers();
 
+    boolean isUserHasRightsToRegister(User user);
+
     UserDto saveUser(User user);
 
     void updateDiscountPercentageLevel(Integer valueToSet, Long userId);

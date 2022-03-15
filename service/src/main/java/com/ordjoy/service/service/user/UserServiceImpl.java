@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private static final Integer MIN_AGE_TO_REGISTER = 13;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -63,6 +66,22 @@ public class UserServiceImpl implements UserService {
             userDto.getPersonalInfo().setLastName(user.getUserData().getLastName());
         }
         return userDto;
+    }
+
+    @Override
+    public boolean isUserHasRightsToRegister(User user) {
+        boolean result = false;
+        if (user != null) {
+            long userAge = getUserAge(user.getUserData().getBirthDate());
+            if (userAge >= MIN_AGE_TO_REGISTER) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    private long getUserAge(LocalDate userBirthDate) {
+        return ChronoUnit.YEARS.between(userBirthDate, LocalDate.now());
     }
 
     @Transactional
