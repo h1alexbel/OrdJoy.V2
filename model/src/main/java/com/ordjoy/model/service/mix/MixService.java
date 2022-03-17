@@ -1,9 +1,8 @@
-package com.ordjoy.service.service.mix;
+package com.ordjoy.model.service.mix;
 
-import com.ordjoy.database.model.track.Mix;
-import com.ordjoy.service.dto.MixDto;
-import com.ordjoy.service.dto.MixReviewDto;
-import com.ordjoy.service.dto.TrackDto;
+import com.ordjoy.model.dto.MixDto;
+import com.ordjoy.model.dto.MixReviewDto;
+import com.ordjoy.model.dto.TrackDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +11,7 @@ public interface MixService {
 
     List<MixDto> listMixes();
 
-    MixDto saveMix(Mix mix);
+    MixDto saveMix(MixDto mixDto);
 
     Optional<MixDto> findMixByTitle(String title);
 
@@ -26,7 +25,7 @@ public interface MixService {
 
     List<MixReviewDto> findMixReviewsByMixId(Long mixId);
 
-    void updateMix(Mix mix);
+    void updateMix(MixDto mixDto);
 
-    void deleteMix(Mix mix);
+    void deleteMix(MixDto mixDto);
 }

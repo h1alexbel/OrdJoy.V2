@@ -1,9 +1,8 @@
-package com.ordjoy.service.service.track;
+package com.ordjoy.model.service.track;
 
-import com.ordjoy.database.model.track.Mix;
-import com.ordjoy.database.model.track.Track;
-import com.ordjoy.service.dto.TrackDto;
-import com.ordjoy.service.dto.TrackReviewDto;
+import com.ordjoy.model.dto.MixDto;
+import com.ordjoy.model.dto.TrackDto;
+import com.ordjoy.model.dto.TrackReviewDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +11,9 @@ public interface TrackService {
 
     List<TrackDto> listTracks();
 
-    TrackDto saveTrack(Track track);
+    TrackDto saveTrack(TrackDto trackDto);
 
-    void addTrackToMix(Track track, Mix mix);
+    void addTrackToMix(TrackDto trackDto, MixDto mixDto);
 
     Optional<TrackDto> findTrackById(Long id);
 
@@ -26,7 +25,7 @@ public interface TrackService {
 
     List<TrackReviewDto> findTrackReviewsByTrackId(Long trackId);
 
-    void updateTrack(Track track);
+    void updateTrack(TrackDto trackDto);
 
-    void deleteTrack(Track track);
+    void deleteTrack(TrackDto trackDto);
 }

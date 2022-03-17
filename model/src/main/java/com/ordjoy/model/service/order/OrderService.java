@@ -1,8 +1,7 @@
-package com.ordjoy.service.service.order;
+package com.ordjoy.model.service.order;
 
-import com.ordjoy.database.model.order.OrderStatus;
-import com.ordjoy.database.model.order.UserTrackOrder;
-import com.ordjoy.service.dto.UserTrackOrderDto;
+import com.ordjoy.model.dto.UserTrackOrderDto;
+import com.ordjoy.model.entity.order.OrderStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,11 +11,11 @@ public interface OrderService {
 
     List<UserTrackOrderDto> listOrders();
 
-    UserTrackOrderDto makeOrder(UserTrackOrder order);
+    UserTrackOrderDto makeOrder(UserTrackOrderDto orderDto);
 
     Optional<UserTrackOrderDto> findOrderById(Long orderId);
 
-    void updateOrder(UserTrackOrder userTrackOrder);
+    void updateOrder(UserTrackOrderDto userTrackOrderDto);
 
     void updateOrderPrice(BigDecimal price, Long orderId);
 
@@ -26,7 +25,7 @@ public interface OrderService {
 
     BigDecimal calculateOrderPrice(Long orderId);
 
-    void deleteOrder(UserTrackOrder order);
+    void deleteOrder(UserTrackOrderDto orderDto);
 
     List<UserTrackOrderDto> findOrdersByPrice(BigDecimal price);
 

@@ -1,9 +1,8 @@
-package com.ordjoy.service.service.album;
+package com.ordjoy.model.service.album;
 
-import com.ordjoy.database.model.track.Album;
-import com.ordjoy.service.dto.AlbumDto;
-import com.ordjoy.service.dto.AlbumReviewDto;
-import com.ordjoy.service.dto.TrackDto;
+import com.ordjoy.model.dto.AlbumDto;
+import com.ordjoy.model.dto.AlbumReviewDto;
+import com.ordjoy.model.dto.TrackDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +11,7 @@ public interface AlbumService {
 
     List<AlbumDto> listAlbums();
 
-    AlbumDto saveAlbum(Album album);
+    AlbumDto saveAlbum(AlbumDto albumDto);
 
     Optional<AlbumDto> findAlbumByTitle(String title);
 
@@ -28,7 +27,7 @@ public interface AlbumService {
 
     List<TrackDto> findTracksByAlbumId(Long albumId);
 
-    void updateAlbum(Album album);
+    void updateAlbum(AlbumDto albumDto);
 
-    void deleteAlbum(Album album);
+    void deleteAlbum(AlbumDto albumDto);
 }

@@ -1,7 +1,6 @@
-package com.ordjoy.service.service.user;
+package com.ordjoy.model.service.user;
 
-import com.ordjoy.database.model.user.User;
-import com.ordjoy.service.dto.UserDto;
+import com.ordjoy.model.dto.UserDto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,9 +10,9 @@ public interface UserService {
 
     List<UserDto> listUsers();
 
-    boolean isUserHasRightsToRegister(User user);
+    boolean isUserHasRightsToRegister(UserDto userDto);
 
-    UserDto saveUser(User user);
+    UserDto saveUser(UserDto user);
 
     void updateDiscountPercentageLevel(Integer valueToSet, Long userId);
 
@@ -31,7 +30,7 @@ public interface UserService {
 
     boolean isLoginExists(String login);
 
-    void updateUser(User user);
+    void updateUser(UserDto userDto);
 
-    void deleteUser(User user);
+    void deleteUser(UserDto userDto);
 }
