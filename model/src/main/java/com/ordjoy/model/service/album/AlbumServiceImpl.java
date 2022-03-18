@@ -1,14 +1,14 @@
 package com.ordjoy.model.service.album;
 
+import com.ordjoy.model.dto.AlbumDto;
+import com.ordjoy.model.dto.AlbumReviewDto;
+import com.ordjoy.model.dto.TrackDto;
+import com.ordjoy.model.dto.UserDto;
 import com.ordjoy.model.entity.review.AlbumReview;
 import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.repository.album.AlbumRepository;
-import com.ordjoy.model.dto.AlbumDto;
-import com.ordjoy.model.dto.AlbumReviewDto;
-import com.ordjoy.model.dto.TrackDto;
-import com.ordjoy.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
