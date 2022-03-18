@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@ComponentScan(basePackages = "com.ordjoy")
+@ComponentScan("com.ordjoy.web.controller")
 @EnableWebMvc
 @Import(ViewResolverConfig.class)
 public class WebMvcConfig {
