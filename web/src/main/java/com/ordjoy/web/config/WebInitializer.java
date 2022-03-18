@@ -5,6 +5,8 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
+    private static final String DISPATCHER_SERVLET_URL_PATTERN = "/";
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[]{HibernateConfig.class};
@@ -17,6 +19,6 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/"};
+        return new String[]{DISPATCHER_SERVLET_URL_PATTERN};
     }
 }
