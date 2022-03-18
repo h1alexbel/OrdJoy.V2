@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "reviews")
+@ToString(exclude = {"reviews", "userTrackOrders"})
 @Builder
 public class UserDto implements Serializable {
 

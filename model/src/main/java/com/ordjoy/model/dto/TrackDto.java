@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "trackReviews")
+@ToString(exclude = {"trackReviews", "mixes"})
 @Builder
 public class TrackDto implements Serializable {
 
