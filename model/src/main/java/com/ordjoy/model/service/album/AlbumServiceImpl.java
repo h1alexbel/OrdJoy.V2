@@ -4,21 +4,20 @@ import com.ordjoy.model.dto.AlbumDto;
 import com.ordjoy.model.dto.AlbumReviewDto;
 import com.ordjoy.model.dto.TrackDto;
 import com.ordjoy.model.dto.UserDto;
-import com.ordjoy.model.entity.review.AlbumReview;
 import com.ordjoy.model.entity.track.Album;
-import com.ordjoy.model.entity.track.Track;
-import com.ordjoy.model.entity.user.User;
+import com.ordjoy.model.log.LoggingUtils;
 import com.ordjoy.model.repository.album.AlbumRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class AlbumServiceImpl implements AlbumService {
@@ -46,6 +45,7 @@ public class AlbumServiceImpl implements AlbumService {
         Album savedAlbum = albumRepository.add(Album.builder()
                 .title(albumDto.getTitle())
                 .build());
+        log.debug(LoggingUtils.ALBUM_WAS_SAVED_IN_SERVICE, savedAlbum);
         return AlbumDto.builder()
                 .id(savedAlbum.getId())
                 .title(savedAlbum.getTitle())
@@ -85,13 +85,15 @@ public class AlbumServiceImpl implements AlbumService {
             albumRepository.findByTitle(title)
                     .ifPresent(album -> result.set(true));
         }
-        return result.get();
+        boolean value = result.get();
+        log.debug(LoggingUtils.IS_ALBUM_ALREADY_EXISTS, title, value);
+        return value;
     }
 
     @Override
     public List<AlbumReviewDto> findAlbumReviewsByAlbumTitle(String albumTitle) {
         if (albumTitle != null) {
-            return albumRepository.findAlbumReviewsByAlbumTitle(albumTitle).stream()
+            List<AlbumReviewDto> albumReviews = albumRepository.findAlbumReviewsByAlbumTitle(albumTitle).stream()
                     .map(albumReview -> AlbumReviewDto.builder()
                             .id(albumReview.getId())
                             .reviewText(albumReview.getReviewText())
@@ -104,6 +106,8 @@ public class AlbumServiceImpl implements AlbumService {
                                     .build())
                             .build())
                     .toList();
+            log.debug(LoggingUtils.REVIEWS_BY_ALBUM_TITLE_SERVICE, albumReviews, albumTitle);
+            return albumReviews;
         }
         return Collections.emptyList();
     }
@@ -111,7 +115,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<AlbumReviewDto> findAlbumReviewsByAlbumId(Long albumId) {
         if (albumId != null) {
-            return albumRepository.findAlbumReviewsByAlbumId(albumId).stream()
+            List<AlbumReviewDto> reviews = albumRepository.findAlbumReviewsByAlbumId(albumId).stream()
                     .map(albumReview -> AlbumReviewDto.builder()
                             .id(albumReview.getId())
                             .reviewText(albumReview.getReviewText())
@@ -125,6 +129,8 @@ public class AlbumServiceImpl implements AlbumService {
                                     .build())
                             .build())
                     .toList();
+            log.debug(LoggingUtils.REVIEWS_BY_ALBUM_ID_SERVICE, reviews, albumId);
+            return reviews;
         }
         return Collections.emptyList();
     }
@@ -132,7 +138,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<TrackDto> findTracksByAlbumTitle(String albumTitle) {
         if (albumTitle != null) {
-            return albumRepository.findTracksByAlbumTitle(albumTitle).stream()
+            List<TrackDto> tracks = albumRepository.findTracksByAlbumTitle(albumTitle).stream()
                     .map(track -> TrackDto.builder()
                             .id(track.getId())
                             .title(track.getTitle())
@@ -143,6 +149,8 @@ public class AlbumServiceImpl implements AlbumService {
                                     .build())
                             .build())
                     .toList();
+            log.debug(LoggingUtils.TRACKS_BY_ALBUM_TITLE_SERVICE, tracks, albumTitle);
+            return tracks;
         }
         return Collections.emptyList();
     }
@@ -150,7 +158,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<TrackDto> findTracksByAlbumId(Long albumId) {
         if (albumId != null) {
-            return albumRepository.findTracksByAlbumId(albumId).stream()
+            List<TrackDto> tracks = albumRepository.findTracksByAlbumId(albumId).stream()
                     .map(track -> TrackDto.builder()
                             .id(track.getId())
                             .url(track.getUrl())
@@ -161,6 +169,8 @@ public class AlbumServiceImpl implements AlbumService {
                                     .build())
                             .build())
                     .toList();
+            log.debug(LoggingUtils.TRACKS_BY_ALBUM_ID_SERVICE, tracks, albumId);
+            return tracks;
         }
         return Collections.emptyList();
     }
@@ -169,12 +179,11 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public void updateAlbum(AlbumDto albumDto) {
         if (albumDto != null) {
-            Album album = Album.builder()
-                    .title(albumDto.getTitle())
-                    .tracks(tracksFromTracksDto(albumDto.getTracks()))
-                    .albumReviews(albumReviewsFromDto(albumDto.getAlbumReviews()))
-                    .build();
-            albumRepository.update(album);
+            Optional<Album> maybeAlbum = albumRepository.findById(albumDto.getId());
+            maybeAlbum.ifPresent(album -> {
+                albumRepository.delete(album);
+                log.debug(LoggingUtils.ALBUM_WAS_UPDATED_IN_SERVICE, album);
+            });
         }
     }
 
@@ -182,48 +191,11 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public void deleteAlbum(AlbumDto albumDto) {
         if (albumDto != null) {
-            Album album = Album.builder()
-                    .title(albumDto.getTitle())
-                    .tracks(tracksFromTracksDto(albumDto.getTracks()))
-                    .albumReviews(albumReviewsFromDto(albumDto.getAlbumReviews()))
-                    .build();
-            albumRepository.delete(album);
+            Optional<Album> maybeAlbum = albumRepository.findById(albumDto.getId());
+            maybeAlbum.ifPresent(album -> {
+                albumRepository.delete(album);
+                log.debug(LoggingUtils.ALBUM_WAS_DELETED_IN_SERVICE, album);
+            });
         }
-    }
-
-    private List<Track> tracksFromTracksDto(List<TrackDto> tracksDto) {
-        if (tracksDto != null) {
-            List<Track> tracks = new ArrayList<>();
-            for (TrackDto trackDto : tracksDto) {
-                tracks.add(Track.builder()
-                        .title(trackDto.getTitle())
-                        .url(trackDto.getUrl())
-                        .album(Album.builder()
-                                .title(trackDto.getAlbum().getTitle())
-                                .build())
-                        .build());
-            }
-            return tracks;
-        }
-        return Collections.emptyList();
-    }
-
-    private List<AlbumReview> albumReviewsFromDto(List<AlbumReviewDto> albumReviewsDto) {
-        if (albumReviewsDto != null) {
-            List<AlbumReview> albumReviews = new ArrayList<>();
-            for (AlbumReviewDto albumReviewDto : albumReviewsDto) {
-                albumReviews.add(AlbumReview.builder()
-                        .reviewText(albumReviewDto.getReviewText())
-                        .user(User.builder()
-                                .login(albumReviewDto.getUser().getLogin())
-                                .build())
-                        .album(Album.builder()
-                                .title(albumReviewDto.getAlbum().getTitle())
-                                .build())
-                        .build());
-            }
-            return albumReviews;
-        }
-        return Collections.emptyList();
     }
 }
