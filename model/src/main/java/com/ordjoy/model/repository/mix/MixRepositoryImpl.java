@@ -6,7 +6,9 @@ import com.ordjoy.model.entity.review.MixReview_;
 import com.ordjoy.model.entity.track.Mix;
 import com.ordjoy.model.entity.track.Mix_;
 import com.ordjoy.model.entity.track.Track;
+import com.ordjoy.model.log.LoggingUtils;
 import com.ordjoy.model.repository.AbstractGenericCRUDRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +19,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
         implements MixRepository {
@@ -35,10 +38,13 @@ public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
     @Override
     public List<Track> findTracksByMixTitle(String mixTitle) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select t from Mix m join m.tracks t where m.title = :title",
+        List<Track> tracks = session
+                .createQuery("select t from Mix m join m.tracks t where m.title = :title",
                         Track.class)
                 .setParameter("title", mixTitle)
                 .getResultList();
+        log.debug(LoggingUtils.TRACKS_BY_MIX_TITLE, tracks, mixTitle);
+        return tracks;
     }
 
     @Override
@@ -50,7 +56,9 @@ public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
         Join<MixReview, Mix> mixJoin = root.join(MixReview_.mix);
         criteria.select(root)
                 .where(cb.equal(mixJoin.get(Mix_.title), mixName));
-        return session.createQuery(criteria).getResultList();
+        List<MixReview> mixReviews = session.createQuery(criteria).getResultList();
+        log.debug(LoggingUtils.REVIEWS_BY_MIX_TITLE, mixReviews, mixName);
+        return mixReviews;
     }
 
     @Override
@@ -62,6 +70,8 @@ public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
         Join<MixReview, Mix> mixJoin = root.join(MixReview_.mix);
         criteria.select(root)
                 .where(cb.equal(mixJoin.get(BaseEntity_.id), mixId));
-        return session.createQuery(criteria).getResultList();
+        List<MixReview> mixReviews = session.createQuery(criteria).getResultList();
+        log.debug(LoggingUtils.REVIEWS_BY_MIX_ID, mixReviews, mixId);
+        return mixReviews;
     }
 }

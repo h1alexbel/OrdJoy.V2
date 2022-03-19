@@ -6,7 +6,9 @@ import com.ordjoy.model.entity.review.AlbumReview_;
 import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Album_;
 import com.ordjoy.model.entity.track.Track;
+import com.ordjoy.model.log.LoggingUtils;
 import com.ordjoy.model.repository.AbstractGenericCRUDRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +19,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Long>
         implements AlbumRepository {
@@ -42,7 +45,9 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
         Join<AlbumReview, Album> albumJoin = root.join(AlbumReview_.album);
         criteria.select(root)
                 .where(cb.equal(albumJoin.get(Album_.title), title));
-        return session.createQuery(criteria).getResultList();
+        List<AlbumReview> albumReviews = session.createQuery(criteria).getResultList();
+        log.debug(LoggingUtils.REVIEWS_BY_ALBUM_TITLE, albumReviews, title);
+        return albumReviews;
     }
 
     @Override
@@ -54,24 +59,32 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
         Join<AlbumReview, Album> albumJoin = root.join(AlbumReview_.album);
         criteria.select(root)
                 .where(cb.equal(albumJoin.get(BaseEntity_.id), albumId));
-        return session.createQuery(criteria).getResultList();
+        List<AlbumReview> albumReviews = session.createQuery(criteria).getResultList();
+        log.debug(LoggingUtils.REVIEWS_BY_ALBUM_ID, albumReviews, albumId);
+        return albumReviews;
     }
 
     @Override
     public List<Track> findTracksByAlbumId(Long albumId) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select t from Track t join t.album a where a.id = :id",
+        List<Track> tracks = session
+                .createQuery("select t from Track t join t.album a where a.id = :id",
                         Track.class)
                 .setParameter("id", albumId)
                 .getResultList();
+        log.debug(LoggingUtils.TRACKS_BY_ALBUM_ID, tracks, albumId);
+        return tracks;
     }
 
     @Override
     public List<Track> findTracksByAlbumTitle(String albumTitle) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select t from Track t join t.album a where a.title = :albumName",
+        List<Track> tracks = session
+                .createQuery("select t from Track t join t.album a where a.title = :albumName",
                         Track.class)
                 .setParameter("albumName", albumTitle)
                 .getResultList();
+        log.debug(LoggingUtils.TRACKS_BY_ALBUM_TITLE, tracks, albumTitle);
+        return tracks;
     }
 }

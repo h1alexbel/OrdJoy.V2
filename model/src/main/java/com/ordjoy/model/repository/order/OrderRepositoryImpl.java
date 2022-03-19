@@ -8,7 +8,9 @@ import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.entity.track.Track_;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.entity.user.User_;
+import com.ordjoy.model.log.LoggingUtils;
 import com.ordjoy.model.repository.AbstractGenericCRUDRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +21,7 @@ import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Slf4j
 @Repository
 public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrackOrder, Long>
         implements OrderRepository {
@@ -31,6 +34,7 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
                 .setParameter("orderId", id)
                 .setParameter("status", status)
                 .executeUpdate();
+        log.debug(LoggingUtils.ORDER_STATUS_WAS_UPDATED, status, id);
     }
 
     @Override
@@ -41,6 +45,7 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
                 .setParameter("price", price)
                 .setParameter("orderId", id)
                 .executeUpdate();
+        log.debug(LoggingUtils.ORDER_PRICE_WAS_UPDATED, price, id);
     }
 
     @Override
@@ -52,6 +57,7 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
                 .setParameter("cost", orderCost)
                 .setParameter("userId", userId)
                 .executeUpdate();
+        log.debug(LoggingUtils.USER_BALANCE_WAS_SUBTRACTED, orderCost, userId);
     }
 
     @Override
