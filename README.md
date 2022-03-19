@@ -1,22 +1,16 @@
 V1.2 Stack :
 Build system: Maven
 
-Spring Framework 5, Spring Boot 2
+Spring Framework 5
 
-Spring Web MVC
-
-Spring Data JPA(Hibernate)
-
-Spring Security
-
-Spring Boot Actuator
-
-Metrics framework: Grafana, Prometheus
-
-Virtualization: Docker
+Spring Orm + Hibernate
 
 RDBMS: PostgreSQL
 
-Testing Framework: JUnit 5
+Spring MVC
 
-Cloud deployment: AWS Beanstalk
+Spring Security
+
+ThymeLeaf
+
+Testing Framework: JUnit 5
