@@ -168,7 +168,7 @@ class AlbumServiceImplTest {
             albumDto.setTitle("after update title");
             albumService.updateAlbum(albumDto);
         });
-        Optional<AlbumDto> afterUpdate = albumService.findAlbumById(2L);
+        Optional<AlbumDto> afterUpdate = albumService.findAlbumByTitle("after update title");
         afterUpdate.ifPresent(albumDto -> assertEquals("after update title",
                 albumDto.getTitle()));
     }
