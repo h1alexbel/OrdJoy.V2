@@ -50,27 +50,6 @@ class OrderRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("update order status test case")
-    void updateOrderStatus() {
-        Optional<UserTrackOrder> maybeOrder = orderRepository.findById(1L);
-        maybeOrder.ifPresent(order -> sessionFactory.getCurrentSession().evict(order));
-        orderRepository.updateStatus(OrderStatus.IN_PROGRESS, 1L);
-        Optional<UserTrackOrder> afterUpdate = orderRepository.findById(1L);
-        afterUpdate.ifPresent(order -> assertThat(order.getStatus())
-                .isEqualTo(OrderStatus.IN_PROGRESS));
-    }
-
-    @Test
-    @DisplayName("update order price test case")
-    void updateOrderPrice() {
-        Optional<UserTrackOrder> maybeOrder = orderRepository.findById(1L);
-        maybeOrder.ifPresent(order -> sessionFactory.getCurrentSession().evict(order));
-        orderRepository.updatePrice(new BigDecimal(1), 1L);
-        Optional<UserTrackOrder> afterUpdate = orderRepository.findById(1L);
-        afterUpdate.ifPresent(order -> assertThat(order.getPrice()).isEqualTo("1.00"));
-    }
-
-    @Test
     @DisplayName("find orders by price test case")
     void findOrdersByPrice() {
         List<UserTrackOrder> ordersByPrice = orderRepository.findOrdersByPrice(new BigDecimal(15));
