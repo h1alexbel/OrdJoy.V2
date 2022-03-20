@@ -23,7 +23,7 @@ public class MixReviewRepositoryImpl extends AbstractGenericCRUDRepository<MixRe
                         MixReview.class)
                 .setParameter("login", login)
                 .getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_USER_LOGIN, mixReviews, login);
+        log.debug(LoggingUtils.REVIEWS_BY_USER_LOGIN_REPO, mixReviews, login);
         return mixReviews;
     }
 
@@ -35,7 +35,7 @@ public class MixReviewRepositoryImpl extends AbstractGenericCRUDRepository<MixRe
                         MixReview.class)
                 .setParameter("id", userId)
                 .getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_USER_ID, mixReviews, userId);
+        log.debug(LoggingUtils.REVIEWS_BY_USER_ID_REPO, mixReviews, userId);
         return mixReviews;
     }
 }

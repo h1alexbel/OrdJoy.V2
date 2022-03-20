@@ -130,7 +130,7 @@ public class TrackServiceImpl implements TrackService {
             trackRepository.findByTitle(title)
                     .ifPresent(track -> {
                         isTracksTitleExistsResult.set(true);
-                        log.debug(LoggingUtils.IS_TRACK_EXISTS_SERVICE,
+                        log.debug(LoggingUtils.IS_TRACK_EXISTS,
                                 track, title, isTracksTitleExistsResult);
                     });
         }

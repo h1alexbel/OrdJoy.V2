@@ -43,7 +43,7 @@ public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
                         Track.class)
                 .setParameter("title", mixTitle)
                 .getResultList();
-        log.debug(LoggingUtils.TRACKS_BY_MIX_TITLE, tracks, mixTitle);
+        log.debug(LoggingUtils.TRACKS_BY_MIX_TITLE_REPO, tracks, mixTitle);
         return tracks;
     }
 
@@ -57,7 +57,7 @@ public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
         criteria.select(root)
                 .where(cb.equal(mixJoin.get(Mix_.title), mixName));
         List<MixReview> mixReviews = session.createQuery(criteria).getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_MIX_TITLE, mixReviews, mixName);
+        log.debug(LoggingUtils.REVIEWS_BY_MIX_TITLE_REPO, mixReviews, mixName);
         return mixReviews;
     }
 
@@ -71,7 +71,7 @@ public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
         criteria.select(root)
                 .where(cb.equal(mixJoin.get(BaseEntity_.id), mixId));
         List<MixReview> mixReviews = session.createQuery(criteria).getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_MIX_ID, mixReviews, mixId);
+        log.debug(LoggingUtils.REVIEWS_BY_MIX_ID_REPO, mixReviews, mixId);
         return mixReviews;
     }
 }

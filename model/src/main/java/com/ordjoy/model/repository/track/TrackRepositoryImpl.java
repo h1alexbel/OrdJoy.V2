@@ -20,7 +20,7 @@ public class TrackRepositoryImpl extends AbstractGenericCRUDRepository<Track, Lo
     @Override
     public void addTrackToMix(Track track, Mix mix) {
         mix.addTrack(track);
-        log.debug(LoggingUtils.TRACK_WAS_ADDED_TO_MIX, track, mix);
+        log.debug(LoggingUtils.TRACK_WAS_ADDED_TO_MIX_REPO, track, mix);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class TrackRepositoryImpl extends AbstractGenericCRUDRepository<Track, Lo
                         TrackReview.class)
                 .setParameter("trackTitle", title)
                 .getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_TRACK_TITLE, trackReviews, title);
+        log.debug(LoggingUtils.REVIEWS_BY_TRACK_TITLE_REPO, trackReviews, title);
         return trackReviews;
     }
 
@@ -55,7 +55,7 @@ public class TrackRepositoryImpl extends AbstractGenericCRUDRepository<Track, Lo
                         TrackReview.class)
                 .setParameter("trackId", trackId)
                 .getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_TRACK_ID, trackReviews, trackId);
+        log.debug(LoggingUtils.REVIEWS_BY_TRACK_ID_REPO, trackReviews, trackId);
         return trackReviews;
     }
 }

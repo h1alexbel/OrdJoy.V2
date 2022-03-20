@@ -46,7 +46,7 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
         criteria.select(root)
                 .where(cb.equal(albumJoin.get(Album_.title), title));
         List<AlbumReview> albumReviews = session.createQuery(criteria).getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_ALBUM_TITLE, albumReviews, title);
+        log.debug(LoggingUtils.REVIEWS_BY_ALBUM_TITLE_REPO, albumReviews, title);
         return albumReviews;
     }
 
@@ -60,7 +60,7 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
         criteria.select(root)
                 .where(cb.equal(albumJoin.get(BaseEntity_.id), albumId));
         List<AlbumReview> albumReviews = session.createQuery(criteria).getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_ALBUM_ID, albumReviews, albumId);
+        log.debug(LoggingUtils.REVIEWS_BY_ALBUM_ID_REPO, albumReviews, albumId);
         return albumReviews;
     }
 
@@ -72,7 +72,7 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
                         Track.class)
                 .setParameter("id", albumId)
                 .getResultList();
-        log.debug(LoggingUtils.TRACKS_BY_ALBUM_ID, tracks, albumId);
+        log.debug(LoggingUtils.TRACKS_BY_ALBUM_ID_REPO, tracks, albumId);
         return tracks;
     }
 
@@ -84,7 +84,7 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
                         Track.class)
                 .setParameter("albumName", albumTitle)
                 .getResultList();
-        log.debug(LoggingUtils.TRACKS_BY_ALBUM_TITLE, tracks, albumTitle);
+        log.debug(LoggingUtils.TRACKS_BY_ALBUM_TITLE_REPO, tracks, albumTitle);
         return tracks;
     }
 }
