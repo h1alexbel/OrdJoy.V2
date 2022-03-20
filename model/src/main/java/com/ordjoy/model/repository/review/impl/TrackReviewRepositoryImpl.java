@@ -22,7 +22,7 @@ public class TrackReviewRepositoryImpl extends AbstractGenericCRUDRepository<Tra
                         TrackReview.class)
                 .setParameter("login", login)
                 .getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_USER_LOGIN, trackReviews, login);
+        log.debug(LoggingUtils.REVIEWS_BY_USER_LOGIN_REPO, trackReviews, login);
         return trackReviews;
     }
 
@@ -33,7 +33,7 @@ public class TrackReviewRepositoryImpl extends AbstractGenericCRUDRepository<Tra
                         TrackReview.class)
                 .setParameter("userId", userId)
                 .getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_USER_ID, trackReviews, userId);
+        log.debug(LoggingUtils.REVIEWS_BY_USER_ID_REPO, trackReviews, userId);
         return trackReviews;
     }
 }

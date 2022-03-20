@@ -23,7 +23,7 @@ public class AlbumReviewRepositoryImpl extends AbstractGenericCRUDRepository<Alb
                         AlbumReview.class)
                 .setParameter("login", login)
                 .getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_USER_LOGIN, reviews, login);
+        log.debug(LoggingUtils.REVIEWS_BY_USER_LOGIN_REPO, reviews, login);
         return reviews;
     }
 
@@ -35,7 +35,7 @@ public class AlbumReviewRepositoryImpl extends AbstractGenericCRUDRepository<Alb
                         AlbumReview.class)
                 .setParameter("id", userId)
                 .getResultList();
-        log.debug(LoggingUtils.REVIEWS_BY_USER_ID, albumReviews, userId);
+        log.debug(LoggingUtils.REVIEWS_BY_USER_ID_REPO, albumReviews, userId);
         return albumReviews;
     }
 }

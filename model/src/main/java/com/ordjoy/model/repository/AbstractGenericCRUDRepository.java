@@ -51,14 +51,14 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
         Session session = sessionFactory.getCurrentSession();
         entity.setEntityState(EntityState.ACTIVE);
         session.save(entity);
-        log.debug(LoggingUtils.ENTITY_WAS_SAVED_IN_REPOSITORY, entity);
+        log.debug(LoggingUtils.ENTITY_WAS_SAVED_IN_REPO, entity);
         return entity;
     }
 
     @Override
     public void update(E entity) {
         Session session = sessionFactory.getCurrentSession();
-        log.debug(LoggingUtils.ENTITY_WAS_UPDATED, entity);
+        log.debug(LoggingUtils.ENTITY_WAS_UPDATED_REPO, entity);
         session.update(entity);
     }
 
@@ -66,7 +66,7 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
     public void delete(E entity) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(entity);
-        log.debug(LoggingUtils.ENTITY_WAS_DELETED, entity);
+        log.debug(LoggingUtils.ENTITY_WAS_DELETED_REPO, entity);
         session.flush();
     }
 }
