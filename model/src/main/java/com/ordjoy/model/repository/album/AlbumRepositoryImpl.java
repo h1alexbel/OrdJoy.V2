@@ -6,7 +6,7 @@ import com.ordjoy.model.entity.review.AlbumReview_;
 import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Album_;
 import com.ordjoy.model.entity.track.Track;
-import com.ordjoy.model.log.LoggingUtils;
+import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.AbstractGenericCRUDRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;

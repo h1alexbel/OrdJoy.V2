@@ -1,7 +1,7 @@
 package com.ordjoy.model.repository.review.impl;
 
 import com.ordjoy.model.entity.review.TrackReview;
-import com.ordjoy.model.log.LoggingUtils;
+import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.AbstractGenericCRUDRepository;
 import com.ordjoy.model.repository.review.TrackReviewRepository;
 import lombok.extern.slf4j.Slf4j;

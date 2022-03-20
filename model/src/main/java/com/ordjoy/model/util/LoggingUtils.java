@@ -1,4 +1,4 @@
-package com.ordjoy.model.log;
+package com.ordjoy.model.util;
 
 import lombok.experimental.UtilityClass;
 

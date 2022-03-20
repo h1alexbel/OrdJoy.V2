@@ -8,7 +8,7 @@ import com.ordjoy.model.entity.review.TrackReview;
 import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.entity.user.User;
-import com.ordjoy.model.log.LoggingUtils;
+import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.review.TrackReviewRepository;
 import com.ordjoy.model.service.review.TrackReviewService;
 import lombok.extern.slf4j.Slf4j;

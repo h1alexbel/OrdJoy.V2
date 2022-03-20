@@ -8,7 +8,7 @@ import com.ordjoy.model.dto.UserDto;
 import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Mix;
 import com.ordjoy.model.entity.track.Track;
-import com.ordjoy.model.log.LoggingUtils;
+import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.mix.MixRepository;
 import com.ordjoy.model.repository.track.TrackRepository;
 import lombok.extern.slf4j.Slf4j;

@@ -5,7 +5,7 @@ import com.ordjoy.model.dto.AlbumReviewDto;
 import com.ordjoy.model.dto.TrackDto;
 import com.ordjoy.model.dto.UserDto;
 import com.ordjoy.model.entity.track.Album;
-import com.ordjoy.model.log.LoggingUtils;
+import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.album.AlbumRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package com.ordjoy.model.repository;
 
 import com.ordjoy.model.entity.BaseEntity;
 import com.ordjoy.model.entity.EntityState;
-import com.ordjoy.model.log.LoggingUtils;
+import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
