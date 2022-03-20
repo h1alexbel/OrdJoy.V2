@@ -14,6 +14,8 @@ public interface UserService {
 
     UserDto saveUser(UserDto user);
 
+    UserDto addNewAdmin(UserDto userDto);
+
     void updateDiscountPercentageLevel(Integer valueToSet, Long userId);
 
     void updateUserBalanceAmount(BigDecimal amountToAdd, Long userId);

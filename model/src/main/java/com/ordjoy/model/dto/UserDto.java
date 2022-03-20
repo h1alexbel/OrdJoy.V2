@@ -8,12 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"reviews", "userTrackOrders"})
+@ToString
 @Builder
 public class UserDto implements Serializable {
 
@@ -23,6 +22,4 @@ public class UserDto implements Serializable {
     private String email;
     private Role role;
     private UserPersonalInfo personalInfo;
-    private List<ReviewDto> reviews;
-    private List<UserTrackOrderDto> userTrackOrders;
 }
