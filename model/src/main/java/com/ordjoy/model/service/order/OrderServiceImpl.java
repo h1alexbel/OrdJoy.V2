@@ -11,7 +11,7 @@ import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.entity.user.UserData;
-import com.ordjoy.model.log.LoggingUtils;
+import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.order.OrderRepository;
 import com.ordjoy.model.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;

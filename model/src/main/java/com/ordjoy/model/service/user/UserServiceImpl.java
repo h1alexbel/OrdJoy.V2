@@ -5,7 +5,7 @@ import com.ordjoy.model.dto.UserPersonalInfo;
 import com.ordjoy.model.entity.user.Role;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.entity.user.UserData;
-import com.ordjoy.model.log.LoggingUtils;
+import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

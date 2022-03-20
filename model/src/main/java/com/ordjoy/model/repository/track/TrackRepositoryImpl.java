@@ -3,7 +3,7 @@ package com.ordjoy.model.repository.track;
 import com.ordjoy.model.entity.review.TrackReview;
 import com.ordjoy.model.entity.track.Mix;
 import com.ordjoy.model.entity.track.Track;
-import com.ordjoy.model.log.LoggingUtils;
+import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.AbstractGenericCRUDRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
