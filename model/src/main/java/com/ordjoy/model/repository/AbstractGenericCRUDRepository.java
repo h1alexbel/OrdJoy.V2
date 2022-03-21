@@ -67,6 +67,5 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
         Session session = sessionFactory.getCurrentSession();
         session.delete(entity);
         log.debug(LoggingUtils.ENTITY_WAS_DELETED_REPO, entity);
-        session.flush();
     }
 }
