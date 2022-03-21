@@ -65,6 +65,17 @@ class OrderRepositoryImplTest {
     }
 
     @Test
+    @DisplayName("update order status test case")
+    void updateOrderStatus() {
+        Optional<UserTrackOrder> maybeOrder = orderRepository.findById(1L);
+        maybeOrder.ifPresent(order -> sessionFactory.getCurrentSession().evict(order));
+        orderRepository.updateOrderStatus(OrderStatus.IN_PROGRESS, 1L);
+        Optional<UserTrackOrder> afterUpdate = orderRepository.findById(1L);
+        afterUpdate.ifPresent(order -> assertThat(order.getStatus())
+                .isEqualTo(OrderStatus.IN_PROGRESS));
+    }
+
+    @Test
     @DisplayName("subtract user's balance test case")
     void subtractBalance() {
         Optional<User> maybeUser = userRepository.findById(1L);
