@@ -65,4 +65,6 @@ public class LoggingUtils {
     public static final String TRACK_REVIEW_WAS_DELETED_SERVICE = "Track review was added in service layer :{}";
     public static final String TRACK_REVIEW_WAS_UPDATED_SERVICE = "Track review was updated in service layer :{}";
     public static final String TRACK_REVIEW_WAS_ADDED_SERVICE = "Track review was deleted in service layer :{}";
+    public static final String ORDER_STATUS_WAS_UPDATED_REPO = "Order status was updated in repository layer :{}, :{}";
+    public static final String ORDER_STATUS_WAS_UPDATED_SERVICE = "Order status was updated in service layer :{}";
 }

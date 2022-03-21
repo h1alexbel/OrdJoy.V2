@@ -113,6 +113,18 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Transactional
+    @Override
+    public void updateOrderStatus(OrderStatus status, Long id) {
+        if (status != null && id != null) {
+            Optional<UserTrackOrder> maybeOrder = orderRepository.findById(id);
+            maybeOrder.ifPresent(order -> {
+                orderRepository.updateOrderStatus(status, order.getId());
+                log.debug(LoggingUtils.ORDER_STATUS_WAS_UPDATED_SERVICE, order);
+            });
+        }
+    }
+
     @Override
     public BigDecimal calculateOrderPrice(Long orderId) {
         BigDecimal price = null;
