@@ -19,6 +19,8 @@ public interface OrderService {
 
     void subtractBalanceFromUser(BigDecimal orderCost, Long userId);
 
+    void updateOrderStatus(OrderStatus status, Long id);
+
     BigDecimal calculateOrderPrice(Long orderId);
 
     void deleteOrder(UserTrackOrderDto orderDto);
