@@ -1,6 +1,6 @@
 package com.ordjoy.model.repository.album;
 
-import com.ordjoy.model.config.HibernateConfigTest;
+import com.ordjoy.model.config.PersistenceConfigTest;
 import com.ordjoy.model.entity.review.AlbumReview;
 import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Track;
@@ -22,7 +22,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = HibernateConfigTest.class)
+@ContextConfiguration(classes = PersistenceConfigTest.class)
 @Transactional
 class AlbumRepositoryImplTest {
 

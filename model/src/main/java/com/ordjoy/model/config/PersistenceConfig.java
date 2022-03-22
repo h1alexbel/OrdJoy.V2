@@ -23,7 +23,7 @@ import java.util.Properties;
 @ComponentScan("com.ordjoy")
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
-public class HibernateConfig {
+public class PersistenceConfig {
 
     private static final String DB_URL_KEY = "db.url";
     private static final String DB_DRIVER_KEY = "db.driver";

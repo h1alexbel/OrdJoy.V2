@@ -1,6 +1,6 @@
 package com.ordjoy.model.repository.mix;
 
-import com.ordjoy.model.config.HibernateConfigTest;
+import com.ordjoy.model.config.PersistenceConfigTest;
 import com.ordjoy.model.entity.review.MixReview;
 import com.ordjoy.model.entity.track.Mix;
 import com.ordjoy.model.entity.track.Track;
@@ -22,7 +22,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = HibernateConfigTest.class)
+@ContextConfiguration(classes = PersistenceConfigTest.class)
 @Transactional
 class MixRepositoryImplTest {
 

@@ -1,6 +1,6 @@
 package com.ordjoy.model.service.album;
 
-import com.ordjoy.model.config.HibernateConfigTest;
+import com.ordjoy.model.config.PersistenceConfigTest;
 import com.ordjoy.model.dto.AlbumDto;
 import com.ordjoy.model.util.TestDataImporter;
 import org.hibernate.SessionFactory;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = HibernateConfigTest.class)
+@ContextConfiguration(classes = PersistenceConfigTest.class)
 @Transactional
 class AlbumServiceImplTest {
 
