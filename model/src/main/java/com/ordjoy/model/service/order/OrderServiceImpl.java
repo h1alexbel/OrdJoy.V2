@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
     public UserTrackOrderDto makeOrder(UserTrackOrderDto orderDto) {
         UserTrackOrder orderToSave = UserTrackOrder.builder()
                 .price(orderDto.getPrice())
-                .status(orderDto.getStatus())
+                .status(OrderStatus.ACCEPTED)
                 .track(Track.builder()
                         .title(orderDto.getTrack().getTitle())
                         .url(orderDto.getTrack().getUrl())
