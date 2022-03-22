@@ -132,6 +132,7 @@ public class OrderServiceImpl implements OrderService {
             Optional<UserTrackOrder> maybeOrder = orderRepository.findById(orderId);
             if (maybeOrder.isPresent()) {
                 UserTrackOrder order = maybeOrder.get();
+                price = order.getPrice();
                 int value = order.getPrice().intValue();
                 Integer discountPercentageLevel = order.getUser()
                         .getUserData()
