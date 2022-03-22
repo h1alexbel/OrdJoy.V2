@@ -4,6 +4,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(HibernateConfig.class)
-public class HibernateConfigTest {
+@Import(PersistenceConfig.class)
+public class PersistenceConfigTest {
 }
