@@ -1,15 +1,14 @@
 package com.ordjoy.web.config;
 
-import com.ordjoy.model.config.HibernateConfig;
+import com.ordjoy.model.config.PersistenceConfig;
+import com.ordjoy.web.util.UrlPathUtils;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    private static final String DISPATCHER_SERVLET_URL_PATTERN = "/";
-
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{HibernateConfig.class};
+        return new Class[]{PersistenceConfig.class};
     }
 
     @Override
@@ -19,6 +18,6 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{DISPATCHER_SERVLET_URL_PATTERN};
+        return new String[]{UrlPathUtils.DISPATCHER_SERVLET_URL_PATTERN};
     }
 }
