@@ -9,15 +9,13 @@ public interface ReviewService<D extends ReviewDto, K> {
 
     D saveReview(D reviewDto);
 
-    Optional<D> findReviewById(Long reviewId);
+    Optional<D> findReviewById(K reviewId);
 
     List<D> findReviewsByUserLogin(String login);
 
     List<D> findReviewsByUserId(Long userId);
 
     List<D> listReviews();
-
-    Optional<D> findReviewById(K key);
 
     void deleteReview(D reviewDto);
 
