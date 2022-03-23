@@ -17,7 +17,7 @@ public interface ReviewService<D extends ReviewDto, K> {
 
     List<D> listReviews();
 
-    void deleteReview(D reviewDto);
+    void deleteReview(K key);
 
     void updateReview(D reviewDto);
 }

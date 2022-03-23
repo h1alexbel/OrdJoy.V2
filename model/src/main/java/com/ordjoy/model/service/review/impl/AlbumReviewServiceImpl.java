@@ -73,10 +73,10 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
 
     @Transactional
     @Override
-    public void deleteReview(AlbumReviewDto albumReviewDto) {
-        if (albumReviewDto != null) {
+    public void deleteReview(Long albumReviewId) {
+        if (albumReviewId != null) {
             Optional<AlbumReview> maybeAlbumReview = albumReviewRepository
-                    .findById(albumReviewDto.getId());
+                    .findById(albumReviewId);
             maybeAlbumReview.ifPresent(albumReview -> {
                 albumReviewRepository.delete(albumReview);
                 log.debug(LoggingUtils.ALBUM_REVIEW_WAS_DELETED_SERVICE, albumReview);

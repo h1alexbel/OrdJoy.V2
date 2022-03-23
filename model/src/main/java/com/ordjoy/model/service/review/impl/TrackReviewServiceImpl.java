@@ -69,10 +69,10 @@ public class TrackReviewServiceImpl implements TrackReviewService {
 
     @Transactional
     @Override
-    public void deleteReview(TrackReviewDto trackReviewDto) {
-        if (trackReviewDto != null) {
+    public void deleteReview(Long trackReviewId) {
+        if (trackReviewId != null) {
             Optional<TrackReview> maybeTrackReview = trackReviewRepository
-                    .findById(trackReviewDto.getId());
+                    .findById(trackReviewId);
             maybeTrackReview.ifPresent(trackReview -> {
                 trackReviewRepository.delete(trackReview);
                 log.debug(LoggingUtils.TRACK_REVIEW_WAS_DELETED_SERVICE, trackReview);
