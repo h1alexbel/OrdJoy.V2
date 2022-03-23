@@ -195,12 +195,12 @@ public class TrackServiceImpl implements TrackService {
 
     @Transactional
     @Override
-    public void deleteTrack(TrackDto trackDto) {
-        if (trackDto != null) {
-            Optional<Track> maybeTrack = trackRepository.findById(trackDto.getId());
+    public void deleteTrack(Long trackId) {
+        if (trackId != null) {
+            Optional<Track> maybeTrack = trackRepository.findById(trackId);
             maybeTrack.ifPresent(track -> {
                 trackRepository.delete(track);
-                log.debug(LoggingUtils.TRACK_WAS_DELETE_SERVICE, trackDto);
+                log.debug(LoggingUtils.TRACK_WAS_DELETE_SERVICE, track);
             });
         }
     }

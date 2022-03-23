@@ -63,10 +63,10 @@ public class MixReviewServiceImpl implements MixReviewService {
 
     @Transactional
     @Override
-    public void deleteReview(MixReviewDto mixReviewDto) {
-        if (mixReviewDto != null) {
+    public void deleteReview(Long mixReviewId) {
+        if (mixReviewId != null) {
             Optional<MixReview> maybeMixReview = mixReviewRepository
-                    .findById(mixReviewDto.getId());
+                    .findById(mixReviewId);
             maybeMixReview.ifPresent(mixReview -> {
                 mixReviewRepository.delete(mixReview);
                 log.debug(LoggingUtils.MIX_REVIEW_WAS_DELETED_SERVICE, mixReview);

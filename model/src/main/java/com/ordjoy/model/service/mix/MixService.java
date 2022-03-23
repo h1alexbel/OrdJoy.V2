@@ -27,5 +27,5 @@ public interface MixService {
 
     void updateMix(MixDto mixDto);
 
-    void deleteMix(MixDto mixDto);
+    void deleteMix(Long mixId);
 }

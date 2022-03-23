@@ -149,9 +149,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public void deleteOrder(UserTrackOrderDto orderDto) {
-        if (orderDto != null) {
-            Optional<UserTrackOrder> maybeOrder = orderRepository.findById(orderDto.getId());
+    public void deleteOrder(Long orderId) {
+        if (orderId != null) {
+            Optional<UserTrackOrder> maybeOrder = orderRepository.findById(orderId);
             maybeOrder.ifPresent(order -> {
                 orderRepository.delete(order);
                 log.debug(LoggingUtils.ORDER_WAS_DELETED_SERVICE, order);

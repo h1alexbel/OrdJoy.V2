@@ -172,9 +172,9 @@ public class MixServiceImpl implements MixService {
 
     @Transactional
     @Override
-    public void deleteMix(MixDto mixDto) {
-        if (mixDto != null) {
-            Optional<Mix> maybeMix = mixRepository.findById(mixDto.getId());
+    public void deleteMix(Long mixId) {
+        if (mixId != null) {
+            Optional<Mix> maybeMix = mixRepository.findById(mixId);
             maybeMix.ifPresent(mix -> {
                 mixRepository.delete(mix);
                 log.debug(LoggingUtils.MIX_WAS_DELETE_SERVICE, mix);
