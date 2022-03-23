@@ -189,9 +189,9 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Transactional
     @Override
-    public void deleteAlbum(AlbumDto albumDto) {
-        if (albumDto != null) {
-            Optional<Album> maybeAlbum = albumRepository.findById(albumDto.getId());
+    public void deleteAlbum(Long albumId) {
+        if (albumId != null) {
+            Optional<Album> maybeAlbum = albumRepository.findById(albumId);
             maybeAlbum.ifPresent(album -> {
                 albumRepository.delete(album);
                 log.debug(LoggingUtils.ALBUM_WAS_DELETED_IN_SERVICE, album);
