@@ -274,12 +274,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUser(UserDto userDto) {
-        if (userDto != null) {
-            Optional<User> maybeUser = userRepository.findById(userDto.getId());
+    public void deleteUser(Long userId) {
+        if (userId != null) {
+            Optional<User> maybeUser = userRepository.findById(userId);
             maybeUser.ifPresent(user -> {
                 userRepository.delete(user);
-                log.debug(LoggingUtils.USER_WAS_DELETED_SERVICE, userDto);
+                log.debug(LoggingUtils.USER_WAS_DELETED_SERVICE, user);
             });
         }
     }
