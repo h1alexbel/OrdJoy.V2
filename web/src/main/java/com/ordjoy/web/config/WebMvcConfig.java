@@ -8,6 +8,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @ComponentScan("com.ordjoy.web.controller")
 @EnableWebMvc
-@Import(ViewResolverConfig.class)
+@Import({ViewResolverConfig.class, InternationalizationConfig.class})
 public class WebMvcConfig {
 }
