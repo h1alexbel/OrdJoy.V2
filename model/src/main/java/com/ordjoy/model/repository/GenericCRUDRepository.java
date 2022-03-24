@@ -12,7 +12,7 @@ public interface GenericCRUDRepository<E extends BaseEntity<K>, K extends Serial
 
     Optional<E> findById(K id);
 
-    List<E> findAll();
+    List<E> findAll(int limit, int offset);
 
     void update(E entity);
 

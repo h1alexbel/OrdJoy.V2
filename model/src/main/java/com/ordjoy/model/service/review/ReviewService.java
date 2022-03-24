@@ -15,7 +15,7 @@ public interface ReviewService<D extends ReviewDto, K> {
 
     List<D> findReviewsByUserId(Long userId);
 
-    List<D> listReviews();
+    List<D> listReviews(int limit, int offset);
 
     void deleteReview(K key);
 

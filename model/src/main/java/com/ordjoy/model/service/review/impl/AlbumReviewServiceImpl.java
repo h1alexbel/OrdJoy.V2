@@ -118,8 +118,8 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
     }
 
     @Override
-    public List<AlbumReviewDto> listReviews() {
-        return albumReviewRepository.findAll().stream()
+    public List<AlbumReviewDto> listReviews(int limit, int offset) {
+        return albumReviewRepository.findAll(limit, offset).stream()
                 .map(this::buildAlbumReviewDtoFromEntity)
                 .toList();
     }

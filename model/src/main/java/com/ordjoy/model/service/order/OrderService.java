@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface OrderService {
 
-    List<UserTrackOrderDto> listOrders();
+    List<UserTrackOrderDto> listOrders(int limit, int offset);
 
     UserTrackOrderDto makeOrder(UserTrackOrderDto orderDto);
 

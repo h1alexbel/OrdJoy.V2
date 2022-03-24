@@ -36,8 +36,8 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<TrackDto> listTracks() {
-        return trackRepository.findAll().stream()
+    public List<TrackDto> listTracks(int limit, int offset) {
+        return trackRepository.findAll(limit, offset).stream()
                 .map(track -> TrackDto.builder()
                         .id(track.getId())
                         .title(track.getTitle())

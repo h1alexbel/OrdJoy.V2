@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface MixService {
 
-    List<MixDto> listMixes();
+    List<MixDto> listMixes(int limit, int offset);
 
     MixDto saveMix(MixDto mixDto);
 

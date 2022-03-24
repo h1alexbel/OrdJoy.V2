@@ -31,8 +31,8 @@ public class MixServiceImpl implements MixService {
     }
 
     @Override
-    public List<MixDto> listMixes() {
-        return mixRepository.findAll().stream()
+    public List<MixDto> listMixes(int limit, int offset) {
+        return mixRepository.findAll(limit, offset).stream()
                 .map(mix -> MixDto.builder()
                         .id(mix.getId())
                         .title(mix.getTitle())

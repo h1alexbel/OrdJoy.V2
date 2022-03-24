@@ -30,8 +30,8 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<AlbumDto> listAlbums() {
-        return albumRepository.findAll().stream()
+    public List<AlbumDto> listAlbums(int limit, int offset) {
+        return albumRepository.findAll(limit, offset).stream()
                 .map(album -> AlbumDto.builder()
                         .id(album.getId())
                         .title(album.getTitle())
