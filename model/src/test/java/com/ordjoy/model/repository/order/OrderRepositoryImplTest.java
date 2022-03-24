@@ -1,6 +1,6 @@
 package com.ordjoy.model.repository.order;
 
-import com.ordjoy.model.config.HibernateConfigTest;
+import com.ordjoy.model.config.PersistenceConfigTest;
 import com.ordjoy.model.entity.order.OrderStatus;
 import com.ordjoy.model.entity.order.UserTrackOrder;
 import com.ordjoy.model.entity.track.Track;
@@ -26,7 +26,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = HibernateConfigTest.class)
+@ContextConfiguration(classes = PersistenceConfigTest.class)
 @Transactional
 class OrderRepositoryImplTest {
 
