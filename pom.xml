@@ -24,6 +24,7 @@
         <hibernate-version>5.6.5.Final</hibernate-version>
         <junit-version>5.8.0-M1</junit-version>
         <log4j2-version>2.17.1</log4j2-version>
+        <spring.security.version>5.6.2</spring.security.version>
     </properties>
 
     <dependencyManagement>
@@ -63,6 +64,24 @@
                 <groupId>org.thymeleaf</groupId>
                 <artifactId>thymeleaf-spring5</artifactId>
                 <version>3.1.0.M1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring.security.version}</version>
             </dependency>
 
             <dependency>
