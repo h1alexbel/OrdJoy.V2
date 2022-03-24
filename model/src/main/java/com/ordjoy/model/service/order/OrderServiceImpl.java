@@ -41,8 +41,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<UserTrackOrderDto> listOrders() {
-        return orderRepository.findAll().stream()
+    public List<UserTrackOrderDto> listOrders(int limit, int offset) {
+        return orderRepository.findAll(limit, offset).stream()
                 .map(this::mapOrderToDto)
                 .toList();
     }

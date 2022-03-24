@@ -108,8 +108,8 @@ public class MixReviewServiceImpl implements MixReviewService {
     }
 
     @Override
-    public List<MixReviewDto> listReviews() {
-        return mixReviewRepository.findAll().stream()
+    public List<MixReviewDto> listReviews(int limit, int offset) {
+        return mixReviewRepository.findAll(limit, offset).stream()
                 .map(this::buildMixReviewDtoFromEntity)
                 .toList();
     }

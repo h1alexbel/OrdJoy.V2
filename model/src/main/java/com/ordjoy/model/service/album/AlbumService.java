@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface AlbumService {
 
-    List<AlbumDto> listAlbums();
+    List<AlbumDto> listAlbums(int limit, int offset);
 
     AlbumDto saveAlbum(AlbumDto albumDto);
 

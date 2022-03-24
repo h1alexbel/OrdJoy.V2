@@ -114,8 +114,8 @@ public class TrackReviewServiceImpl implements TrackReviewService {
     }
 
     @Override
-    public List<TrackReviewDto> listReviews() {
-        return trackReviewRepository.findAll().stream()
+    public List<TrackReviewDto> listReviews(int limit, int offset) {
+        return trackReviewRepository.findAll(limit, offset).stream()
                 .map(this::buildTrackReviewDtoFromEntity)
                 .toList();
     }

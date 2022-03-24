@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface TrackService {
 
-    List<TrackDto> listTracks();
+    List<TrackDto> listTracks(int limit, int offset);
 
     TrackDto saveTrack(TrackDto trackDto);
 

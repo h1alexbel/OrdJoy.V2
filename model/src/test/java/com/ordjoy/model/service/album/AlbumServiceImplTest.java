@@ -48,8 +48,8 @@ class AlbumServiceImplTest {
     @Test
     @DisplayName("all albums test case")
     void listAlbums() {
-        List<AlbumDto> albums = albumService.listAlbums();
-        assertThat(albums).hasSize(4);
+        List<AlbumDto> albums = albumService.listAlbums(10, 1);
+        assertThat(albums).hasSize(3);
     }
 
     @Test
