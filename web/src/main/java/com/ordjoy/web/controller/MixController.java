@@ -35,9 +35,11 @@ public class MixController {
         this.mixService = mixService;
     }
 
-    @GetMapping("/all")
-    public String getAllMixes(Model model) {
-        List<MixDto> mixList = mixService.listMixes();
+    @GetMapping("/all/")
+    public String getAllMixes(
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
+        List<MixDto> mixList = mixService.listMixes(limit, offset);
         model.addAttribute(AttributeUtils.MIXES, mixList);
         return PageUtils.MIXES_PAGE;
     }
