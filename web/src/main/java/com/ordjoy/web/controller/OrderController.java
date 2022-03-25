@@ -28,7 +28,7 @@ import java.util.Optional;
 @Slf4j
 @Controller
 @RequestMapping("/order")
-@SessionAttributes("sessionOrder")
+@SessionAttributes(AttributeUtils.SESSION_ORDER)
 public class OrderController {
 
     private final OrderService orderService;
