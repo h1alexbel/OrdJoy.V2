@@ -169,23 +169,29 @@ public class ReviewController {
         return PageUtils.TRACK_REVIEWS_PAGE;
     }
 
-    @GetMapping("/album/all")
-    public String getAllAlbumReviews(Model model) {
-        List<AlbumReviewDto> albumReviews = albumReviewService.listReviews();
+    @GetMapping("/album/all/")
+    public String getAllAlbumReviews(
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
+        List<AlbumReviewDto> albumReviews = albumReviewService.listReviews(limit, offset);
         model.addAttribute(AttributeUtils.ALBUM_REVIEWS, albumReviews);
         return PageUtils.ALBUM_REVIEWS_PAGE;
     }
 
-    @GetMapping("/mix/all")
-    public String getAllMixReviews(Model model) {
-        List<MixReviewDto> mixReviews = mixReviewService.listReviews();
+    @GetMapping("/mix/all/")
+    public String getAllMixReviews(
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
+        List<MixReviewDto> mixReviews = mixReviewService.listReviews(limit, offset);
         model.addAttribute(AttributeUtils.MIX_REVIEWS, mixReviews);
         return PageUtils.MIX_REVIEWS_PAGE;
     }
 
-    @GetMapping("/track/all")
-    public String getAllTrackReviews(Model model) {
-        List<TrackReviewDto> trackReviews = trackReviewService.listReviews();
+    @GetMapping("/track/all/")
+    public String getAllTrackReviews(
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
+        List<TrackReviewDto> trackReviews = trackReviewService.listReviews(limit, offset);
         model.addAttribute(AttributeUtils.TRACK_REVIEWS, trackReviews);
         return PageUtils.TRACK_REVIEWS_PAGE;
     }
