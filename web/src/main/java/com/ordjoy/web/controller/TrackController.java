@@ -35,9 +35,11 @@ public class TrackController {
         this.trackService = trackService;
     }
 
-    @GetMapping("/all")
-    public String getAllTracks(Model model) {
-        List<TrackDto> tracks = trackService.listTracks();
+    @GetMapping("/all/")
+    public String getAllTracks(
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
+        List<TrackDto> tracks = trackService.listTracks(limit, offset);
         model.addAttribute(AttributeUtils.TRACKS, tracks);
         return PageUtils.TRACKS_PAGE;
     }
