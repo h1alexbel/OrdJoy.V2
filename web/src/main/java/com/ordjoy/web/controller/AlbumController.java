@@ -35,9 +35,11 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
-    @GetMapping("/all")
-    public String getAllAlbums(Model model) {
-        List<AlbumDto> albums = albumService.listAlbums();
+    @GetMapping("/all/")
+    public String getAllAlbums(
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
+        List<AlbumDto> albums = albumService.listAlbums(limit, offset);
         model.addAttribute(AttributeUtils.REQUEST_ALBUMS, albums);
         return PageUtils.ALL_ALBUMS_PAGE;
     }
