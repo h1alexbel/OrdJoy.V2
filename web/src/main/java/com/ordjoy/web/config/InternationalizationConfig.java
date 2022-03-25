@@ -19,7 +19,7 @@ import java.util.Locale;
 public class InternationalizationConfig implements WebMvcConfigurer {
 
     private static final String BUNDLE_NAME = "translation";
-    private static final String STATIC_LOCATIONS = "/static/";
+    private static final String REAL_RESOURCE_LOCATION = "/static/";
     private static final String RESOURCE_DIRECTORY_HANDLER = "/resources/**";
 
     @Bean
@@ -52,6 +52,6 @@ public class InternationalizationConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(RESOURCE_DIRECTORY_HANDLER)
-                .addResourceLocations(STATIC_LOCATIONS);
+                .addResourceLocations(REAL_RESOURCE_LOCATION);
     }
 }
