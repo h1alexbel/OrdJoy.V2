@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum Permission {
     READ("user:read"),
     WRITE("user:write"),
+    UPDATE("user:update"),
     BACK_UP("user:backup"),
     SOFT_DELETE("user:delete"),
     HARD_DELETE("user:delete -h");
