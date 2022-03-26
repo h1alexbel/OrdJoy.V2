@@ -94,6 +94,8 @@ public class OrderController {
         orderService.updateOrder(savedOrder);
         log.debug(LoggingUtils.ORDER_WAS_UPDATED_IN_CONTROLLER, savedOrder);
         model.addAttribute(AttributeUtils.SESSION_ORDER, savedOrder);
+        orderService.subtractBalanceFromUser(savedOrder.getPrice(), savedOrder.getUser().getId());
+        log.debug(LoggingUtils.USER_BALANCE_WAS_SUBTRACTED_IN_CONTROLLER, savedOrder, savedOrder.getUser());
         return UrlPathUtils.REDIRECT_USER_ORDERS_PAGE;
     }
 
