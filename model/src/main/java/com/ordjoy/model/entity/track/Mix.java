@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -20,7 +19,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -38,9 +36,6 @@ import java.util.Objects;
 @SQLDelete(sql = "UPDATE audio_storage.mix SET state = 'NOT_ACTIVE' WHERE id = ?",
         check = ResultCheckStyle.COUNT)
 @Where(clause = "state = 'ACTIVE'")
-@Loader(namedQuery = "exclude_not_active_mixes")
-@NamedQuery(name = "exclude_not_active_mixes",
-        query = "select m from Mix m where m.entityState = 'ACTIVE'")
 public class Mix extends BaseEntity<Long> {
 
     @Column(length = 128, nullable = false, unique = true)
