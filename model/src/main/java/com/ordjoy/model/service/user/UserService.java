@@ -1,14 +1,15 @@
 package com.ordjoy.model.service.user;
 
 import com.ordjoy.model.dto.UserDto;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
-    List<UserDto> listUsers();
+    List<UserDto> listUsers(int limit, int offset);
 
     boolean isUserHasRightsToRegister(UserDto userDto);
 
