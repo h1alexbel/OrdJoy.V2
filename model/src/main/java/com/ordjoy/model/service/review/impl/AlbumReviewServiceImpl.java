@@ -6,9 +6,9 @@ import com.ordjoy.model.dto.UserDto;
 import com.ordjoy.model.entity.review.AlbumReview;
 import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.user.User;
-import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.review.AlbumReviewRepository;
 import com.ordjoy.model.service.review.AlbumReviewService;
+import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,18 +47,7 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
         albumReviewToSave.getAlbum().setId(albumReviewDto.getAlbum().getId());
         AlbumReview savedAlbumReview = albumReviewRepository.add(albumReviewToSave);
         log.debug(LoggingUtils.ALBUM_REVIEW_WAS_ADDED_SERVICE, savedAlbumReview);
-        return AlbumReviewDto.builder()
-                .reviewText(savedAlbumReview.getReviewText())
-                .album(AlbumDto.builder()
-                        .id(savedAlbumReview.getAlbum().getId())
-                        .title(savedAlbumReview.getAlbum().getTitle())
-                        .build())
-                .user(UserDto.builder()
-                        .id(savedAlbumReview.getUser().getId())
-                        .login(savedAlbumReview.getUser().getLogin())
-                        .email(savedAlbumReview.getUser().getEmail())
-                        .build())
-                .build();
+        return buildAlbumReviewDtoFromEntity(savedAlbumReview);
     }
 
     @Override
