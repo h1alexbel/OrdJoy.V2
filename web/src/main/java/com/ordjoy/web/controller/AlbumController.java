@@ -35,7 +35,7 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
-    @GetMapping("/all/")
+    @GetMapping("/all")
     public String getAllAlbums(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {

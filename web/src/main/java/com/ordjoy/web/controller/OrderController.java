@@ -38,7 +38,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/all/")
+    @GetMapping("/admin/all")
     public String getAllOrders(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {

@@ -169,7 +169,7 @@ public class ReviewController {
         return PageUtils.TRACK_REVIEWS_PAGE;
     }
 
-    @GetMapping("/album/all/")
+    @GetMapping("/album/all")
     public String getAllAlbumReviews(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
@@ -178,7 +178,7 @@ public class ReviewController {
         return PageUtils.ALBUM_REVIEWS_PAGE;
     }
 
-    @GetMapping("/mix/all/")
+    @GetMapping("/mix/all")
     public String getAllMixReviews(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
@@ -187,7 +187,7 @@ public class ReviewController {
         return PageUtils.MIX_REVIEWS_PAGE;
     }
 
-    @GetMapping("/track/all/")
+    @GetMapping("/track/all")
     public String getAllTrackReviews(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
