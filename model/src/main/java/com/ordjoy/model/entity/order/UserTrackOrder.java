@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -22,7 +21,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -38,9 +36,6 @@ import java.util.Objects;
 @SQLDelete(sql = "UPDATE user_storage.user_track_order SET state = 'NOT_ACTIVE' WHERE id = ?",
         check = ResultCheckStyle.COUNT)
 @Where(clause = "state = 'ACTIVE'")
-@Loader(namedQuery = "exclude_not_active_orders")
-@NamedQuery(name = "exclude_not_active_orders",
-        query = "select o from UserTrackOrder o where o.entityState = 'ACTIVE'")
 public class UserTrackOrder extends AuditableEntity<Long> {
 
     @Column(nullable = false)

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -21,7 +20,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -39,9 +37,6 @@ import java.util.Objects;
 @SQLDelete(sql = "UPDATE user_storage.user_account SET state = 'NOT_ACTIVE' WHERE id = ?",
         check = ResultCheckStyle.COUNT)
 @Where(clause = "state = 'ACTIVE'")
-@Loader(namedQuery = "exclude_not_active_users")
-@NamedQuery(name = "exclude_not_active_users",
-        query = "select u from User u where u.entityState = 'ACTIVE'")
 public class User extends AuditableEntity<Long> {
 
     @Column(length = 128, unique = true, nullable = false)
