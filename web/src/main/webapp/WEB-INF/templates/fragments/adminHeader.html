@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>UserHeader</title>
+    <title>AdminHeader</title>
     <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
@@ -22,33 +22,40 @@
                 <div th:replace="~{fragments/locale::locale}">
                 </div>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a th:href="@{/album/all?limit=20&offset=0}"
+                    <li><a th:href="@{/order/admin/all?limit=20&offset=0}"
                            class="nav-link px-2 text-white">
-                        Albums
+                        Orders
                     </a></li>
-                    <li><a th:href="@{/track/all?limit=20&offset=0}"
+                    <li><a th:href="@{/account/admin/all?limit=20&offset=0}"
                            class="nav-link px-2 text-white">
-                        Tracks
+                        Customers
                     </a>
                     </li>
-                    <li><a th:href="@{/mix/all?limit=20&offset=0}"
-                           class="nav-link px-2 text-white">
-                        Mixes
-                    </a>
-                    </li>
-                    <li><a href="https://github.com/h1alexbel/OrdJoy.V2" class="nav-link px-2 text-white">
-                        GitHub
-                    </a></li>
                 </ul>
                 <div class="text-end">
-                    <a th:href="@{/account/info}"
-                       class="btn btn-outline-light me-2"
-                       role="button">
-                        Account info
+                    <a th:href="@{/account/admin/addAdmin}"
+                       class="btn btn-warning" role="button">
+                        Add new Admin
                     </a>
-                    <a th:href="@{/order/makeOrder}"
-                       class="btn btn-outline-primary" role="button">
-                        Make order
+
+                    <a th:href="@{/track/addTrackToMix}"
+                       class="btn btn btn-primary" role="button">
+                        Add Track to Mix
+                    </a>
+
+                    <a th:href="@{/track/addTrack}"
+                       class="btn btn btn-primary" role="button">
+                        Add Track
+                    </a>
+
+                    <a th:href="@{/mix/addMix}"
+                       class="btn btn btn-primary" role="button">
+                        Add Mix
+                    </a>
+
+                    <a th:href="@{/album/addAlbum}"
+                       class="btn btn btn-primary" role="button">
+                        Add Album
                     </a>
 
                     <div class="text-xxl-center">
