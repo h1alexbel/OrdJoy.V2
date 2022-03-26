@@ -28,6 +28,7 @@ public class MixReview extends Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mix_id")
+    @ToString.Exclude
     private Mix mix;
 
     @Builder

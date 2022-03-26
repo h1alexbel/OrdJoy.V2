@@ -1,6 +1,7 @@
 package com.ordjoy.model.entity.track;
 
 import com.ordjoy.model.entity.BaseEntity;
+import com.ordjoy.model.entity.order.UserTrackOrder;
 import com.ordjoy.model.entity.review.TrackReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -20,6 +22,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -37,6 +40,9 @@ import java.util.Objects;
 @SQLDelete(sql = "UPDATE audio_storage.track SET state = 'NOT_ACTIVE' WHERE id = ?",
         check = ResultCheckStyle.COUNT)
 @Where(clause = "state = 'ACTIVE'")
+@Loader(namedQuery = "exclude_not_active_tracks")
+@NamedQuery(name = "exclude_not_active_tracks",
+        query = "select t from Track t where t.entityState = 'ACTIVE'")
 public class Track extends BaseEntity<Long> {
 
     @Column(length = 512, nullable = false, unique = true)
@@ -47,6 +53,7 @@ public class Track extends BaseEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
+    @ToString.Exclude
     private Album album;
 
     @ManyToMany(mappedBy = "tracks", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
@@ -58,6 +65,21 @@ public class Track extends BaseEntity<Long> {
     @Builder.Default
     @ToString.Exclude
     private List<TrackReview> trackReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "track", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @Builder.Default
+    @ToString.Exclude
+    private List<UserTrackOrder> orders = new ArrayList<>();
+
+    public void addReviewToTrack(TrackReview trackReview) {
+        trackReviews.add(trackReview);
+        trackReview.setTrack(this);
+    }
+
+    public void addOrderToTrack(UserTrackOrder order) {
+        orders.add(order);
+        order.setTrack(this);
+    }
 
     @Override
     public boolean equals(Object o) {
