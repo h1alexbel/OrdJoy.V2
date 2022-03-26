@@ -28,6 +28,7 @@ public class AlbumReview extends Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
+    @ToString.Exclude
     private Album album;
 
     @Builder

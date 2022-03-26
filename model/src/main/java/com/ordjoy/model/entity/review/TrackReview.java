@@ -28,6 +28,7 @@ public class TrackReview extends Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "track_id")
+    @ToString.Exclude
     private Track track;
 
     @Builder
