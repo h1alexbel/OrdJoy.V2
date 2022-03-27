@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Welcome</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <link href="heroes.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/userHeader.html}"></div>
+<main>
+    <h1 class="visually-hidden">Heroes examples</h1>
+
+    <div class="px-4 py-5 my-5 text-center">
+        <img class="d-block mx-auto mb-4"
+             th:src="@{/resources/img/welcome.png}" alt="" width="390"
+             height="240">
+        <h1 class="display-5 fw-bold">
+            <span th:text="'Hello ' + ${session.sessionUser.login} + '!'">
+            </span>
+        </h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">
+                We feel great to meet you! Welcome!
+            </p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a th:href="@{/account/info}"
+                   class="btn btn-outline-success me-2"
+                   role="button">
+                    Account info
+                </a>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a th:href="@{/order/makeOrder}"
+                       class="btn btn-outline-primary" role="button">
+                        Make order
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/footer.html}"></div>
+</body>
+</html>
