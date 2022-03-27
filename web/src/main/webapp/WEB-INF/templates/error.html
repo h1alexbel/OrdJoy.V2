@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Something went wrong..</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<header>
+    <div th:if="${session.sessionUser.role eq 'USER'}">
+        <div th:replace="~{fragments/userHeader.html}"></div>
+    </div>
+    <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
+        <div th:replace="~{fragments/adminHeader.html}"></div>
+    </div>
+</header>
+
+<div class="px-4 py-5 my-5 text-center">
+    <img class="d-block mx-auto mb-4"
+         th:src="@{/resources/img/error.png}" alt="" width="450"
+         height="350">
+    <h1 class="display-6 fw-normal">
+            <span th:text="'Oops, something went wrong due to following reason: ' + ${exceptionMessage}">
+                Error text
+            </span>
+    </h1>
+</div>
+
+<div th:replace="~{fragments/footer.html}">
+</div>
+</body>
+</html>
