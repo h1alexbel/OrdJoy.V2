@@ -28,6 +28,9 @@
     <a th:href="@{/album/{id}/tracks(id = ${requestAlbum.id})}" class="btn btn-outline-success">
         Album Tracks
     </a>
+    <a th:href="@{/album/reviews/(title = ${requestAlbum.title})}" class="btn btn-outline-success">
+        Reviews
+    </a>
 </div>
 <div th:replace="~{fragments/footer.html}"></div>
 </body>
