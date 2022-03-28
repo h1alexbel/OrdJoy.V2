@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Locale Settings</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+
 </head>
 <body>
 
 <div th:fragment="locale">
-    <a class="btn-primary" th:href="@{?lang=en_US}">EN</a>
-    <a class="btn-primary" th:href="@{?lang=ru_ru}">RU</a>
+    <a class="btn btn-primary" th:href="@{?lang=en_US}">EN</a>
+    <a class="btn btn-primary" th:href="@{?lang=ru_ru}">RU</a>
 </div>
 </body>
 </html>
