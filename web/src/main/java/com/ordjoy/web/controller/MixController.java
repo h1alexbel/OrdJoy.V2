@@ -91,16 +91,16 @@ public class MixController {
     public String getMixTracks(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
                                Model model) {
         List<TrackDto> mixTracks = mixService.findTracksByMixTitle(mixTitle);
-        model.addAttribute(AttributeUtils.MIX_TRACKS, mixTracks);
-        return PageUtils.MIX_TRACKS_PAGE;
+        model.addAttribute(AttributeUtils.TRACKS, mixTracks);
+        return PageUtils.TRACKS_PAGE;
     }
 
     @GetMapping("/{id}/reviews")
     public String getMixReviews(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
                                 Model model) {
         List<MixReviewDto> mixReviews = mixService.findMixReviewsByMixId(mixId);
-        model.addAttribute(AttributeUtils.MIX_REVIEWS, mixReviews);
-        return PageUtils.MIX_REVIEWS_PAGE;
+        model.addAttribute(AttributeUtils.TRACKS, mixReviews);
+        return PageUtils.TRACKS_PAGE;
     }
 
     @GetMapping("/reviews/")

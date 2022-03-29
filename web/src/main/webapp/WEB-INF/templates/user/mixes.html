@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mixes</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+
+<header>
+    <div th:if="${session.sessionUser.role eq 'USER'}">
+        <div th:replace="~{fragments/userHeader.html}"></div>
+    </div>
+    <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
+        <div th:replace="~{fragments/adminHeader.html}"></div>
+    </div>
+</header>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">
+            Mix title
+        </th>
+        <th scope="col">
+            Mix Description
+        </th>
+    </tr>
+    <tr th:each="mix : ${mixes}">
+        <td th:text="${mix.title}">Mix title</td>
+        <td th:text="${mix.description}">Mix Description</td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-danger">
+            Delete Mix
+        </a></td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-warning">
+            Edit Mix
+        </a></td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-success">
+            Add Review
+        </a></td>
+    </tr>
+    </thead>
+</table>
+<div th:replace="~{fragments/footer.html}"></div>
+</body>
+</html>
