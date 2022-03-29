@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Album Reviews</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/userHeader.html}"></div>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">
+            Album title
+        </th>
+        <th scope="col">
+            Review text
+        </th>
+        <th scope="col">
+            User login
+        </th>
+    </tr>
+    <tr th:each="albumReview : ${albumReviews}">
+        <td th:text="${albumReview.album.title}">
+            Album title
+        </td>
+        <td th:text="${albumReview.reviewText}">
+            Review text
+        </td>
+        <td th:text="${albumReview.user.login}">
+            User login
+        </td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-danger">
+            Delete Review
+        </a></td>
+    </tr>
+    </thead>
+</table>
+<div th:replace="~{fragments/footer.html}"></div>
+</body>
+</html>
