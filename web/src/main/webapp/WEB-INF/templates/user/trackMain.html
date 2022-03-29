@@ -33,7 +33,8 @@
             </div>
         </div>
     </a>
-    <a href="" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+    <a th:href="@{/album/{id}(id = ${track.album.id})}"
+       class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
                 <h6 class="mb-0">Album:</h6>

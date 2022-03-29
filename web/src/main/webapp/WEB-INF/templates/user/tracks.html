@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tracks</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+
+<header>
+    <div th:if="${session.sessionUser.role eq 'USER'}">
+        <div th:replace="~{fragments/userHeader.html}"></div>
+    </div>
+    <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
+        <div th:replace="~{fragments/adminHeader.html}"></div>
+    </div>
+</header>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">
+            Track title
+        </th>
+        <th scope="col">
+            Track Url
+        </th>
+        <th scope="col">
+            Album
+        </th>
+    </tr>
+    <tr th:each="track : ${tracks}">
+        <td th:text="${track.title}">Track title</td>
+        <td th:text="${track.url}">Track Url</td>
+        <td th:text="${track.album.title}">Album</td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-danger">
+            Delete Track
+        </a></td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-warning">
+            Edit Track
+        </a></td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-success">
+            Add Review
+        </a></td>
+    </tr>
+    </thead>
+</table>
+<div th:replace="~{fragments/footer.html}"></div>
+</body>
+</html>

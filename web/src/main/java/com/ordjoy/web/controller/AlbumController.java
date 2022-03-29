@@ -91,16 +91,16 @@ public class AlbumController {
     public String getAlbumTracks(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId,
                                  Model model) {
         List<TrackDto> albumTracks = albumService.findTracksByAlbumId(albumId);
-        model.addAttribute(AttributeUtils.ALBUM_TRACKS, albumTracks);
-        return PageUtils.ALBUM_TRACKS_PAGE;
+        model.addAttribute(AttributeUtils.TRACKS, albumTracks);
+        return PageUtils.TRACKS_PAGE;
     }
 
     @GetMapping("/tracks/")
     public String getAlbumTracks(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String albumTitle,
                                  Model model) {
         List<TrackDto> albumTracks = albumService.findTracksByAlbumTitle(albumTitle);
-        model.addAttribute(AttributeUtils.ALBUM_TRACKS, albumTracks);
-        return PageUtils.ALBUM_TRACKS_PAGE;
+        model.addAttribute(AttributeUtils.TRACKS, albumTracks);
+        return PageUtils.TRACKS_PAGE;
     }
 
     @GetMapping("/{id}/reviews")
