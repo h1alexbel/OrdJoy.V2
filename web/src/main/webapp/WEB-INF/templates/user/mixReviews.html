@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mix Reviews</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/userHeader.html}"></div>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">
+            Mix title
+        </th>
+        <th scope="col">
+            Review text
+        </th>
+        <th scope="col">
+            User login
+        </th>
+    </tr>
+    <tr th:each="mixReview : ${mixReviews}">
+        <td th:text="${mixReview.mix.title}">
+            Mix title
+        </td>
+        <td th:text="${mixReview.reviewText}">
+            Review text
+        </td>
+        <td th:text="${mixReview.user.login}">
+            User login
+        </td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-danger">
+            Delete Review
+        </a></td>
+    </tr>
+    </thead>
+</table>
+<div th:replace="~{fragments/footer.html}"></div>
+</body>
+</html>
