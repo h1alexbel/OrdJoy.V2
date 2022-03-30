@@ -8,8 +8,8 @@ import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.entity.track.Track_;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.entity.user.User_;
-import com.ordjoy.model.log.LoggingUtils;
 import com.ordjoy.model.repository.AbstractGenericCRUDRepository;
+import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -27,37 +27,22 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
         implements OrderRepository {
 
     @Override
-    public void updateStatus(OrderStatus status, Long id) {
-        Session session = sessionFactory.getCurrentSession();
-        session.createQuery("update UserTrackOrder o set o.status = :status" +
-                            " where o.id = :orderId")
-                .setParameter("orderId", id)
-                .setParameter("status", status)
-                .executeUpdate();
-        log.debug(LoggingUtils.ORDER_STATUS_WAS_UPDATED, status, id);
-    }
-
-    @Override
-    public void updatePrice(BigDecimal price, Long id) {
-        Session session = sessionFactory.getCurrentSession();
-        session.createQuery("update UserTrackOrder o set o.price = :price" +
-                            " where o.id = :orderId")
-                .setParameter("price", price)
-                .setParameter("orderId", id)
-                .executeUpdate();
-        log.debug(LoggingUtils.ORDER_PRICE_WAS_UPDATED, price, id);
-    }
-
-    @Override
     public void subtractBalance(BigDecimal orderCost, Long userId) {
         Session session = sessionFactory.getCurrentSession();
-        session.createQuery("update User u " +
-                            "set u.userData.accountBalance = u.userData.accountBalance - :cost" +
-                            " where u.id = :userId")
-                .setParameter("cost", orderCost)
-                .setParameter("userId", userId)
-                .executeUpdate();
-        log.debug(LoggingUtils.USER_BALANCE_WAS_SUBTRACTED, orderCost, userId);
+        User user = session.get(User.class, userId);
+        user.getUserData().setAccountBalance(user.getUserData().getAccountBalance()
+                .subtract(orderCost));
+        session.update(user);
+        log.debug(LoggingUtils.USER_BALANCE_WAS_SUBTRACTED_REPO, orderCost, userId);
+    }
+
+    @Override
+    public void updateOrderStatus(OrderStatus orderStatus, Long id) {
+        Session session = sessionFactory.getCurrentSession();
+        UserTrackOrder userTrackOrder = session.get(UserTrackOrder.class, id);
+        userTrackOrder.setStatus(orderStatus);
+        session.update(userTrackOrder);
+        log.debug(LoggingUtils.ORDER_STATUS_WAS_UPDATED_REPO, orderStatus, id);
     }
 
     @Override

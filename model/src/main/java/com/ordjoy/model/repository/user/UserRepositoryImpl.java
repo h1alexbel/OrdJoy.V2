@@ -1,8 +1,8 @@
 package com.ordjoy.model.repository.user;
 
 import com.ordjoy.model.entity.user.User;
-import com.ordjoy.model.log.LoggingUtils;
 import com.ordjoy.model.repository.AbstractGenericCRUDRepository;
+import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -18,25 +18,20 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
     @Override
     public void updateDiscountLevel(Integer newDiscountLevelToSet, Long userId) {
         Session session = sessionFactory.getCurrentSession();
-        session.createQuery("update User u" +
-                            " set u.userData.discountPercentageLevel = :discountPercentageLevel" +
-                            " where u.id = :userId")
-                .setParameter("discountPercentageLevel", newDiscountLevelToSet)
-                .setParameter("userId", userId)
-                .executeUpdate();
-        log.debug(LoggingUtils.USER_DISCOUNT_PERCENTAGE_LEVEL_WAS_UPDATED, newDiscountLevelToSet);
+        User user = session.get(User.class, userId);
+        user.getUserData().setDiscountPercentageLevel(newDiscountLevelToSet);
+        session.update(user);
+        log.debug(LoggingUtils.USER_DISCOUNT_PERCENTAGE_LEVEL_WAS_UPDATED_REPO, newDiscountLevelToSet);
     }
 
     @Override
     public void updateBalanceAmount(BigDecimal balanceToAdd, Long userId) {
         Session session = sessionFactory.getCurrentSession();
-        session.createQuery("update User u " +
-                            "set u.userData.accountBalance = u.userData.accountBalance + :amount" +
-                            " where u.id = :userId")
-                .setParameter("amount", balanceToAdd)
-                .setParameter("userId", userId)
-                .executeUpdate();
-        log.debug(LoggingUtils.USER_ACCOUNT_BALANCE_WAS_UPDATED, balanceToAdd);
+        User user = session.get(User.class, userId);
+        user.getUserData().setAccountBalance(user.getUserData().getAccountBalance()
+                .add(balanceToAdd));
+        session.update(user);
+        log.debug(LoggingUtils.USER_ACCOUNT_BALANCE_WAS_UPDATED_REPO, balanceToAdd);
     }
 
     @Override
@@ -75,7 +70,7 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
                 .getResultList()
                 .stream()
                 .findFirst();
-        log.debug(LoggingUtils.USER_WAS_FOUND_BY_LOGIN_AND_PASSWORD, user);
+        log.debug(LoggingUtils.USER_WAS_FOUND_BY_LOGIN_AND_PASSWORD_REPO, user);
         return user;
     }
 }
