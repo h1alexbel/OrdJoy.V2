@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+
+<div th:replace="~{fragments/adminHeader.html}"></div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">
+            Id
+        </th>
+        <th scope="col">
+            Login
+        </th>
+        <th scope="col">
+            Email
+        </th>
+        <th scope="col">
+            Role
+        </th>
+        <th scope="col">
+            Birthdate
+        </th>
+        <th scope="col">
+            Discount level
+        </th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">User id</td>
+        <td th:text="${user.login}">User login</td>
+        <td th:text="${user.email}">User email</td>
+        <td th:text="${#strings.capitalize(user.role.toString().toLowerCase())}">User role</td>
+        <td th:text="${user.personalInfo.birthDate}">User birthDate</td>
+        <td th:text="${user.personalInfo.discountPercentageLevel}">User discount level</td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-danger">
+            Delete user
+        </a></td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-warning">
+            Edit user
+        </a></td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-warning">
+            Edit DPL
+        </a></td>
+    </tr>
+    </thead>
+</table>
+<div th:replace="~{fragments/footer.html}"></div>
+</body>
+</html>

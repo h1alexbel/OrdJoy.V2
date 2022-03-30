@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+
+<div th:replace="~{fragments/adminHeader.html}"></div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">
+            Id
+        </th>
+        <th scope="col">
+            Price
+        </th>
+        <th scope="col">
+            Status
+        </th>
+        <th scope="col">
+            User
+        </th>
+        <th scope="col">
+            Track
+        </th>
+    </tr>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}">Order id</td>
+        <td th:text="${order.price}">Order price</td>
+        <td th:text="${#strings.capitalize(order.status.toString().toLowerCase())}">Order status</td>
+        <td th:text="${order.user.login}">User login</td>
+        <td th:text="${order.track.title}">Track title</td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-danger">
+            Decline order
+        </a></td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-warning">
+            Run order
+        </a></td>
+        <td><a th:href="@{/}" role="button"
+               class="btn btn-success">
+            Complete order
+        </a></td>
+    </tr>
+    </thead>
+</table>
+<div th:replace="~{fragments/footer.html}"></div>
+</body>
+</html>
