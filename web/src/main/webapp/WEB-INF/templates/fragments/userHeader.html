@@ -51,6 +51,11 @@
                         Make order
                     </a>
 
+                    <a th:href="@{/account/info/depositForm}"
+                       class="btn btn-outline-success" role="button">
+                        Update your balance
+                    </a>
+
                     <div class="text-xxl-center">
                         <form method="post" th:action="@{/account/logout}" th:method="post" th:value="Logout"
                               enctype="application/x-www-form-urlencoded">
