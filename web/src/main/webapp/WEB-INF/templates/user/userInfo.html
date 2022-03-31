@@ -33,8 +33,7 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">
-                    Your Login:
+                <h6 class="mb-0" th:text="#{user.info.login}">
                 </h6>
                 <p class="mb-0 opacity-75" th:text="${session.sessionUser.login}">user login</p>
             </div>
@@ -43,8 +42,7 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">
-                    Your Email:
+                <h6 class="mb-0" th:text="#{user.info.email}">
                 </h6>
                 <p class="mb-0 opacity-75" th:text="${session.sessionUser.email}">user email</p>
             </div>
@@ -53,8 +51,7 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">
-                    Your Birthdate:
+                <h6 class="mb-0" th:text="#{user.info.birthdate}">
                 </h6>
                 <p class="mb-0 opacity-75" th:text="${session.sessionUser.personalInfo.birthDate}">
                     user birthDate</p>
@@ -64,10 +61,10 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">
-                    Your current balance:
+                <h6 class="mb-0" th:text="#{user.info.balance}">
                 </h6>
-                <p class="mb-0 opacity-75" th:text="${session.sessionUser.personalInfo.accountBalance}">
+                <p class="mb-0 opacity-75"
+                   th:text="${session.sessionUser.personalInfo.accountBalance} + #{user.balance.sign}">
                     user balance</p>
             </div>
         </div>
@@ -75,11 +72,11 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">
-                    Your Discount percentage level:
+                <h6 class="mb-0" th:text="#{user.info.discountPercentageLevel}">
                 </h6>
                 <p class="mb-0 opacity-75"
-                   th:text="${session.sessionUser.personalInfo.discountPercentageLevel} + '%'">
+                   th:text="${session.sessionUser.personalInfo.discountPercentageLevel} +
+                   #{user.info.discount.sign}">
                     user discount level
                 </p>
             </div>
@@ -88,8 +85,7 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">
-                    Your Firstname:
+                <h6 class="mb-0" th:text="#{user.info.firstName}">
                 </h6>
                 <p class="mb-0 opacity-75" th:text="${session.sessionUser.personalInfo.firstName}">
                     user firstname
@@ -100,8 +96,7 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">
-                    Your Lastname:
+                <h6 class="mb-0" th:text="#{user.info.lastName}">
                 </h6>
                 <p class="mb-0 opacity-75" th:text="${session.sessionUser.personalInfo.lastName}">
                     user lastname
@@ -112,8 +107,7 @@
 
     <a th:href="@{/account/info/setOptionalInfo}"
        class="btn btn-outline-success me-2"
-       role="button">
-        Set optional info
+       role="button" th:text="#{setOptionalInfo}">
     </a>
 </div>
 <div th:replace="~{fragments/footer.html}"></div>

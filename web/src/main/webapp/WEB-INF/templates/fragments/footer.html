@@ -11,17 +11,14 @@
     <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
             <li class="nav-item"><a th:href="@{/account/info}"
-                                    class="nav-link px-2 text-muted">
-                Account info
+                                    class="nav-link px-2 text-muted" th:text="#{user.accountInfo}">
             </a></li>
             <li class="nav-item"><a
                     href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSDbSGrCJdjncNKblNWgNZvwDGdWdCrPpbCskHdlbCKTfmSPqXJnMZkJSjmLlsnzWRtRsljq"
-                    class="nav-link px-2 text-muted">
-                Bug report
+                    class="nav-link px-2 text-muted" th:text="#{user.bugReport}">
             </a></li>
             <li class="nav-item"><a href="https://github.com/h1alexbel/OrdJoy.V2"
-                                    class="nav-link px-2 text-muted">
-                GitHub
+                                    class="nav-link px-2 text-muted" th:text="#{user.gitHub}">
             </a></li>
         </ul>
         <p class="text-center text-muted">&copy; 2022 OrdJoy, Inc</p>

@@ -9,29 +9,29 @@
 <body>
 <div th:replace="~{fragments/locale::locale}"></div>
 <div class="center">
-    <h1> Login in to OrdJoy
+    <h1 th:text="#{login.message}">
     </h1>
     <form th:method="post" th:action="@{/account/login}"
           enctype="application/x-www-form-urlencoded">
         <div class="txt_field">
             <input name="login" type="text" required pattern="^[A-Za-zА-Яа-я1-9]{3,20}$">
             <span></span>
-            <label>
-                Username
+            <label th:text="#{login.username}">
             </label>
         </div>
         <div class="txt_field">
             <input name="password" type="password" required pattern="^\w{2,64}$">
             <span></span>
-            <label>
-                Password
+            <label th:text="#{login.password}">
             </label>
         </div>
         <input type="submit" value="Login">
         <div class="signup_link">
-            Not member?
+            <span th:text="#{login.notAMember}">
+            </span>
             <a th:href="@{/account/register}">
-                Register
+                <span th:text="#{login.register}">
+                </span>
             </a>
         </div>
     </form>

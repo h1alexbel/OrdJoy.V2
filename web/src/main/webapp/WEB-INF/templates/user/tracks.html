@@ -19,14 +19,11 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">
-            Track title
+        <th scope="col" th:text="#{track.title}">
         </th>
-        <th scope="col">
-            Track Url
+        <th scope="col" th:text="#{track.url}">
         </th>
-        <th scope="col">
-            Album
+        <th scope="col" th:text="#{review.album}">
         </th>
     </tr>
     <tr th:each="track : ${tracks}">
@@ -34,16 +31,13 @@
         <td th:text="${track.url}">Track Url</td>
         <td th:text="${track.album.title}">Album</td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-danger">
-            Delete Track
+               class="btn btn-danger" th:text="#{track.delete}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-warning">
-            Edit Track
+               class="btn btn-warning" th:text="#{track.edit}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-success">
-            Add Review
+               class="btn btn-success" th:text="#{addReview}">
         </a></td>
     </tr>
     </thead>

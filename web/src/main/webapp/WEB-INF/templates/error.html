@@ -21,7 +21,7 @@
          th:src="@{/resources/img/error.png}" alt="" width="450"
          height="350">
     <h1 class="display-6 fw-normal">
-            <span th:text="'Oops, something went wrong due to following reason: ' + ${exceptionMessage}">
+            <span th:text="#{error.text} + ${exceptionMessage}">
                 Error text
             </span>
     </h1>

@@ -19,27 +19,22 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">
-            Mix title
+        <th scope="col" th:text="#{mix.title}">
         </th>
-        <th scope="col">
-            Mix Description
+        <th scope="col" th:text="#{mix.description}">
         </th>
     </tr>
     <tr th:each="mix : ${mixes}">
         <td th:text="${mix.title}">Mix title</td>
         <td th:text="${mix.description}">Mix Description</td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-danger">
-            Delete Mix
+               class="btn btn-danger" th:text="#{mix.delete}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-warning">
-            Edit Mix
+               class="btn btn-warning" th:text="#{mix.edit}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-success">
-            Add Review
+               class="btn btn-success" th:text="#{addReview}">
         </a></td>
     </tr>
     </thead>

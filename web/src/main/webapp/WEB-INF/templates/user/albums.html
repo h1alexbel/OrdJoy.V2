@@ -19,8 +19,7 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">
-            Album title
+        <th scope="col" th:text="#{album.title}">
         </th>
     </tr>
     <tr th:each="album : ${albums}">
@@ -28,16 +27,13 @@
             Album title
         </td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-danger">
-            Delete Album
+               class="btn btn-danger" th:text="#{album.delete}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-warning">
-            Edit Album
+               class="btn btn-warning" th:text="#{album.edit}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-success">
-            Add Review
+               class="btn btn-success" th:text="#{addReview}">
         </a></td>
     </tr>
     </thead>

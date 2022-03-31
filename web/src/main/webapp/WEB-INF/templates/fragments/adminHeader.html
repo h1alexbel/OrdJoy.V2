@@ -23,45 +23,39 @@
                 </div>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a th:href="@{/order/admin/all?limit=20&offset=0}"
-                           class="nav-link px-2 text-white">
-                        Orders
+                           class="nav-link px-2 text-white" th:text="#{admin.orders}">
                     </a></li>
                     <li><a th:href="@{/account/admin/all?limit=20&offset=0}"
-                           class="nav-link px-2 text-white">
-                        Customers
+                           class="nav-link px-2 text-white" th:text="#{admin.customers}">
                     </a>
                     </li>
                 </ul>
                 <div class="text-end">
                     <a th:href="@{/account/admin/addAdmin}"
-                       class="btn btn-warning" role="button">
-                        Add new Admin
+                       class="btn btn-warning" role="button" th:text="#{admin.addNewAdmin}">
                     </a>
 
                     <a th:href="@{/track/addTrackToMix}"
-                       class="btn btn btn-primary" role="button">
-                        Add Track to Mix
+                       class="btn btn btn-primary" role="button" th:text="#{admin.addTrackToMix}">
                     </a>
 
                     <a th:href="@{/track/addTrack}"
-                       class="btn btn btn-primary" role="button">
-                        Add Track
+                       class="btn btn btn-primary" role="button" th:text="#{admin.addTrack}">
                     </a>
 
                     <a th:href="@{/mix/addMix}"
-                       class="btn btn btn-primary" role="button">
-                        Add Mix
+                       class="btn btn btn-primary" role="button" th:text="#{admin.addMix}">
                     </a>
 
                     <a th:href="@{/album/addAlbum}"
-                       class="btn btn btn-primary" role="button">
-                        Add Album
+                       class="btn btn btn-primary" role="button" th:text="#{admin.addAlbum}">
                     </a>
 
                     <div class="text-xxl-center">
-                        <form method="post" th:action="@{/account/logout}" th:method="post" th:value="Logout"
+                        <form method="post" th:action="@{/account/logout}" th:method="post"
+                              th:value="#{logout}"
                               enctype="application/x-www-form-urlencoded">
-                            <input type="submit" class="btn btn-info" value="Logout">
+                            <input type="submit" class="btn btn-info" th:value="#{logout}">
                         </form>
                     </div>
                 </div>

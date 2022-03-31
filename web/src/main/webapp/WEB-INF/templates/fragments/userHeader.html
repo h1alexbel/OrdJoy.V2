@@ -23,43 +23,38 @@
                 </div>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a th:href="@{/album/all?limit=20&offset=0}"
-                           class="nav-link px-2 text-white">
-                        Albums
+                           class="nav-link px-2 text-white" th:text="#{user.albums}">
                     </a></li>
                     <li><a th:href="@{/track/all?limit=20&offset=0}"
-                           class="nav-link px-2 text-white">
-                        Tracks
+                           class="nav-link px-2 text-white" th:text="#{user.tracks}">
                     </a>
                     </li>
                     <li><a th:href="@{/mix/all?limit=20&offset=0}"
-                           class="nav-link px-2 text-white">
-                        Mixes
+                           class="nav-link px-2 text-white" th:text="#{user.mixes}">
                     </a>
                     </li>
-                    <li><a href="https://github.com/h1alexbel/OrdJoy.V2" class="nav-link px-2 text-white">
-                        GitHub
+                    <li><a href="https://github.com/h1alexbel/OrdJoy.V2" class="nav-link px-2 text-white"
+                           th:text="#{user.gitHub}">
                     </a></li>
                 </ul>
                 <div class="text-end">
                     <a th:href="@{/account/info}"
                        class="btn btn-outline-light me-2"
-                       role="button">
-                        Account info
+                       role="button" th:text="#{user.accountInfo}">
                     </a>
                     <a th:href="@{/order/makeOrder}"
-                       class="btn btn-outline-primary" role="button">
-                        Make order
+                       class="btn btn-outline-primary" role="button" th:text="#{user.makeOrder}">
                     </a>
 
                     <a th:href="@{/account/info/depositForm}"
-                       class="btn btn-outline-success" role="button">
-                        Update your balance
+                       class="btn btn-outline-success" role="button" th:text="#{user.updateBalance}">
                     </a>
 
                     <div class="text-xxl-center">
-                        <form method="post" th:action="@{/account/logout}" th:method="post" th:value="Logout"
+                        <form method="post" th:action="@{/account/logout}" th:method="post"
+                              th:value="#{logout}"
                               enctype="application/x-www-form-urlencoded">
-                            <input type="submit" class="btn btn-info" value="Logout">
+                            <input type="submit" class="btn btn-info" th:value="#{logout}">
                         </form>
                     </div>
                 </div>

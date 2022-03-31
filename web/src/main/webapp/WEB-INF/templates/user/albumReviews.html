@@ -11,14 +11,11 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">
-            Album title
+        <th scope="col" th:text="#{review.album}">
         </th>
-        <th scope="col">
-            Review text
+        <th scope="col" th:text="#{review.album.text}">
         </th>
-        <th scope="col">
-            User login
+        <th scope="col" th:text="#{review.user}">
         </th>
     </tr>
     <tr th:each="albumReview : ${albumReviews}">
@@ -32,8 +29,7 @@
             User login
         </td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-danger">
-            Delete Review
+               class="btn btn-danger" th:text="#{review.delete}">
         </a></td>
     </tr>
     </thead>
