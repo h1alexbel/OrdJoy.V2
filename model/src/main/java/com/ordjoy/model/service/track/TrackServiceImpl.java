@@ -5,10 +5,14 @@ import com.ordjoy.model.dto.MixDto;
 import com.ordjoy.model.dto.TrackDto;
 import com.ordjoy.model.dto.TrackReviewDto;
 import com.ordjoy.model.dto.UserDto;
+import com.ordjoy.model.entity.order.UserTrackOrder;
+import com.ordjoy.model.entity.review.TrackReview;
 import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Mix;
 import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.repository.mix.MixRepository;
+import com.ordjoy.model.repository.order.OrderRepository;
+import com.ordjoy.model.repository.review.TrackReviewRepository;
 import com.ordjoy.model.repository.track.TrackRepository;
 import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -28,11 +33,18 @@ public class TrackServiceImpl implements TrackService {
 
     private final TrackRepository trackRepository;
     private final MixRepository mixRepository;
+    private final TrackReviewRepository trackReviewRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public TrackServiceImpl(TrackRepository trackRepository, MixRepository mixRepository) {
+    public TrackServiceImpl(TrackRepository trackRepository,
+                            MixRepository mixRepository,
+                            TrackReviewRepository trackReviewRepository,
+                            OrderRepository orderRepository) {
         this.trackRepository = trackRepository;
         this.mixRepository = mixRepository;
+        this.trackReviewRepository = trackReviewRepository;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -59,6 +71,8 @@ public class TrackServiceImpl implements TrackService {
                 .album(Album.builder()
                         .title(trackDto.getTitle())
                         .build())
+                .trackReviews(new ArrayList<>())
+                .mixes(new ArrayList<>())
                 .build();
         trackToSave.getAlbum().setId(trackDto.getAlbum().getId());
         Track savedTrack = trackRepository.add(trackToSave);
@@ -71,6 +85,8 @@ public class TrackServiceImpl implements TrackService {
                         .id(savedTrack.getId())
                         .title(savedTrack.getTitle())
                         .build())
+                .mixes(new ArrayList<>())
+                .trackReviews(new ArrayList<>())
                 .build();
     }
 
@@ -199,6 +215,14 @@ public class TrackServiceImpl implements TrackService {
         if (trackId != null) {
             Optional<Track> maybeTrack = trackRepository.findById(trackId);
             maybeTrack.ifPresent(track -> {
+                List<TrackReview> trackReviews = trackRepository.findTrackReviewsByTrackId(trackId);
+                for (TrackReview trackReview : trackReviews) {
+                    trackReviewRepository.delete(trackReview);
+                }
+                List<UserTrackOrder> orders = orderRepository.findOrdersByTrackId(trackId);
+                for (UserTrackOrder order : orders) {
+                    orderRepository.delete(order);
+                }
                 trackRepository.delete(track);
                 log.debug(LoggingUtils.TRACK_WAS_DELETE_SERVICE, track);
             });
