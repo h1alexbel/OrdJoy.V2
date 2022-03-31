@@ -19,7 +19,7 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">User's id:</h6>
+                <h6 class="mb-0" th:text="#{user.profile.id}"></h6>
                 <p class="mb-0 opacity-75" th:text="${requestUser.id}">user id</p>
             </div>
         </div>
@@ -27,7 +27,7 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">User's login:</h6>
+                <h6 class="mb-0" th:text="#{user.profile.username}"></h6>
                 <p class="mb-0 opacity-75" th:text="${requestUser.login}">user login</p>
             </div>
         </div>
@@ -35,8 +35,7 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">
-                    User's email:
+                <h6 class="mb-0" th:text="#{user.profile.email}">
                 </h6>
                 <p class="mb-0 opacity-75" th:text="${requestUser.email}">user email</p>
             </div>
@@ -45,22 +44,21 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
-                <h6 class="mb-0">
-                    User's role:
+                <h6 class="mb-0" th:text="#{user.profile.role}">
                 </h6>
                 <p class="mb-0 opacity-75" th:text="${#strings.capitalize(requestUser.role.name().toLowerCase())}">
                     user role</p>
             </div>
         </div>
     </a>
-    <a th:href="@{/review/track/user/(username = ${requestUser.login})}" class="btn btn-outline-success">
-        Track Reviews
+    <a th:href="@{/review/track/user/(username = ${requestUser.login})}" class="btn btn-outline-success"
+       th:text="#{user.profile.trackReviews}">
     </a>
-    <a th:href="@{/review/mix/user/(username = ${requestUser.login})}" class="btn btn-outline-success">
-        Mix Reviews
+    <a th:href="@{/review/mix/user/(username = ${requestUser.login})}" class="btn btn-outline-success"
+       th:text="#{user.profile.mixReviews}">
     </a>
-    <a th:href="@{/review/album/user/(username = ${requestUser.login})}" class="btn btn-outline-success">
-        Album Reviews
+    <a th:href="@{/review/album/user/(username = ${requestUser.login})}" class="btn btn-outline-success"
+       th:text="#{user.profile.albumReviews}">
     </a>
 </div>
 <div th:replace="~{fragments/footer.html}"></div>
