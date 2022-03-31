@@ -11,9 +11,8 @@ import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.entity.user.UserData;
-import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.order.OrderRepository;
-import com.ordjoy.model.repository.user.UserRepository;
+import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,12 +31,10 @@ public class OrderServiceImpl implements OrderService {
     private static final Integer STANDART_DISCOUNT_PERCENTAGE_LEVEL = 0;
     private static final int PERCENTAGE_AMOUNT = 100;
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -50,6 +47,16 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public UserTrackOrderDto makeOrder(UserTrackOrderDto orderDto) {
+        User user = User.builder()
+                .login(orderDto.getUser().getLogin())
+                .email(orderDto.getUser().getEmail())
+                .userData(UserData.builder()
+                        .accountBalance(orderDto.getUser().getPersonalInfo()
+                                .getAccountBalance())
+                        .discountPercentageLevel(orderDto.getUser().getPersonalInfo()
+                                .getDiscountPercentageLevel())
+                        .build())
+                .build();
         UserTrackOrder orderToSave = UserTrackOrder.builder()
                 .price(orderDto.getPrice())
                 .status(OrderStatus.ACCEPTED)
@@ -60,20 +67,12 @@ public class OrderServiceImpl implements OrderService {
                                 .title(orderDto.getTrack().getAlbum().getTitle())
                                 .build())
                         .build())
-                .user(User.builder()
-                        .login(orderDto.getUser().getLogin())
-                        .email(orderDto.getUser().getEmail())
-                        .userData(UserData.builder()
-                                .accountBalance(orderDto.getUser().getPersonalInfo()
-                                        .getAccountBalance())
-                                .discountPercentageLevel(orderDto.getUser().getPersonalInfo()
-                                        .getDiscountPercentageLevel())
-                                .build())
-                        .build())
+                .user(user)
                 .build();
         orderToSave.getTrack().getAlbum().setId(orderDto.getTrack().getAlbum().getId());
         orderToSave.getTrack().setId(orderDto.getTrack().getId());
         orderToSave.getUser().setId(orderDto.getUser().getId());
+        user.addOrderToUser(orderToSave);
         UserTrackOrder savedOrder = orderRepository.add(orderToSave);
         log.debug(LoggingUtils.ORDER_WAS_CREATED_SERVICE, savedOrder);
         return mapOrderToDto(savedOrder);
@@ -97,18 +96,6 @@ public class OrderServiceImpl implements OrderService {
             maybeOrder.ifPresent(order -> {
                 orderRepository.update(order);
                 log.debug(LoggingUtils.ORDER_WAS_UPDATED_SERVICE, order);
-            });
-        }
-    }
-
-    @Transactional
-    @Override
-    public void subtractBalanceFromUser(BigDecimal orderCost, Long userId) {
-        if (orderCost != null && userId != null) {
-            Optional<User> maybeUser = userRepository.findById(userId);
-            maybeUser.ifPresent(user -> {
-                orderRepository.subtractBalance(orderCost, user.getId());
-                log.debug(LoggingUtils.USER_BALANCE_WAS_SUBTRACTED_SERVICE, orderCost, user);
             });
         }
     }
@@ -230,6 +217,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private UserTrackOrderDto mapOrderToDto(UserTrackOrder order) {
+        UserDto user = UserDto.builder()
+                .id(order.getUser().getId())
+                .login(order.getUser().getLogin())
+                .email(order.getUser().getEmail())
+                .personalInfo(UserPersonalInfo.builder()
+                        .accountBalance(order.getUser().getUserData()
+                                .getAccountBalance())
+                        .discountPercentageLevel(order.getUser().getUserData()
+                                .getDiscountPercentageLevel())
+                        .build())
+                .build();
+        order.getUser().addOrderToUser(order);
         return UserTrackOrderDto.builder()
                 .id(order.getId())
                 .price(order.getPrice())
@@ -243,17 +242,7 @@ public class OrderServiceImpl implements OrderService {
                                 .title(order.getTrack().getAlbum().getTitle())
                                 .build())
                         .build())
-                .user(UserDto.builder()
-                        .id(order.getUser().getId())
-                        .login(order.getUser().getLogin())
-                        .email(order.getUser().getEmail())
-                        .personalInfo(UserPersonalInfo.builder()
-                                .accountBalance(order.getUser().getUserData()
-                                        .getAccountBalance())
-                                .discountPercentageLevel(order.getUser().getUserData()
-                                        .getDiscountPercentageLevel())
-                                .build())
-                        .build())
+                .user(user)
                 .build();
     }
 }

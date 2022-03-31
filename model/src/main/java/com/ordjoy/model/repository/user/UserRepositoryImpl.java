@@ -16,6 +16,16 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
         implements UserRepository {
 
     @Override
+    public void subtractBalance(BigDecimal orderCost, Long userId) {
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.get(User.class, userId);
+        user.getUserData().setAccountBalance(user.getUserData().getAccountBalance()
+                .subtract(orderCost));
+        session.update(user);
+        log.debug(LoggingUtils.USER_BALANCE_WAS_SUBTRACTED_REPO, orderCost, userId);
+    }
+
+    @Override
     public void updateDiscountLevel(Integer newDiscountLevelToSet, Long userId) {
         Session session = sessionFactory.getCurrentSession();
         User user = session.get(User.class, userId);
