@@ -2,13 +2,23 @@ package com.ordjoy.model.service.user;
 
 import com.ordjoy.model.dto.UserDto;
 import com.ordjoy.model.dto.UserPersonalInfo;
+import com.ordjoy.model.entity.order.UserTrackOrder;
+import com.ordjoy.model.entity.review.AlbumReview;
+import com.ordjoy.model.entity.review.MixReview;
+import com.ordjoy.model.entity.review.TrackReview;
 import com.ordjoy.model.entity.user.Role;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.entity.user.UserData;
-import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.repository.order.OrderRepository;
+import com.ordjoy.model.repository.review.AlbumReviewRepository;
+import com.ordjoy.model.repository.review.MixReviewRepository;
+import com.ordjoy.model.repository.review.TrackReviewRepository;
 import com.ordjoy.model.repository.user.UserRepository;
+import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,27 +28,56 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 @Slf4j
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
+    private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
+    private final AlbumReviewRepository albumReviewRepository;
+    private final MixReviewRepository mixReviewRepository;
+    private final TrackReviewRepository trackReviewRepository;
     private static final int STARTER_DISCOUNT_PERCENTAGE_LEVEL = 0;
     private static final int ADMIN_DISCOUNT_PERCENTAGE_LEVEL = 0;
     private static final BigDecimal ADMIN_BALANCE = new BigDecimal(0);
     private static final BigDecimal STARTER_ACCOUNT_BALANCE = new BigDecimal(0);
-    private final UserRepository userRepository;
+    private static final String USER_NOT_FOUND_MESSAGE = "Can't find username with login:";
     private static final Integer MIN_AGE_TO_REGISTER = 13;
+    private final Function<User, UserDetails> userToUserDetails = user ->
+            org.springframework.security.core.userdetails.User
+                    .builder()
+                    .username(user.getLogin())
+                    .password(user.getPassword())
+                    .authorities(user.getRole().name())
+                    .build();
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           OrderRepository orderRepository,
+                           TrackReviewRepository trackReviewRepository,
+                           AlbumReviewRepository albumReviewRepository,
+                           MixReviewRepository mixReviewRepository) {
         this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
+        this.albumReviewRepository = albumReviewRepository;
+        this.mixReviewRepository = mixReviewRepository;
+        this.trackReviewRepository = trackReviewRepository;
     }
 
     @Override
-    public List<UserDto> listUsers() {
-        return userRepository.findAll().stream()
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> maybeUser = userRepository.findByLogin(username);
+        return maybeUser.map(userToUserDetails)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(USER_NOT_FOUND_MESSAGE + username));
+    }
+
+    @Override
+    public List<UserDto> listUsers(int limit, int offset) {
+        return userRepository.findAll(limit, offset).stream()
                 .map(user -> UserDto.builder()
                         .id(user.getId())
                         .login(user.getLogin())
@@ -47,6 +86,7 @@ public class UserServiceImpl implements UserService {
                         .personalInfo(UserPersonalInfo.builder()
                                 .discountPercentageLevel(user.getUserData()
                                         .getDiscountPercentageLevel())
+                                .birthDate(user.getUserData().getBirthDate())
                                 .build())
                         .build())
                 .toList();
@@ -62,8 +102,8 @@ public class UserServiceImpl implements UserService {
                 .role(Role.USER)
                 .userData(UserData.builder()
                         .birthDate(userDto.getPersonalInfo().getBirthDate())
-                        .discountPercentageLevel(ADMIN_DISCOUNT_PERCENTAGE_LEVEL)
-                        .accountBalance(ADMIN_BALANCE)
+                        .discountPercentageLevel(STARTER_DISCOUNT_PERCENTAGE_LEVEL)
+                        .accountBalance(STARTER_ACCOUNT_BALANCE)
                         .build())
                 .build();
         setOptionalInfoToUserEntity(userDto, user);
@@ -95,8 +135,8 @@ public class UserServiceImpl implements UserService {
                 .role(Role.ADMIN)
                 .userData(UserData.builder()
                         .birthDate(adminDto.getPersonalInfo().getBirthDate())
-                        .discountPercentageLevel(STARTER_DISCOUNT_PERCENTAGE_LEVEL)
-                        .accountBalance(STARTER_ACCOUNT_BALANCE)
+                        .discountPercentageLevel(ADMIN_DISCOUNT_PERCENTAGE_LEVEL)
+                        .accountBalance(ADMIN_BALANCE)
                         .build())
                 .build();
         setOptionalInfoToUserEntity(adminDto, admin);
@@ -208,6 +248,7 @@ public class UserServiceImpl implements UserService {
                             .personalInfo(UserPersonalInfo.builder()
                                     .discountPercentageLevel(user.getUserData()
                                             .getDiscountPercentageLevel())
+                                    .accountBalance(user.getUserData().getAccountBalance())
                                     .build())
                             .build())
                     .findFirst();
@@ -223,11 +264,12 @@ public class UserServiceImpl implements UserService {
                             .id(user.getId())
                             .login(user.getLogin())
                             .email(user.getEmail())
+                            .role(user.getRole())
                             .personalInfo(UserPersonalInfo.builder()
                                     .discountPercentageLevel(user.getUserData()
                                             .getDiscountPercentageLevel())
+                                    .accountBalance(user.getUserData().getAccountBalance())
                                     .build())
-                            .role(user.getRole())
                             .build())
                     .findFirst();
         }
@@ -278,6 +320,22 @@ public class UserServiceImpl implements UserService {
         if (userId != null) {
             Optional<User> maybeUser = userRepository.findById(userId);
             maybeUser.ifPresent(user -> {
+                List<UserTrackOrder> ordersByUserId = orderRepository.findOrdersByUserId(userId);
+                for (UserTrackOrder userTrackOrder : ordersByUserId) {
+                    orderRepository.delete(userTrackOrder);
+                }
+                List<AlbumReview> albumReviews = albumReviewRepository.findAlbumReviewsByUserId(userId);
+                for (AlbumReview albumReview : albumReviews) {
+                    albumReviewRepository.delete(albumReview);
+                }
+                List<MixReview> mixReviews = mixReviewRepository.findMixReviewsByUserId(userId);
+                for (MixReview mixReview : mixReviews) {
+                    mixReviewRepository.delete(mixReview);
+                }
+                List<TrackReview> trackReviews = trackReviewRepository.findTrackReviewsByUserId(userId);
+                for (TrackReview trackReview : trackReviews) {
+                    trackReviewRepository.delete(trackReview);
+                }
                 userRepository.delete(user);
                 log.debug(LoggingUtils.USER_WAS_DELETED_SERVICE, user);
             });
@@ -295,6 +353,9 @@ public class UserServiceImpl implements UserService {
         if (user.getUserData().getLastName() != null) {
             userDto.getPersonalInfo().setLastName(user.getUserData().getLastName());
         }
+        if (user.getUserData().getCardNumber() != null) {
+            userDto.getPersonalInfo().setCardNumber(user.getUserData().getCardNumber());
+        }
     }
 
     private void setOptionalInfoToUserEntity(UserDto userDto, User user) {
@@ -303,6 +364,9 @@ public class UserServiceImpl implements UserService {
         }
         if (userDto.getPersonalInfo().getLastName() != null) {
             user.getUserData().setLastName(userDto.getPersonalInfo().getLastName());
+        }
+        if (userDto.getPersonalInfo().getCardNumber() != null) {
+            user.getUserData().setCardNumber(userDto.getPersonalInfo().getCardNumber());
         }
     }
 }
