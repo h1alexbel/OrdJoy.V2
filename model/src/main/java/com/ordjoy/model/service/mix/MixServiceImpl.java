@@ -5,14 +5,17 @@ import com.ordjoy.model.dto.MixDto;
 import com.ordjoy.model.dto.MixReviewDto;
 import com.ordjoy.model.dto.TrackDto;
 import com.ordjoy.model.dto.UserDto;
+import com.ordjoy.model.entity.review.MixReview;
 import com.ordjoy.model.entity.track.Mix;
-import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.mix.MixRepository;
+import com.ordjoy.model.repository.review.MixReviewRepository;
+import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -24,10 +27,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MixServiceImpl implements MixService {
 
     private final MixRepository mixRepository;
+    private final MixReviewRepository mixReviewRepository;
 
     @Autowired
-    public MixServiceImpl(MixRepository mixRepository) {
+    public MixServiceImpl(MixRepository mixRepository, MixReviewRepository mixReviewRepository) {
         this.mixRepository = mixRepository;
+        this.mixReviewRepository = mixReviewRepository;
     }
 
     @Override
@@ -47,6 +52,8 @@ public class MixServiceImpl implements MixService {
         Mix mix = Mix.builder()
                 .title(mixDto.getTitle())
                 .description(mixDto.getDescription())
+                .mixReviews(new ArrayList<>())
+                .tracks(new ArrayList<>())
                 .build();
         Mix saved = mixRepository.add(mix);
         log.debug(LoggingUtils.MIX_WAS_SAVED_SERVICE, saved);
@@ -54,6 +61,8 @@ public class MixServiceImpl implements MixService {
                 .id(saved.getId())
                 .title(saved.getTitle())
                 .description(saved.getDescription())
+                .tracks(new ArrayList<>())
+                .mixReviews(new ArrayList<>())
                 .build();
     }
 
@@ -176,6 +185,10 @@ public class MixServiceImpl implements MixService {
         if (mixId != null) {
             Optional<Mix> maybeMix = mixRepository.findById(mixId);
             maybeMix.ifPresent(mix -> {
+                List<MixReview> mixReviews = mixRepository.findMixReviewsByMixId(mixId);
+                for (MixReview mixReview : mixReviews) {
+                    mixReviewRepository.delete(mixReview);
+                }
                 mixRepository.delete(mix);
                 log.debug(LoggingUtils.MIX_WAS_DELETE_SERVICE, mix);
             });
