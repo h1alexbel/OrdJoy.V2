@@ -48,73 +48,65 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page"
                            th:href="@{/account/adminMain}">
-                            <span data-feather="home"></span>
-                            Home
+                            <span data-feather="home" th:text="#{metrics.home}">
+                            </span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/order/admin/all?limit=20&offset=0}">
-                            <span data-feather="shopping-cart"></span>
-                            Orders
+                            <span data-feather="shopping-cart" th:text="#{admin.orders}">
+                            </span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/track/all?limit=20&offset=0}">
-                            <span data-feather="file"></span>
-                            Tracks
+                            <span data-feather="file" th:text="#{user.tracks}"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/album/all?limit=20&offset=0}">
-                            <span data-feather="file"></span>
-                            Albums
+                            <span data-feather="file" th:text="#{user.albums}"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/mix/all?limit=20&offset=0}">
-                            <span data-feather="file"></span>
-                            Mixes
+                            <span data-feather="file" th:text="#{user.mixes}"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           th:href="@{/account/admin/all?limit=20&offset=0}">
-                            <span data-feather="file"></span>
-                            Customers
+                           th:href="@{/account/admin/all?limit=20&offset=0}" th:text="#{admin.customers}">
+                            <span data-feather="file" th:text="#{admin.customers}"></span>
                         </a>
                     </li>
                 </ul>
 
                 <h6 class="sidebar-heading d-flex justify-content-between
                 align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>
-                        Actions
+                    <span th:text="#{metrics.actions}">
                     </span>
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/review/mix/all?limit=20&offset=0}">
-                            <span data-feather="file"></span>
-                            Mix Reviews
+                            <span data-feather="file" th:text="#{mix.reviews}"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/review/album/all?limit=20&offset=0}">
-                            <span data-feather="file"></span>
-                            Album Reviews
+                            <span data-feather="file" th:text="#{album.reviews}"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/review/track/all?limit=20&offset=0}">
-                            <span data-feather="file"></span>
-                            Track Reviews
+                            <span data-feather="file" th:text="#{track.reviews}"></span>
                         </a>
                     </li>
                 </ul>

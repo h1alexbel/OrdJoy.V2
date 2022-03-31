@@ -13,23 +13,17 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">
-            Id
+        <th scope="col" th:text="#{user.id}">
         </th>
-        <th scope="col">
-            Login
+        <th scope="col" th:text="#{login.username}">
         </th>
-        <th scope="col">
-            Email
+        <th scope="col" th:text="#{user.info.email}">
         </th>
-        <th scope="col">
-            Role
+        <th scope="col" th:text="#{user.role}">
         </th>
-        <th scope="col">
-            Birthdate
+        <th scope="col" th:text="#{user.info.birthdate}">
         </th>
-        <th scope="col">
-            Discount level
+        <th scope="col" th:text="#{user.info.discountPercentageLevel}">
         </th>
     </tr>
     <tr th:each="user : ${users}">
@@ -38,18 +32,17 @@
         <td th:text="${user.email}">User email</td>
         <td th:text="${#strings.capitalize(user.role.toString().toLowerCase())}">User role</td>
         <td th:text="${user.personalInfo.birthDate}">User birthDate</td>
-        <td th:text="${user.personalInfo.discountPercentageLevel}">User discount level</td>
+        <td th:text="${user.personalInfo.discountPercentageLevel} + #{user.info.discount.sign}">
+            User discount level
+        </td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-danger">
-            Delete user
+               class="btn btn-danger" th:text="#{user.delete}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-warning">
-            Edit user
+               class="btn btn-warning" th:text="#{user.edit}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-warning">
-            Edit DPL
+               class="btn btn-warning" th:text="#{dpl.edit}">
         </a></td>
     </tr>
     </thead>

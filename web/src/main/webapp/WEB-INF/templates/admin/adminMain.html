@@ -36,20 +36,19 @@
              th:src="@{/resources/img/welcome.png}" alt="" width="390"
              height="240">
         <h1 class="display-5 fw-bold">
-            <span th:text="'Welcome ' + ${session.sessionUser.login} + ', You are Admin!'">
+            <span th:text="#{user.welcome.hello} + ' ' + ${session.sessionUser.login}
+             + #{admin.youAreAdminMessage}">
             </span>
         </h1>
         <div class="col-lg-6 mx-auto">
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                 <a th:href="@{/account/admin/metrics}"
                    class="btn btn-outline-success me-2"
-                   role="button">
-                    Check Application Metrics
+                   role="button" th:text="#{admin.checkApplicationMetrics}">
                 </a>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                     <a th:href="@{/account/admin/addAdmin}"
-                       class="btn btn-outline-warning" role="button">
-                        Add admin
+                       class="btn btn-outline-warning" role="button" th:text="#{admin.addNewAdmin}">
                     </a>
                 </div>
             </div>

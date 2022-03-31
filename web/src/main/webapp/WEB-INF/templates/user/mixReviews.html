@@ -11,14 +11,11 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">
-            Mix title
+        <th scope="col" th:text="#{review.mix}">
         </th>
-        <th scope="col">
-            Review text
+        <th scope="col" th:text="#{review.mix.text}">
         </th>
-        <th scope="col">
-            User login
+        <th scope="col" th:text="#{review.user}">
         </th>
     </tr>
     <tr th:each="mixReview : ${mixReviews}">
@@ -32,8 +29,7 @@
             User login
         </td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-danger">
-            Delete Review
+               class="btn btn-danger" th:text="#{review.delete}">
         </a></td>
     </tr>
     </thead>

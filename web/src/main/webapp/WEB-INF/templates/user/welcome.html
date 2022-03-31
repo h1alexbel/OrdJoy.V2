@@ -36,23 +36,20 @@
              th:src="@{/resources/img/welcome.png}" alt="" width="390"
              height="240">
         <h1 class="display-5 fw-bold">
-            <span th:text="'Hello ' + ${session.sessionUser.login} + '!'">
+            <span th:text="#{user.welcome.hello} + ' ' + ${session.sessionUser.login} + '!'">
             </span>
         </h1>
         <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">
-                We feel great to meet you! Welcome!
+            <p class="lead mb-4" th:text="#{user.welcome.message}">
             </p>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                 <a th:href="@{/account/info}"
                    class="btn btn-outline-success me-2"
-                   role="button">
-                    Account info
+                   role="button" th:text="#{user.accountInfo}">
                 </a>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                     <a th:href="@{/order/makeOrder}"
-                       class="btn btn-outline-primary" role="button">
-                        Make order
+                       class="btn btn-outline-primary" role="button" th:text="#{user.makeOrder}">
                     </a>
                 </div>
             </div>

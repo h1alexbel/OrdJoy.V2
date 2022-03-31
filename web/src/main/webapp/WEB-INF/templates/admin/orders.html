@@ -13,39 +13,31 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">
-            Id
+        <th scope="col" th:text="#{order.id}">
         </th>
-        <th scope="col">
-            Price
+        <th scope="col" th:text="#{order.price}">
         </th>
-        <th scope="col">
-            Status
+        <th scope="col" th:text="#{order.status}">
         </th>
-        <th scope="col">
-            User
+        <th scope="col" th:text="#{review.user}">
         </th>
-        <th scope="col">
-            Track
+        <th scope="col" th:text="#{review.track}">
         </th>
     </tr>
     <tr th:each="order : ${orders}">
         <td th:text="${order.id}">Order id</td>
-        <td th:text="${order.price}">Order price</td>
+        <td th:text="${order.price} + #{user.balance.sign}">Order price</td>
         <td th:text="${#strings.capitalize(order.status.toString().toLowerCase())}">Order status</td>
         <td th:text="${order.user.login}">User login</td>
         <td th:text="${order.track.title}">Track title</td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-danger">
-            Decline order
+               class="btn btn-danger" th:text="#{order.decline}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-warning">
-            Run order
+               class="btn btn-warning" th:text="#{order.run}">
         </a></td>
         <td><a th:href="@{/}" role="button"
-               class="btn btn-success">
-            Complete order
+               class="btn btn-success" th:text="#{order.complete}">
         </a></td>
     </tr>
     </thead>
