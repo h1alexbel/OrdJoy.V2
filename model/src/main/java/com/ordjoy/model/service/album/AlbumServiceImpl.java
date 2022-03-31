@@ -4,14 +4,19 @@ import com.ordjoy.model.dto.AlbumDto;
 import com.ordjoy.model.dto.AlbumReviewDto;
 import com.ordjoy.model.dto.TrackDto;
 import com.ordjoy.model.dto.UserDto;
+import com.ordjoy.model.entity.review.AlbumReview;
 import com.ordjoy.model.entity.track.Album;
-import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.repository.album.AlbumRepository;
+import com.ordjoy.model.repository.review.AlbumReviewRepository;
+import com.ordjoy.model.repository.track.TrackRepository;
+import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +28,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class AlbumServiceImpl implements AlbumService {
 
     private final AlbumRepository albumRepository;
+    private final TrackRepository trackRepository;
+    private final AlbumReviewRepository albumReviewRepository;
 
     @Autowired
-    public AlbumServiceImpl(AlbumRepository albumRepository) {
+    public AlbumServiceImpl(AlbumRepository albumRepository,
+                            TrackRepository trackRepository,
+                            AlbumReviewRepository albumReviewRepository) {
         this.albumRepository = albumRepository;
+        this.trackRepository = trackRepository;
+        this.albumReviewRepository = albumReviewRepository;
     }
 
     @Override
@@ -44,11 +55,15 @@ public class AlbumServiceImpl implements AlbumService {
     public AlbumDto saveAlbum(AlbumDto albumDto) {
         Album savedAlbum = albumRepository.add(Album.builder()
                 .title(albumDto.getTitle())
+                .albumReviews(new ArrayList<>())
+                .tracks(new ArrayList<>())
                 .build());
         log.debug(LoggingUtils.ALBUM_WAS_SAVED_IN_SERVICE, savedAlbum);
         return AlbumDto.builder()
                 .id(savedAlbum.getId())
                 .title(savedAlbum.getTitle())
+                .tracks(new ArrayList<>())
+                .albumReviews(new ArrayList<>())
                 .build();
     }
 
@@ -93,11 +108,13 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<AlbumReviewDto> findAlbumReviewsByAlbumTitle(String albumTitle) {
         if (albumTitle != null) {
-            List<AlbumReviewDto> albumReviews = albumRepository.findAlbumReviewsByAlbumTitle(albumTitle).stream()
+            List<AlbumReviewDto> albumReviews = albumRepository
+                    .findAlbumReviewsByAlbumTitle(albumTitle).stream()
                     .map(albumReview -> AlbumReviewDto.builder()
                             .id(albumReview.getId())
                             .reviewText(albumReview.getReviewText())
                             .user(UserDto.builder()
+                                    .id(albumReview.getUser().getId())
                                     .login(albumReview.getUser().getLogin())
                                     .build())
                             .album(AlbumDto.builder()
@@ -181,7 +198,7 @@ public class AlbumServiceImpl implements AlbumService {
         if (albumDto != null) {
             Optional<Album> maybeAlbum = albumRepository.findById(albumDto.getId());
             maybeAlbum.ifPresent(album -> {
-                albumRepository.delete(album);
+                albumRepository.update(album);
                 log.debug(LoggingUtils.ALBUM_WAS_UPDATED_IN_SERVICE, album);
             });
         }
@@ -193,6 +210,14 @@ public class AlbumServiceImpl implements AlbumService {
         if (albumId != null) {
             Optional<Album> maybeAlbum = albumRepository.findById(albumId);
             maybeAlbum.ifPresent(album -> {
+                List<AlbumReview> albumReviews = albumRepository.findAlbumReviewsByAlbumId(albumId);
+                for (AlbumReview albumReview : albumReviews) {
+                    albumReviewRepository.delete(albumReview);
+                }
+                List<Track> tracks = albumRepository.findTracksByAlbumId(albumId);
+                for (Track track : tracks) {
+                    trackRepository.delete(track);
+                }
                 albumRepository.delete(album);
                 log.debug(LoggingUtils.ALBUM_WAS_DELETED_IN_SERVICE, album);
             });
