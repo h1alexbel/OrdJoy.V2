@@ -17,6 +17,8 @@ public interface UserService extends UserDetailsService {
 
     UserDto addNewAdmin(UserDto userDto);
 
+    void subtractBalanceFromUser(BigDecimal orderCost, Long userId);
+
     void updateDiscountPercentageLevel(Integer valueToSet, Long userId);
 
     void updateUserBalanceAmount(BigDecimal amountToAdd, Long userId);

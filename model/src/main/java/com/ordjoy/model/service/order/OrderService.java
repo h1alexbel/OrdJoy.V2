@@ -17,8 +17,6 @@ public interface OrderService {
 
     void updateOrder(UserTrackOrderDto userTrackOrderDto);
 
-    void subtractBalanceFromUser(BigDecimal orderCost, Long userId);
-
     void updateOrderStatus(OrderStatus status, Long id);
 
     BigDecimal calculateOrderPrice(Long orderId);

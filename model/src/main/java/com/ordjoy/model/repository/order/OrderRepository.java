@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface OrderRepository extends GenericCRUDRepository<UserTrackOrder, Long> {
 
-    void subtractBalance(BigDecimal cost, Long userId);
-
     void updateOrderStatus(OrderStatus orderStatus, Long id);
 
     List<UserTrackOrder> findOrdersByPrice(BigDecimal price);

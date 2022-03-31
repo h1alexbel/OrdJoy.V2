@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface UserRepository extends GenericCRUDRepository<User, Long> {
 
+    void subtractBalance(BigDecimal cost, Long userId);
+
     void updateDiscountLevel(Integer newDiscountLevelToSet, Long userId);
 
     void updateBalanceAmount(BigDecimal balanceToAdd, Long userId);
