@@ -70,9 +70,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> maybeUser = userRepository.findByLogin(username);
-        return maybeUser.map(userToUserDetails)
+        UserDetails userDetails = maybeUser.map(userToUserDetails)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(USER_NOT_FOUND_MESSAGE + username));
+        log.debug(LoggingUtils.USER_DETAILS_WAS_TRIGGERED, userDetails);
+        return userDetails;
     }
 
     @Override
@@ -177,6 +179,18 @@ public class UserServiceImpl implements UserService {
             Optional<User> maybeUser = userRepository.findById(userId);
             maybeUser.ifPresent(user -> userRepository.updateDiscountLevel(valueToSet, user.getId()));
             log.debug(LoggingUtils.USER_DISCOUNT_PERCENTAGE_LEVEL_WAS_UPDATED_SERVICE, valueToSet, userId);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void subtractBalanceFromUser(BigDecimal orderCost, Long userId) {
+        if (orderCost != null && userId != null) {
+            Optional<User> maybeUser = userRepository.findById(userId);
+            maybeUser.ifPresent(user -> {
+                userRepository.subtractBalance(orderCost, user.getId());
+                log.debug(LoggingUtils.USER_BALANCE_WAS_SUBTRACTED_SERVICE, orderCost, user);
+            });
         }
     }
 
