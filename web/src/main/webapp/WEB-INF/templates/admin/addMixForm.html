@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Mix</title>
+    <link rel="stylesheet" th:href="@{/resources/css/design.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/locale::locale}"></div>
+<div class="center">
+    <h1 th:text="#{mix.add}">
+    </h1>
+    <form th:method="post" th:action="@{/mix/addMix}"
+          enctype="application/x-www-form-urlencoded">
+        <div class="txt_field">
+            <input name="title" type="text" required pattern="^[A-Za-zА-Яа-я].{1,512}.$">
+            <span></span>
+            <label th:text="#{mix.title}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input name="description" type="text" required pattern="[A-Za-zА-Яа-я].{2,512}">
+            <span></span>
+            <label th:text="#{mix.description}">
+            </label>
+        </div>
+        <input type="submit" th:value="#{add}">
+    </form>
+</div>
+</body>
+</html>
