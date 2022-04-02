@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Tracks</title>
+    <title>Albums</title>
     <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
@@ -19,22 +19,19 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col" th:text="#{track.title}">
-        </th>
-        <th scope="col" th:text="#{track.url}">
-        </th>
-        <th scope="col" th:text="#{review.album}">
+        <th scope="col" th:text="#{album.title}">
         </th>
     </tr>
-    <tr th:each="track : ${tracks}">
-        <td th:text="${track.title}">Track title</td>
-        <td th:text="${track.url}">Track Url</td>
-        <td th:text="${track.album.title}">Album</td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-danger" th:text="#{track.delete}">
-        </a></td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-warning" th:text="#{track.edit}">
+    <tr th:each="album : ${albums}">
+        <td th:text="${album.title}">
+            Album title
+        </td>
+        <td><a th:href="@{/album/{id}/remove(id = ${album.id})}" role="button" class="btn btn-danger"
+               th:text="#{album.delete}">
+        </a>
+        </td>
+        <td><a th:href="@{/album/update/{id}(id = ${album.id})}" role="button"
+               class="btn btn-warning" th:text="#{album.edit}">
         </a></td>
         <td><a th:href="@{/}" role="button"
                class="btn btn-success" th:text="#{addReview}">

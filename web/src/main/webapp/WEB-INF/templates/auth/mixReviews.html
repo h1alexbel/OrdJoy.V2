@@ -7,7 +7,14 @@
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
 <body>
-<div th:replace="~{fragments/userHeader.html}"></div>
+<header>
+    <div th:if="${session.sessionUser.role eq 'USER'}">
+        <div th:replace="~{fragments/userHeader.html}"></div>
+    </div>
+    <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
+        <div th:replace="~{fragments/adminHeader.html}"></div>
+    </div>
+</header>
 <table class="table">
     <thead>
     <tr>
