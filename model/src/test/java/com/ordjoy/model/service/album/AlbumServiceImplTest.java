@@ -3,7 +3,6 @@ package com.ordjoy.model.service.album;
 import com.ordjoy.model.config.PersistenceConfigTest;
 import com.ordjoy.model.dto.AlbumDto;
 import com.ordjoy.model.util.TestDataImporter;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +21,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = PersistenceConfigTest.class)
@@ -33,16 +30,12 @@ class AlbumServiceImplTest {
     @Autowired
     private AlbumService albumService;
     @Autowired
-    private SessionFactory sessionFactory;
+    private TestDataImporter testDataImporter;
 
     @BeforeEach
-    public void importTestData() {
-        TestDataImporter.importTestData(sessionFactory);
-    }
-
-    @AfterTestMethod
-    public void flushTestData() {
-        sessionFactory.close();
+    public void init() {
+        testDataImporter.cleanTestData();
+        testDataImporter.importTestData();
     }
 
     @Test
@@ -68,14 +61,11 @@ class AlbumServiceImplTest {
     void findAlbumByTitle() {
         Optional<AlbumDto> albumByTitle = albumService
                 .findAlbumByTitle("Post Malone - Beerbongs & Bentleys");
-        if (albumByTitle.isPresent()) {
-            AlbumDto albumDto = albumByTitle.get();
-            assertThat(albumService
-                    .findAlbumByTitle(albumDto.getTitle()))
-                    .isNotEmpty();
-        } else {
-            fail();
-        }
+        assertThat(albumByTitle).isNotEmpty();
+        AlbumDto albumDto = albumByTitle.get();
+        assertThat(albumService
+                .findAlbumByTitle(albumDto.getTitle()))
+                .isNotEmpty();
     }
 
     @ParameterizedTest
@@ -163,12 +153,12 @@ class AlbumServiceImplTest {
     @Test
     @DisplayName("update album default test case")
     void updateAlbum() {
-        Optional<AlbumDto> albumById = albumService.findAlbumById(2L);
-        albumById.ifPresent(albumDto -> {
+        Optional<AlbumDto> albumByTitle = albumService.findAlbumByTitle("Metalica - Black Album");
+        albumByTitle.ifPresent(albumDto -> {
             albumDto.setTitle("after update title");
             albumService.updateAlbum(albumDto);
         });
-        Optional<AlbumDto> afterUpdate = albumService.findAlbumByTitle("after update title");
+        Optional<AlbumDto> afterUpdate = albumService.findAlbumById(2L);
         afterUpdate.ifPresent(albumDto -> assertEquals("after update title",
                 albumDto.getTitle()));
     }
@@ -192,7 +182,7 @@ class AlbumServiceImplTest {
     @ParameterizedTest
     @NullSource
     @DisplayName("delete album null case")
-    void deleteAlbumNullCase(AlbumDto albumDto) {
-        assertDoesNotThrow(() -> albumService.deleteAlbum(albumDto.getId()));
+    void deleteAlbumNullCase(Long id) {
+        assertDoesNotThrow(() -> albumService.deleteAlbum(id));
     }
 }
