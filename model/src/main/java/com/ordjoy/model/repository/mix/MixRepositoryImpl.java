@@ -6,8 +6,8 @@ import com.ordjoy.model.entity.review.MixReview_;
 import com.ordjoy.model.entity.track.Mix;
 import com.ordjoy.model.entity.track.Mix_;
 import com.ordjoy.model.entity.track.Track;
-import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.repository.AbstractGenericCRUDRepository;
+import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -24,11 +24,13 @@ import java.util.Optional;
 public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
         implements MixRepository {
 
+    private static final String MIX_TITLE_PARAM = "mixTitle";
+
     @Override
     public Optional<Mix> findByTitle(String title) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select m from Mix m where m.title = :mixTitle", Mix.class)
-                .setParameter("mixTitle", title)
+                .setParameter(MIX_TITLE_PARAM, title)
                 .setMaxResults(1)
                 .getResultList()
                 .stream()
@@ -39,9 +41,9 @@ public class MixRepositoryImpl extends AbstractGenericCRUDRepository<Mix, Long>
     public List<Track> findTracksByMixTitle(String mixTitle) {
         Session session = sessionFactory.getCurrentSession();
         List<Track> tracks = session
-                .createQuery("select t from Mix m join m.tracks t where m.title = :title",
+                .createQuery("select t from Mix m join m.tracks t where m.title = :mixTitle",
                         Track.class)
-                .setParameter("title", mixTitle)
+                .setParameter(MIX_TITLE_PARAM, mixTitle)
                 .getResultList();
         log.debug(LoggingUtils.TRACKS_BY_MIX_TITLE_REPO, tracks, mixTitle);
         return tracks;

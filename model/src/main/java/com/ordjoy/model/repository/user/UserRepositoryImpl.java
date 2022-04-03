@@ -15,6 +15,10 @@ import java.util.Optional;
 public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long>
         implements UserRepository {
 
+    private static final String LOGIN_PARAM = "login";
+    private static final String EMAIL_PARAM = "email";
+    private static final String PASSWORD_PARAM = "password";
+
     @Override
     public void subtractBalance(BigDecimal orderCost, Long userId) {
         Session session = sessionFactory.getCurrentSession();
@@ -49,7 +53,7 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
         Session session = sessionFactory.getCurrentSession();
         return session
                 .createQuery("select u from User u where u.login = :login", User.class)
-                .setParameter("login", login)
+                .setParameter(LOGIN_PARAM, login)
                 .setMaxResults(1)
                 .getResultList()
                 .stream()
@@ -61,7 +65,7 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
         Session session = sessionFactory.getCurrentSession();
         return session
                 .createQuery("select u from User u where u.email = :email", User.class)
-                .setParameter("email", email)
+                .setParameter(EMAIL_PARAM, email)
                 .setMaxResults(1)
                 .getResultList()
                 .stream()
@@ -74,8 +78,8 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
         Optional<User> user = session
                 .createQuery("select u from User u where u.login = :login and u.password = :password",
                         User.class)
-                .setParameter("login", login)
-                .setParameter("password", password)
+                .setParameter(LOGIN_PARAM, login)
+                .setParameter(PASSWORD_PARAM, password)
                 .setMaxResults(1)
                 .getResultList()
                 .stream()
