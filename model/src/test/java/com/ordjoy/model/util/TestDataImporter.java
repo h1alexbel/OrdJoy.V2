@@ -43,7 +43,7 @@ public class TestDataImporter {
         User alex = saveUser(session, "alex@gmail.com", "alex_0921",
                 "1231bkjg", Role.USER, "Alex", "Stag",
                 LocalDate.of(1980, 9, 12), new BigDecimal(0),
-                5);
+                100);
 
         User dogCat = saveUser(session, "dogcat123@gmail.com", "dogCat",
                 "guihantw151", Role.DBA, "Dog", "Cat",
