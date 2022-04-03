@@ -6,21 +6,19 @@ import com.ordjoy.model.entity.track.Mix;
 import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.repository.mix.MixRepository;
 import com.ordjoy.model.util.TestDataImporter;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = PersistenceConfigTest.class)
@@ -32,35 +30,32 @@ class TrackRepositoryImplTest {
     @Autowired
     private MixRepository mixRepository;
     @Autowired
-    private SessionFactory sessionFactory;
+    private TestDataImporter testDataImporter;
 
     @BeforeEach
-    public void importTestData() {
-        TestDataImporter.importTestData(sessionFactory);
-    }
-
-    @AfterTestMethod
-    public void flush() {
-        sessionFactory.close();
+    public void init() {
+        testDataImporter.cleanTestData();
+        testDataImporter.importTestData();
     }
 
     @Test
     @DisplayName("add existing track to existing mix")
     void addTrackToMix() {
-        Optional<Track> maybeTrack = trackRepository.findById(1L);
-        Optional<Mix> maybeMix = mixRepository.findById(1L);
-        if (maybeMix.isPresent() && maybeTrack.isPresent()) {
-            Mix mix = maybeMix.get();
-            Track track = maybeTrack.get();
-            trackRepository.addTrackToMix(track, mix);
-            assertThat(mix.getTracks()).isNotEmpty().hasSize(1);
-        }
+        Optional<Track> maybeTrack = trackRepository.findByTitle("Paranoid");
+        assertThat(maybeTrack).isNotEmpty();
+        Optional<Mix> maybeMix = mixRepository.findByTitle("Hip-Hop");
+        assertThat(maybeMix).isNotEmpty();
+        Mix mix = maybeMix.get();
+        Track track = maybeTrack.get();
+        trackRepository.addTrackToMix(track, mix);
+        assertThat(mix.getTracks()).isNotEmpty().hasSize(1);
     }
 
     @Test
     @DisplayName("find track by track title test case")
     void findByTitle() {
         Optional<Track> maybeTrack = trackRepository.findByTitle("Jail");
+        assertThat(maybeTrack).isNotEmpty();
         maybeTrack.ifPresent(track -> assertThat(track.getTitle())
                 .isEqualTo("Jail"));
     }
@@ -75,8 +70,9 @@ class TrackRepositoryImplTest {
     @Test
     @DisplayName("find track reviews by track id test case")
     void findTrackReviewsByTrackId() {
-        Optional<Track> byId = trackRepository.findById(6L);
-        byId.ifPresent(user -> assertThat(trackRepository.findTrackReviewsByTrackId(6L))
+        Optional<Track> maybeTrack = trackRepository.findByTitle("Paranoid");
+        assertThat(maybeTrack).isNotEmpty();
+        maybeTrack.ifPresent(track -> assertThat(trackRepository.findTrackReviewsByTrackId(track.getId()))
                 .isNotEmpty());
     }
 }

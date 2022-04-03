@@ -12,15 +12,27 @@ import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.entity.user.Role;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.entity.user.UserData;
+import lombok.Getter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public final class TestDataImporter {
+@Getter
+@Component
+public class TestDataImporter {
 
-    public static void importTestData(SessionFactory sessionFactory) {
+    private final SessionFactory sessionFactory;
+
+    @Autowired
+    public TestDataImporter(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public void importTestData() {
         Session session = sessionFactory.getCurrentSession();
 
         User johnDoe = saveUser(session, "johndow@gmail.com", "johnyy66",
@@ -47,47 +59,88 @@ public final class TestDataImporter {
         Album blackAlbum = saveAlbum(session, "Metalica - Black Album");
         Album beerbongsAndBentleysAlbum = saveAlbum(session, "Post Malone - Beerbongs & Bentleys");
 
-        Track praiseGod = saveTrack(session, "https://www.youtube.com/watch?v=9sJZOGxRxwM", "Praise God", dondaAlbum);
-        Track jail = saveTrack(session, "https://www.youtube.com/watch?v=IviYsgJXG5k", "Jail", dondaAlbum);
-        Track nothingElseMatters = saveTrack(session, "https://www.youtube.com/watch?v=tAGnKpE4NCI", "Nothing Else Matters", blackAlbum);
-        Track unforgiven = saveTrack(session, "https://www.youtube.com/watch?v=Ckom3gf57Yw", "Unforgiven", blackAlbum);
-        Track betterNow = saveTrack(session, "https://www.youtube.com/watch?v=JdkhJhtxFl4", "Better now", beerbongsAndBentleysAlbum);
-        Track paranoid = saveTrack(session, "https://www.youtube.com/watch?v=LOqrbkMyCoo", "Paranoid", beerbongsAndBentleysAlbum);
+        Track praiseGod = saveTrack(session,
+                "https://www.youtube.com/watch?v=9sJZOGxRxwM",
+                "Praise God", dondaAlbum);
+        dondaAlbum.addTrackToAlbum(praiseGod);
+
+        Track jail = saveTrack(session,
+                "https://www.youtube.com/watch?v=IviYsgJXG5k",
+                "Jail", dondaAlbum);
+        dondaAlbum.addTrackToAlbum(jail);
+
+        Track nothingElseMatters = saveTrack(session,
+                "https://www.youtube.com/watch?v=tAGnKpE4NCI",
+                "Nothing Else Matters", blackAlbum);
+        blackAlbum.addTrackToAlbum(nothingElseMatters);
+
+        Track unforgiven = saveTrack(session,
+                "https://www.youtube.com/watch?v=Ckom3gf57Yw",
+                "Unforgiven", blackAlbum);
+        blackAlbum.addTrackToAlbum(unforgiven);
+
+        Track betterNow = saveTrack(session,
+                "https://www.youtube.com/watch?v=JdkhJhtxFl4",
+                "Better now", beerbongsAndBentleysAlbum);
+        beerbongsAndBentleysAlbum.addTrackToAlbum(betterNow);
+
+        Track paranoid = saveTrack(session,
+                "https://www.youtube.com/watch?v=LOqrbkMyCoo",
+                "Paranoid", beerbongsAndBentleysAlbum);
+        beerbongsAndBentleysAlbum.addTrackToAlbum(paranoid);
 
         Mix hipHopMix = saveMix(session, "Hip-Hop", "Best of hip-hop!");
         Mix travisScottMix = saveMix(session, "Travis scott hits", "Best of Travis scott");
 
-        UserTrackOrder alexJailOrder = saveOrder(session, new BigDecimal(15), OrderStatus.ACCEPTED, jail, alex);
-        UserTrackOrder johnDoeBetterNowOrder = saveOrder(session, new BigDecimal(10), OrderStatus.ACCEPTED, betterNow, johnDoe);
-        UserTrackOrder alexPraiseGodOrder = saveOrder(session, new BigDecimal(5), OrderStatus.ACCEPTED, praiseGod, alex);
+        UserTrackOrder alexJailOrder = saveOrder(session,
+                new BigDecimal(15), OrderStatus.ACCEPTED, jail, alex);
+        alex.addOrderToUser(alexJailOrder);
 
-        saveAlbumReview(session, dondaAlbum, alex, "Good Album by YE!");
-        saveAlbumReview(session, blackAlbum, alex, "The classic one.");
-        saveAlbumReview(session, beerbongsAndBentleysAlbum, johnDoe, "Good enough in 2022");
-        saveAlbumReview(session, dondaAlbum, johnDoe, "Not fun of YE, but nice, 7/10");
+        UserTrackOrder johnDoeBetterNowOrder = saveOrder(session,
+                new BigDecimal(10), OrderStatus.ACCEPTED, betterNow, johnDoe);
+        johnDoe.addOrderToUser(johnDoeBetterNowOrder);
+
+        UserTrackOrder alexPraiseGodOrder = saveOrder(session,
+                new BigDecimal(5), OrderStatus.ACCEPTED, praiseGod, alex);
+        alex.addOrderToUser(alexPraiseGodOrder);
+
+        saveAlbumReview(session, dondaAlbum, alex,
+                "Good Album by YE!");
+        saveAlbumReview(session, blackAlbum, alex,
+                "The classic one.");
+        saveAlbumReview(session,
+                beerbongsAndBentleysAlbum, johnDoe,
+                "Good enough in 2022");
+
+        saveAlbumReview(session, dondaAlbum, johnDoe,
+                "Not fun of YE, but nice, 7/10");
 
         saveTrackReview(session, paranoid, johnDoe, "Best song ever");
         saveTrackReview(session, nothingElseMatters, admin77, "My fav!");
 
-        saveMixReview(session, travisScottMix, alex, "To be honest not the best songs pick. This artist has more crutial songs");
+        saveMixReview(session, travisScottMix, alex,
+                "To be honest not the best songs pick. This artist has more crutial songs");
         saveMixReview(session, hipHopMix, johnDoe, "I love this mix.");
 
         Mix mix = saveMix(session, "Jazz hits", "Best of jazz");
         Album album = saveAlbum(session, "Jazz 2022");
-        Track track = saveTrack(session, "https://www.youtube.com/watch?v=neV3EPgvZ3g", "Relaxing jazz", album);
+
+        Track track = saveTrack(session,
+                "https://www.youtube.com/watch?v=neV3EPgvZ3g",
+                "Relaxing jazz", album);
         mix.addTrack(track);
     }
 
-    private static User saveUser(Session session,
-                                 String email,
-                                 String login,
-                                 String password,
-                                 Role role,
-                                 String firstName,
-                                 String lastName,
-                                 LocalDate birthDate,
-                                 BigDecimal balance,
-                                 Integer discountPercentageLevel) {
+    private User saveUser(Session session,
+                          String email,
+                          String login,
+                          String password,
+                          Role role,
+                          String firstName,
+                          String lastName,
+                          LocalDate birthDate,
+                          BigDecimal balance,
+                          Integer discountPercentageLevel) {
         User user = User.builder()
                 .email(email)
                 .login(login)
@@ -106,7 +159,19 @@ public final class TestDataImporter {
         return user;
     }
 
-    private static Album saveAlbum(Session session, String title) {
+    public void cleanTestData() {
+        Session session = sessionFactory.getCurrentSession();
+        session.createQuery("delete from User ").executeUpdate();
+        session.createQuery("delete from UserTrackOrder ").executeUpdate();
+        session.createQuery("delete from Mix ").executeUpdate();
+        session.createQuery("delete from Album ").executeUpdate();
+        session.createQuery("delete from Track ").executeUpdate();
+        session.createQuery("delete from AlbumReview ").executeUpdate();
+        session.createQuery("delete from TrackReview ").executeUpdate();
+        session.createQuery("delete from MixReview ").executeUpdate();
+    }
+
+    private Album saveAlbum(Session session, String title) {
         Album album = Album.builder()
                 .title(title)
                 .build();
@@ -115,7 +180,7 @@ public final class TestDataImporter {
         return album;
     }
 
-    private static Track saveTrack(Session session, String url, String title, Album album) {
+    private Track saveTrack(Session session, String url, String title, Album album) {
         Track track = Track.builder()
                 .url(url)
                 .title(title)
@@ -126,7 +191,7 @@ public final class TestDataImporter {
         return track;
     }
 
-    private static Mix saveMix(Session session, String title, String description) {
+    private Mix saveMix(Session session, String title, String description) {
         Mix mix = Mix.builder()
                 .title(title)
                 .description(description)
@@ -136,7 +201,7 @@ public final class TestDataImporter {
         return mix;
     }
 
-    private static UserTrackOrder saveOrder(Session session,
+    private UserTrackOrder saveOrder(Session session,
                                             BigDecimal price,
                                             OrderStatus status,
                                             Track track,
@@ -152,7 +217,7 @@ public final class TestDataImporter {
         return order;
     }
 
-    private static AlbumReview saveAlbumReview(Session session, Album album, User user, String reviewText) {
+    private AlbumReview saveAlbumReview(Session session, Album album, User user, String reviewText) {
         AlbumReview albumReview = AlbumReview.builder()
                 .album(album)
                 .user(user)
@@ -163,7 +228,7 @@ public final class TestDataImporter {
         return albumReview;
     }
 
-    private static TrackReview saveTrackReview(Session session, Track track, User user, String reviewText) {
+    private TrackReview saveTrackReview(Session session, Track track, User user, String reviewText) {
         TrackReview trackReview = TrackReview.builder()
                 .track(track)
                 .user(user)
@@ -174,7 +239,7 @@ public final class TestDataImporter {
         return trackReview;
     }
 
-    private static MixReview saveMixReview(Session session, Mix mix, User user, String reviewText) {
+    private MixReview saveMixReview(Session session, Mix mix, User user, String reviewText) {
         MixReview mixReview = MixReview.builder()
                 .mix(mix)
                 .user(user)

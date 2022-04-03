@@ -5,14 +5,12 @@ import com.ordjoy.model.entity.review.MixReview;
 import com.ordjoy.model.entity.track.Mix;
 import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.util.TestDataImporter;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,22 +27,19 @@ class MixRepositoryImplTest {
     @Autowired
     private MixRepository mixRepository;
     @Autowired
-    private SessionFactory sessionFactory;
+    private TestDataImporter testDataImporter;
 
     @BeforeEach
-    public void importTestData() {
-        TestDataImporter.importTestData(sessionFactory);
-    }
-
-    @AfterTestMethod
-    public void flush() {
-        sessionFactory.close();
+    public void init() {
+        testDataImporter.cleanTestData();
+        testDataImporter.importTestData();
     }
 
     @Test
     @DisplayName("find mix by title test case")
     void findByTitle() {
         Optional<Mix> maybeMix = mixRepository.findByTitle("Travis scott hits");
+        assertThat(maybeMix).isNotEmpty();
         maybeMix.ifPresent(mix -> assertThat(mix.getTitle())
                 .isEqualTo("Travis scott hits"));
     }
@@ -67,7 +62,8 @@ class MixRepositoryImplTest {
     @Test
     @DisplayName("find mix reviews by mix id test case")
     void findMixReviewsByMixId() {
-        Optional<Mix> maybeMix = mixRepository.findById(1L);
+        Optional<Mix> maybeMix = mixRepository.findByTitle("Hip-Hop");
+        assertThat(maybeMix).isNotEmpty();
         maybeMix.ifPresent(mix -> assertThat(mixRepository.findMixReviewsByMixId(mix.getId()))
                 .isNotEmpty());
     }
