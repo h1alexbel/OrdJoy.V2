@@ -26,6 +26,9 @@ import java.util.List;
 public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrackOrder, Long>
         implements OrderRepository {
 
+    private static final String PRICE_PARAM = "price";
+    private static final String STATUS_PARAM = "status";
+
     @Override
     public void updateOrderStatus(OrderStatus orderStatus, Long id) {
         Session session = sessionFactory.getCurrentSession();
@@ -40,7 +43,7 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select o from UserTrackOrder o where o.price = :price",
                         UserTrackOrder.class)
-                .setParameter("price", price)
+                .setParameter(PRICE_PARAM, price)
                 .getResultList();
     }
 
@@ -109,7 +112,7 @@ public class OrderRepositoryImpl extends AbstractGenericCRUDRepository<UserTrack
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select o from UserTrackOrder o where o.status = :status",
                         UserTrackOrder.class)
-                .setParameter("status", status)
+                .setParameter(STATUS_PARAM, status)
                 .getResultList();
     }
 }

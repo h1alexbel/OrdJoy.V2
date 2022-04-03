@@ -24,12 +24,15 @@ import java.util.Optional;
 public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Long>
         implements AlbumRepository {
 
+    private static final String ALBUM_NAME_PARAM = "albumName";
+    private static final String ID_PARAM = "id";
+
     @Override
     public Optional<Album> findByTitle(String title) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select a from Album a where a.title = :albumName",
                         Album.class)
-                .setParameter("albumName", title)
+                .setParameter(ALBUM_NAME_PARAM, title)
                 .setMaxResults(1)
                 .getResultList()
                 .stream()
@@ -70,7 +73,7 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
         List<Track> tracks = session
                 .createQuery("select t from Track t join t.album a where a.id = :id",
                         Track.class)
-                .setParameter("id", albumId)
+                .setParameter(ID_PARAM, albumId)
                 .getResultList();
         log.debug(LoggingUtils.TRACKS_BY_ALBUM_ID_REPO, tracks, albumId);
         return tracks;
@@ -82,7 +85,7 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
         List<Track> tracks = session
                 .createQuery("select t from Track t join t.album a where a.title = :albumName",
                         Track.class)
-                .setParameter("albumName", albumTitle)
+                .setParameter(ALBUM_NAME_PARAM, albumTitle)
                 .getResultList();
         log.debug(LoggingUtils.TRACKS_BY_ALBUM_TITLE_REPO, tracks, albumTitle);
         return tracks;
