@@ -1,0 +1,23 @@
+package com.ordjoy.model.service;
+
+import com.ordjoy.model.dto.ReviewDto;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface ReviewService<D extends ReviewDto, K> {
+
+    D saveReview(D reviewDto);
+
+    Optional<D> findReviewById(K reviewId);
+
+    List<D> findReviewsByUserLogin(String login);
+
+    List<D> findReviewsByUserId(Long userId);
+
+    List<D> listReviews(int limit, int offset);
+
+    void deleteReview(K key);
+
+    void updateReview(D reviewDto);
+}
