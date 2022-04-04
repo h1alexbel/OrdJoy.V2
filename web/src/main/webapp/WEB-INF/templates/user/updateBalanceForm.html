@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Account balance</title>
+    <link rel="stylesheet" th:href="@{/resources/css/design.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/locale::locale}"></div>
+<div class="center">
+    <h1 th:text="#{depositForm.add}">
+    </h1>
+    <form th:method="post" th:action="@{/account/info/addBalance/{id}(id = ${session.sessionUser.id})}"
+          enctype="application/x-www-form-urlencoded">
+        <div class="txt_field">
+            <input type="hidden" name="id" th:value="${session.sessionUser.id}">
+            <input name="balanceToAdd" type="text" required pattern="^[1-9]+[0-9]*$">
+            <span></span>
+            <label th:text="#{depositForm.add}">
+            </label>
+        </div>
+        <input type="submit" th:value="#{depositForm.update}">
+    </form>
+</div>
+</body>
+</html>
