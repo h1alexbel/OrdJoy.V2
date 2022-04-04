@@ -45,7 +45,7 @@ public class User extends AuditableEntity<Long> {
     @Column(length = 64, unique = true, nullable = false)
     private String email;
 
-    @Column(length = 128, nullable = false)
+    @Column(length = 128, updatable = false, nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
