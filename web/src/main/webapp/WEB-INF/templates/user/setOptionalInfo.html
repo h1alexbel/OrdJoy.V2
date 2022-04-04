@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Set User Optional Info</title>
+    <link rel="stylesheet" th:href="@{/resources/css/design.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/locale::locale}"></div>
+<div class="center">
+    <h1 th:text="#{depositForm.add}">
+    </h1>
+    <form th:method="post" th:action="@{/account/info/setOptionalInfo}"
+          enctype="application/x-www-form-urlencoded">
+        <div class="txt_field">
+            <input name="firstName" type="text" required>
+            <span></span>
+            <label th:text="#{user.info.firstName}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input name="lastName" type="text" required>
+            <span></span>
+            <label th:text="#{user.info.lastName}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input name="cardNumber" type="text" required>
+            <span></span>
+            <label th:text="#{user.info.cardNumber}">
+            </label>
+        </div>
+        <input type="submit" th:value="#{setOptionalInfo}">
+    </form>
+</div>
+</body>
+</html>
