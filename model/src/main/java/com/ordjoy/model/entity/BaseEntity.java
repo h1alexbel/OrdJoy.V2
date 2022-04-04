@@ -24,7 +24,7 @@ public abstract class BaseEntity<K extends Serializable> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected K id;
 
-    @Column(name = "state")
+    @Column(name = "state", updatable = false)
     @Enumerated(EnumType.STRING)
     protected EntityState entityState;
 

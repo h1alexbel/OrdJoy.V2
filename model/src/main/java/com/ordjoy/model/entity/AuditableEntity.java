@@ -16,7 +16,7 @@ import java.time.Instant;
 @EntityListeners(AuditDatesListener.class)
 public abstract class AuditableEntity<K extends Serializable> extends BaseEntity<K> {
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
     @Column(name = "updated_at")
