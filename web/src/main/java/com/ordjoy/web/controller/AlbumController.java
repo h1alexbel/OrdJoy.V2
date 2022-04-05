@@ -132,7 +132,7 @@ public class AlbumController {
             Model model) {
         Optional<AlbumDto> maybeAlbum = albumService.findById(id);
         maybeAlbum.ifPresent(albumDto -> model.addAttribute(AttributeUtils.REQUEST_ALBUM, albumDto));
-        return "admin/albumUpdateForm";
+        return PageUtils.ALBUM_UPDATE_PAGE;
     }
 
     @PostMapping("/update")
