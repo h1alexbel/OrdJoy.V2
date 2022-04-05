@@ -44,7 +44,7 @@ class MixServiceImplTest {
     @Test
     @DisplayName("find all mixes test case")
     void listMixes() {
-        List<MixDto> mixes = mixService.listMixes(10, 0);
+        List<MixDto> mixes = mixService.list(10, 0);
         Assertions.assertThat(mixes).hasSize(3);
     }
 
@@ -63,7 +63,7 @@ class MixServiceImplTest {
     @Test
     @DisplayName("find mix by id test case")
     void findMixById() {
-        Optional<MixDto> mixById = mixService.findMixById(2L);
+        Optional<MixDto> mixById = mixService.findById(2L);
         mixById.ifPresent(mixDto -> assertEquals("Travis scott hits",
                 mixDto.getTitle()));
     }
@@ -119,6 +119,6 @@ class MixServiceImplTest {
     @NullSource
     @DisplayName("update mix null case")
     void updateMixNullCase(MixDto mixDto) {
-        assertDoesNotThrow(() -> mixService.updateMix(mixDto));
+        assertDoesNotThrow(() -> mixService.update(mixDto));
     }
 }

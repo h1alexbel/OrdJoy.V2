@@ -42,7 +42,7 @@ class AlbumServiceImplTest {
     @Test
     @DisplayName("all albums test case")
     void listAlbums() {
-        List<AlbumDto> albums = albumService.listAlbums(10, 1);
+        List<AlbumDto> albums = albumService.list(10, 1);
         assertThat(albums).hasSize(3);
     }
 
@@ -52,7 +52,7 @@ class AlbumServiceImplTest {
         AlbumDto albumDto = AlbumDto.builder()
                 .title("was added by test")
                 .build();
-        albumService.saveAlbum(albumDto);
+        albumService.save(albumDto);
         assertThat(albumService.findAlbumByTitle("was added by test"))
                 .isNotEmpty();
     }
@@ -79,7 +79,7 @@ class AlbumServiceImplTest {
     @Test
     @DisplayName("find album by id default test case")
     void findAlbumById() {
-        Optional<AlbumDto> albumById = albumService.findAlbumById(2L);
+        Optional<AlbumDto> albumById = albumService.findById(2L);
         albumById.ifPresent(albumDto -> assertEquals("Metalica - Black Album",
                 albumDto.getTitle()));
     }
@@ -157,9 +157,9 @@ class AlbumServiceImplTest {
         Optional<AlbumDto> albumByTitle = albumService.findAlbumByTitle("Metalica - Black Album");
         albumByTitle.ifPresent(albumDto -> {
             albumDto.setTitle("after update title");
-            albumService.updateAlbum(albumDto);
+            albumService.update(albumDto);
         });
-        Optional<AlbumDto> afterUpdate = albumService.findAlbumById(2L);
+        Optional<AlbumDto> afterUpdate = albumService.findById(2L);
         afterUpdate.ifPresent(albumDto -> assertEquals("after update title",
                 albumDto.getTitle()));
     }
@@ -168,15 +168,15 @@ class AlbumServiceImplTest {
     @NullSource
     @DisplayName("update album null test case")
     void updateAlbumNullCase(AlbumDto albumDto) {
-        assertDoesNotThrow(() -> albumService.updateAlbum(albumDto));
+        assertDoesNotThrow(() -> albumService.update(albumDto));
     }
 
     @Test
     @DisplayName("delete album default test case")
     void deleteAlbum() {
-        Optional<AlbumDto> albumById = albumService.findAlbumById(1L);
+        Optional<AlbumDto> albumById = albumService.findById(1L);
         albumById.ifPresent(albumDto -> albumService.deleteAlbum(albumDto.getId()));
-        Optional<AlbumDto> albumAfterDelete = albumService.findAlbumById(1L);
+        Optional<AlbumDto> albumAfterDelete = albumService.findById(1L);
         assertThat(albumAfterDelete).isEmpty();
     }
 

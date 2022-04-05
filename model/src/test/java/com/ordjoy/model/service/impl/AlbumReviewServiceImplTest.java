@@ -59,7 +59,7 @@ class AlbumReviewServiceImplTest {
     @Test
     @DisplayName("find all album reviews")
     void listReviews() {
-        List<AlbumReviewDto> albumReviews = albumReviewService.listReviews(20, 0);
+        List<AlbumReviewDto> albumReviews = albumReviewService.list(20, 0);
         assertThat(albumReviews).hasSize(4);
     }
 }

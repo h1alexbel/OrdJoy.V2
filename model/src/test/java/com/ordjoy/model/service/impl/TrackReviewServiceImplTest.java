@@ -58,7 +58,7 @@ class TrackReviewServiceImplTest {
     @Test
     @DisplayName("find all track reviews")
     void listReviews() {
-        List<TrackReviewDto> reviews = trackReviewService.listReviews(20, 0);
+        List<TrackReviewDto> reviews = trackReviewService.list(20, 0);
         assertThat(reviews).hasSize(2);
     }
 }

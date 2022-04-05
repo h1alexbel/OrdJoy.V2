@@ -4,16 +4,11 @@ import com.ordjoy.model.dto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
-public interface UserService extends UserDetailsService {
-
-    List<UserDto> listUsers(int limit, int offset);
+public interface UserService extends UserDetailsService, GenericCRUDService<UserDto, Long> {
 
     boolean isUserHasRightsToRegister(UserDto userDto);
-
-    UserDto saveUser(UserDto user);
 
     UserDto addNewAdmin(UserDto userDto);
 
@@ -25,8 +20,6 @@ public interface UserService extends UserDetailsService {
 
     Optional<UserDto> findUserByLoginAndPassword(String login, String password);
 
-    Optional<UserDto> findUserById(Long id);
-
     Optional<UserDto> findUserByEmail(String email);
 
     Optional<UserDto> findUserByLogin(String login);
@@ -34,8 +27,6 @@ public interface UserService extends UserDetailsService {
     boolean isEmailExists(String email);
 
     boolean isLoginExists(String login);
-
-    void updateUser(UserDto userDto);
 
     void deleteUser(Long userId);
 }
