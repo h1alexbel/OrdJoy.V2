@@ -2,19 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Album</title>
+    <title>Edit Mix</title>
     <link rel="stylesheet" th:href="@{/resources/css/design.css}">
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
 <body>
 <div th:replace="~{fragments/locale::locale}"></div>
 <div class="center">
-    <form action="#" th:action="@{/album/update}" th:object="${requestAlbum}" method="post">
-        <h1 th:text="#{album.edit}"></h1>
+    <form action="#" th:action="@{/mix/update}" th:object="${mix}" method="post">
+        <h1 th:text="#{mix.edit}"></h1>
         <div class="txt_field">
             <input id="id" type="number" required readonly th:field="*{id}">
             <span></span>
-            <label for="id" th:text="#{album.id}">
+            <label for="id" th:text="#{mix.id}">
             </label>
         </div>
         <div class="txt_field">
@@ -23,7 +23,13 @@
             <label for="title" th:text="#{album.title}">
             </label>
         </div>
-        <input type="submit" th:value="#{album.edit}">
+        <div class="txt_field">
+            <input id="description" type="text" required th:field="*{description}">
+            <span></span>
+            <label for="description" th:text="#{mix.description}">
+            </label>
+        </div>
+        <input type="submit" th:value="#{mix.edit}">
     </form>
 </div>
 </body>
