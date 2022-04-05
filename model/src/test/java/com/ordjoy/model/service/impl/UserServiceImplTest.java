@@ -44,14 +44,14 @@ class UserServiceImplTest {
     @Test
     @DisplayName("find all users with limit and offset")
     void listUsers() {
-        List<UserDto> users = userService.listUsers(10, 0);
+        List<UserDto> users = userService.list(10, 0);
         assertThat(users).hasSize(4);
     }
 
     @Test
     @DisplayName("save user test case")
     void saveUser() {
-        UserDto savedUser = userService.saveUser(UserDto.builder()
+        UserDto savedUser = userService.save(UserDto.builder()
                 .login("Alexx")
                 .email("alexey@gmail.com")
                 .password("secret-password")

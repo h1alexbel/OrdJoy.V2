@@ -32,7 +32,7 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
 
     @Transactional
     @Override
-    public AlbumReviewDto saveReview(AlbumReviewDto albumReviewDto) {
+    public AlbumReviewDto save(AlbumReviewDto albumReviewDto) {
         AlbumReview albumReviewToSave = AlbumReview.builder()
                 .reviewText(albumReviewDto.getReviewText())
                 .album(Album.builder()
@@ -51,7 +51,7 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
     }
 
     @Override
-    public Optional<AlbumReviewDto> findReviewById(Long reviewId) {
+    public Optional<AlbumReviewDto> findById(Long reviewId) {
         if (reviewId != null) {
             return albumReviewRepository.findById(reviewId).stream()
                     .map(this::buildAlbumReviewDtoFromEntity)
@@ -75,7 +75,7 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
 
     @Transactional
     @Override
-    public void updateReview(AlbumReviewDto albumReviewDto) {
+    public void update(AlbumReviewDto albumReviewDto) {
         if (albumReviewDto != null) {
             albumReviewRepository.update(mapToEntity(albumReviewDto));
             log.debug(LoggingUtils.ALBUM_REVIEW_WAS_UPDATED_SERVICE, albumReviewDto);
@@ -103,7 +103,7 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
     }
 
     @Override
-    public List<AlbumReviewDto> listReviews(int limit, int offset) {
+    public List<AlbumReviewDto> list(int limit, int offset) {
         return albumReviewRepository.findAll(limit, offset).stream()
                 .map(this::buildAlbumReviewDtoFromEntity)
                 .toList();

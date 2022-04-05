@@ -5,17 +5,8 @@ import com.ordjoy.model.entity.order.OrderStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
-public interface OrderService {
-
-    List<UserTrackOrderDto> listOrders(int limit, int offset);
-
-    UserTrackOrderDto makeOrder(UserTrackOrderDto orderDto);
-
-    Optional<UserTrackOrderDto> findOrderById(Long orderId);
-
-    void updateOrder(UserTrackOrderDto userTrackOrderDto);
+public interface OrderService extends GenericCRUDService<UserTrackOrderDto, Long> {
 
     void updateOrderStatus(OrderStatus status, Long id);
 

@@ -46,7 +46,7 @@ class TrackServiceImplTest {
     @Test
     @DisplayName("find all tracks with limit and offset")
     void listTracks() {
-        List<TrackDto> tracks = trackService.listTracks(10, 4);
+        List<TrackDto> tracks = trackService.list(10, 4);
         assertThat(tracks).hasSize(3);
     }
 
@@ -56,7 +56,7 @@ class TrackServiceImplTest {
         Optional<AlbumDto> maybeAlbum = albumService.findAlbumByTitle("Kanye West - Donda");
         if (maybeAlbum.isPresent()) {
             AlbumDto albumDto = maybeAlbum.get();
-            TrackDto saved = trackService.saveTrack(TrackDto.builder()
+            TrackDto saved = trackService.save(TrackDto.builder()
                     .url("https://www.youtube.com/watch?v=grE7x-NeGw8&list=RDgrE7x-NeGw8&start_radio=1")
                     .title("66")
                     .album(albumDto)

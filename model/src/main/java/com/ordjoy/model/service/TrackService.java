@@ -7,15 +7,9 @@ import com.ordjoy.model.dto.TrackReviewDto;
 import java.util.List;
 import java.util.Optional;
 
-public interface TrackService {
-
-    List<TrackDto> listTracks(int limit, int offset);
-
-    TrackDto saveTrack(TrackDto trackDto);
+public interface TrackService extends GenericCRUDService<TrackDto, Long> {
 
     void addTrackToMix(TrackDto trackDto, MixDto mixDto);
-
-    Optional<TrackDto> findTrackById(Long id);
 
     Optional<TrackDto> findTrackByTitle(String title);
 
@@ -24,8 +18,6 @@ public interface TrackService {
     List<TrackReviewDto> findTrackReviewsByTrackTitle(String trackTitle);
 
     List<TrackReviewDto> findTrackReviewsByTrackId(Long trackId);
-
-    void updateTrack(TrackDto trackDto);
 
     void deleteTrack(Long trackId);
 }

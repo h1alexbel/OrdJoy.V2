@@ -59,7 +59,7 @@ class MixReviewServiceImplTest {
     @Test
     @DisplayName("find all mix reviews")
     void listReviews() {
-        List<MixReviewDto> reviews = mixReviewService.listReviews(20, 0);
+        List<MixReviewDto> reviews = mixReviewService.list(20, 0);
         assertThat(reviews).hasSize(2);
     }
 }

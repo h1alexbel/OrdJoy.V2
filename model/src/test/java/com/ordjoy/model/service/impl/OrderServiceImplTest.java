@@ -47,7 +47,7 @@ class OrderServiceImplTest {
     @Test
     @DisplayName("find all Orders with limit & offset")
     void listOrders() {
-        List<UserTrackOrderDto> userTrackOrders = orderService.listOrders(10, 1);
+        List<UserTrackOrderDto> userTrackOrders = orderService.list(10, 1);
         assertThat(userTrackOrders).hasSize(2);
     }
 
@@ -59,12 +59,12 @@ class OrderServiceImplTest {
         if (maybeUser.isPresent() && maybeTrack.isPresent()) {
             TrackDto trackDto = maybeTrack.get();
             UserDto userDto = maybeUser.get();
-            UserTrackOrderDto savedUserTrackOrder = orderService.makeOrder(UserTrackOrderDto.builder()
+            UserTrackOrderDto savedUserTrackOrder = orderService.save(UserTrackOrderDto.builder()
                     .price(new BigDecimal(1111))
                     .track(trackDto)
                     .user(userDto)
                     .build());
-            Optional<UserTrackOrderDto> maybeOrder = orderService.findOrderById(savedUserTrackOrder.getId());
+            Optional<UserTrackOrderDto> maybeOrder = orderService.findById(savedUserTrackOrder.getId());
             assertThat(maybeOrder).isNotEmpty();
         }
     }
@@ -73,7 +73,7 @@ class OrderServiceImplTest {
     @DisplayName("update order status test case")
     void updateOrderStatus() {
         orderService.updateOrderStatus(OrderStatus.CANCELLED, 2L);
-        Optional<UserTrackOrderDto> orderById = orderService.findOrderById(2L);
+        Optional<UserTrackOrderDto> orderById = orderService.findById(2L);
         orderById.ifPresent(orderDto -> assertThat(orderDto.getStatus())
                 .isEqualTo(OrderStatus.CANCELLED));
     }
@@ -81,13 +81,13 @@ class OrderServiceImplTest {
     @Test
     @DisplayName("calculate order price")
     void calculateOrderPrice() {
-        Optional<UserTrackOrderDto> orderById = orderService.findOrderById(1L);
+        Optional<UserTrackOrderDto> orderById = orderService.findById(1L);
         orderById.ifPresent(orderDto -> {
             BigDecimal finalPrice = orderService.calculateOrderPrice(orderDto.getId());
             orderDto.setPrice(finalPrice);
-            orderService.updateOrder(orderDto);
+            orderService.update(orderDto);
         });
-        orderService.findOrderById(1L)
+        orderService.findById(1L)
                 .ifPresent(orderDto ->
                         assertThat(orderDto.getPrice()).isNotEqualTo(new BigDecimal(15)));
     }

@@ -7,15 +7,9 @@ import com.ordjoy.model.dto.TrackDto;
 import java.util.List;
 import java.util.Optional;
 
-public interface AlbumService {
-
-    List<AlbumDto> listAlbums(int limit, int offset);
-
-    AlbumDto saveAlbum(AlbumDto albumDto);
+public interface AlbumService extends GenericCRUDService<AlbumDto, Long> {
 
     Optional<AlbumDto> findAlbumByTitle(String title);
-
-    Optional<AlbumDto> findAlbumById(Long id);
 
     boolean isAlbumTitleExists(String title);
 
@@ -26,8 +20,6 @@ public interface AlbumService {
     List<TrackDto> findTracksByAlbumTitle(String albumTitle);
 
     List<TrackDto> findTracksByAlbumId(Long albumId);
-
-    void updateAlbum(AlbumDto albumDto);
 
     void deleteAlbum(Long albumId);
 }
