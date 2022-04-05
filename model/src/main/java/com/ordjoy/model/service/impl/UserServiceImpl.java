@@ -9,9 +9,9 @@ import com.ordjoy.model.entity.review.TrackReview;
 import com.ordjoy.model.entity.user.Role;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.entity.user.UserData;
-import com.ordjoy.model.repository.OrderRepository;
 import com.ordjoy.model.repository.AlbumReviewRepository;
 import com.ordjoy.model.repository.MixReviewRepository;
+import com.ordjoy.model.repository.OrderRepository;
 import com.ordjoy.model.repository.TrackReviewRepository;
 import com.ordjoy.model.repository.UserRepository;
 import com.ordjoy.model.service.UserService;
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> listUsers(int limit, int offset) {
+    public List<UserDto> list(int limit, int offset) {
         return userRepository.findAll(limit, offset).stream()
                 .map(user -> UserDto.builder()
                         .id(user.getId())
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDto saveUser(UserDto userDto) {
+    public UserDto save(UserDto userDto) {
         User user = User.builder()
                 .login(userDto.getLogin())
                 .email(userDto.getEmail())
@@ -115,8 +115,8 @@ public class UserServiceImpl implements UserService {
         UserDto userDtoWithId = UserDto.builder()
                 .id(saved.getId())
                 .login(saved.getLogin())
-                .password(saved.getPassword())
                 .email(saved.getEmail())
+                .password(saved.getPassword())
                 .role(saved.getRole())
                 .personalInfo(UserPersonalInfo.builder()
                         .birthDate(saved.getUserData().getBirthDate())
@@ -149,6 +149,7 @@ public class UserServiceImpl implements UserService {
                 .id(saved.getId())
                 .login(saved.getLogin())
                 .email(saved.getEmail())
+                .password(saved.getPassword())
                 .role(saved.getRole())
                 .personalInfo(UserPersonalInfo.builder()
                         .birthDate(saved.getUserData().getBirthDate())
@@ -232,7 +233,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> findUserById(Long id) {
+    public Optional<UserDto> findById(Long id) {
         if (id != null) {
             return userRepository.findById(id).stream()
                     .map(user -> {
@@ -324,7 +325,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateUser(UserDto userDto) {
+    public void update(UserDto userDto) {
         if (userDto != null) {
             userRepository.update(mapEntityFromDto(userDto));
             log.debug(LoggingUtils.USER_WAS_UPDATED_SERVICE, userDto);

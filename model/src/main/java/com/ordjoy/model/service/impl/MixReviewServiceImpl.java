@@ -32,7 +32,7 @@ public class MixReviewServiceImpl implements MixReviewService {
 
     @Transactional
     @Override
-    public MixReviewDto saveReview(MixReviewDto mixReviewDto) {
+    public MixReviewDto save(MixReviewDto mixReviewDto) {
         MixReview mixReviewToSave = MixReview.builder()
                 .reviewText(mixReviewDto.getReviewText())
                 .mix(Mix.builder()
@@ -52,7 +52,7 @@ public class MixReviewServiceImpl implements MixReviewService {
     }
 
     @Override
-    public Optional<MixReviewDto> findReviewById(Long reviewId) {
+    public Optional<MixReviewDto> findById(Long reviewId) {
         if (reviewId != null) {
             return mixReviewRepository.findById(reviewId).stream()
                     .map(this::buildMixReviewDtoFromEntity)
@@ -76,7 +76,7 @@ public class MixReviewServiceImpl implements MixReviewService {
 
     @Transactional
     @Override
-    public void updateReview(MixReviewDto mixReviewDto) {
+    public void update(MixReviewDto mixReviewDto) {
         if (mixReviewDto != null) {
             mixReviewRepository.update(mapToEntity(mixReviewDto));
             log.debug(LoggingUtils.MIX_REVIEW_WAS_UPDATED_SERVICE, mixReviewDto);
@@ -104,7 +104,7 @@ public class MixReviewServiceImpl implements MixReviewService {
     }
 
     @Override
-    public List<MixReviewDto> listReviews(int limit, int offset) {
+    public List<MixReviewDto> list(int limit, int offset) {
         return mixReviewRepository.findAll(limit, offset).stream()
                 .map(this::buildMixReviewDtoFromEntity)
                 .toList();
@@ -113,6 +113,7 @@ public class MixReviewServiceImpl implements MixReviewService {
     private MixReview mapToEntity(MixReviewDto mixReviewDto) {
         User user = User.builder()
                 .login(mixReviewDto.getUser().getLogin())
+                .email(mixReviewDto.getUser().getEmail())
                 .build();
         user.setId(mixReviewDto.getUser().getId());
         Mix mix = Mix.builder()
@@ -120,11 +121,13 @@ public class MixReviewServiceImpl implements MixReviewService {
                 .description(mixReviewDto.getMix().getDescription())
                 .build();
         mix.setId(mixReviewDto.getMix().getId());
-        return MixReview.builder()
+        MixReview mixReview = MixReview.builder()
                 .reviewText(mixReviewDto.getReviewText())
                 .user(user)
                 .mix(mix)
                 .build();
+        mixReview.setId(mixReviewDto.getId());
+        return mixReview;
     }
 
     private MixReviewDto buildMixReviewDtoFromEntity(MixReview mixReview) {

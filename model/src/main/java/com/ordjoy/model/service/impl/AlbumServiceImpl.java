@@ -42,7 +42,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<AlbumDto> listAlbums(int limit, int offset) {
+    public List<AlbumDto> list(int limit, int offset) {
         return albumRepository.findAll(limit, offset).stream()
                 .map(album -> AlbumDto.builder()
                         .id(album.getId())
@@ -53,7 +53,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Transactional
     @Override
-    public AlbumDto saveAlbum(AlbumDto albumDto) {
+    public AlbumDto save(AlbumDto albumDto) {
         Album savedAlbum = albumRepository.add(Album.builder()
                 .title(albumDto.getTitle())
                 .albumReviews(new ArrayList<>())
@@ -82,7 +82,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Optional<AlbumDto> findAlbumById(Long id) {
+    public Optional<AlbumDto> findById(Long id) {
         if (id != null) {
             return albumRepository.findById(id).stream()
                     .map(album -> AlbumDto.builder()
@@ -195,7 +195,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Transactional
     @Override
-    public void updateAlbum(AlbumDto albumDto) {
+    public void update(AlbumDto albumDto) {
         if (albumDto != null) {
             albumRepository.update(mapEntityFromDto(albumDto));
             log.debug(LoggingUtils.ALBUM_WAS_UPDATED_IN_SERVICE, albumDto);

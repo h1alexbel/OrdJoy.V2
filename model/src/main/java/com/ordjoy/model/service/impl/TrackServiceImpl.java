@@ -12,8 +12,8 @@ import com.ordjoy.model.entity.track.Mix;
 import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.repository.MixRepository;
 import com.ordjoy.model.repository.OrderRepository;
-import com.ordjoy.model.repository.TrackReviewRepository;
 import com.ordjoy.model.repository.TrackRepository;
+import com.ordjoy.model.repository.TrackReviewRepository;
 import com.ordjoy.model.service.TrackService;
 import com.ordjoy.model.util.LoggingUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<TrackDto> listTracks(int limit, int offset) {
+    public List<TrackDto> list(int limit, int offset) {
         return trackRepository.findAll(limit, offset).stream()
                 .map(track -> TrackDto.builder()
                         .id(track.getId())
@@ -65,17 +65,19 @@ public class TrackServiceImpl implements TrackService {
 
     @Transactional
     @Override
-    public TrackDto saveTrack(TrackDto trackDto) {
+    public TrackDto save(TrackDto trackDto) {
+        Album album = Album.builder()
+                .title(trackDto.getTitle())
+                .build();
         Track trackToSave = Track.builder()
                 .title(trackDto.getTitle())
                 .url(trackDto.getUrl())
-                .album(Album.builder()
-                        .title(trackDto.getTitle())
-                        .build())
+                .album(album)
                 .trackReviews(new ArrayList<>())
                 .mixes(new ArrayList<>())
                 .build();
         trackToSave.getAlbum().setId(trackDto.getAlbum().getId());
+        album.addTrackToAlbum(trackToSave);
         Track savedTrack = trackRepository.add(trackToSave);
         log.debug(LoggingUtils.TRACK_WAS_SAVED_SERVICE, savedTrack);
         return TrackDto.builder()
@@ -105,7 +107,7 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public Optional<TrackDto> findTrackById(Long id) {
+    public Optional<TrackDto> findById(Long id) {
         if (id != null) {
             return trackRepository.findById(id).stream()
                     .map(track -> TrackDto.builder()
@@ -164,11 +166,16 @@ public class TrackServiceImpl implements TrackService {
                             .user(UserDto.builder()
                                     .id(trackReview.getUser().getId())
                                     .login(trackReview.getUser().getLogin())
+                                    .email(trackReview.getUser().getEmail())
                                     .build())
                             .track(TrackDto.builder()
                                     .id(trackReview.getTrack().getId())
                                     .title(trackReview.getTrack().getTitle())
                                     .url(trackReview.getTrack().getUrl())
+                                    .album(AlbumDto.builder()
+                                            .id(trackReview.getTrack().getAlbum().getId())
+                                            .title(trackReview.getTrack().getAlbum().getTitle())
+                                            .build())
                                     .build())
                             .build())
                     .toList();
@@ -191,6 +198,10 @@ public class TrackServiceImpl implements TrackService {
                                     .id(trackReview.getTrack().getId())
                                     .title(trackReview.getTrack().getTitle())
                                     .url(trackReview.getTrack().getUrl())
+                                    .album(AlbumDto.builder()
+                                            .id(trackReview.getTrack().getAlbum().getId())
+                                            .title(trackReview.getTrack().getAlbum().getTitle())
+                                            .build())
                                     .build())
                             .build())
                     .toList();
@@ -200,7 +211,7 @@ public class TrackServiceImpl implements TrackService {
 
     @Transactional
     @Override
-    public void updateTrack(TrackDto trackDto) {
+    public void update(TrackDto trackDto) {
         if (trackDto != null) {
             trackRepository.update(mapToEntity(trackDto));
             log.debug(LoggingUtils.TRACK_WAS_UPDATED_SERVICE, trackDto);

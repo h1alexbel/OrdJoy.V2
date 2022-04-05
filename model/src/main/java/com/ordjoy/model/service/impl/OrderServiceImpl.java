@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<UserTrackOrderDto> listOrders(int limit, int offset) {
+    public List<UserTrackOrderDto> list(int limit, int offset) {
         return orderRepository.findAll(limit, offset).stream()
                 .map(this::mapOrderToDto)
                 .toList();
@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public UserTrackOrderDto makeOrder(UserTrackOrderDto orderDto) {
+    public UserTrackOrderDto save(UserTrackOrderDto orderDto) {
         User user = User.builder()
                 .login(orderDto.getUser().getLogin())
                 .email(orderDto.getUser().getEmail())
@@ -80,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<UserTrackOrderDto> findOrderById(Long orderId) {
+    public Optional<UserTrackOrderDto> findById(Long orderId) {
         if (orderId != null) {
             return orderRepository.findById(orderId).stream()
                     .map(this::mapOrderToDto)
@@ -91,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public void updateOrder(UserTrackOrderDto userTrackOrderDto) {
+    public void update(UserTrackOrderDto userTrackOrderDto) {
         if (userTrackOrderDto != null) {
             orderRepository.update(mapEntityFromDto(userTrackOrderDto));
             log.debug(LoggingUtils.ORDER_WAS_UPDATED_SERVICE, userTrackOrderDto);
