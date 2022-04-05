@@ -112,17 +112,20 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
     private AlbumReview mapToEntity(AlbumReviewDto albumReviewDto) {
         User user = User.builder()
                 .login(albumReviewDto.getUser().getLogin())
+                .email(albumReviewDto.getUser().getEmail())
                 .build();
         user.setId(albumReviewDto.getUser().getId());
         Album album = Album.builder()
                 .title(albumReviewDto.getAlbum().getTitle())
                 .build();
         album.setId(albumReviewDto.getAlbum().getId());
-        return AlbumReview.builder()
+        AlbumReview albumReview = AlbumReview.builder()
                 .reviewText(albumReviewDto.getReviewText())
                 .user(user)
                 .album(album)
                 .build();
+        albumReview.setId(albumReviewDto.getId());
+        return albumReview;
     }
 
     private AlbumReviewDto buildAlbumReviewDtoFromEntity(AlbumReview albumReview) {

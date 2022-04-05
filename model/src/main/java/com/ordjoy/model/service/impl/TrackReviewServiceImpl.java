@@ -34,7 +34,7 @@ public class TrackReviewServiceImpl implements TrackReviewService {
 
     @Transactional
     @Override
-    public TrackReviewDto saveReview(TrackReviewDto trackReviewDto) {
+    public TrackReviewDto save(TrackReviewDto trackReviewDto) {
         TrackReview trackReviewToSave = TrackReview.builder()
                 .reviewText(trackReviewDto.getReviewText())
                 .track(Track.builder()
@@ -58,7 +58,7 @@ public class TrackReviewServiceImpl implements TrackReviewService {
     }
 
     @Override
-    public Optional<TrackReviewDto> findReviewById(Long reviewId) {
+    public Optional<TrackReviewDto> findById(Long reviewId) {
         if (reviewId != null) {
             return trackReviewRepository.findById(reviewId).stream()
                     .map(this::buildTrackReviewDtoFromEntity)
@@ -82,7 +82,7 @@ public class TrackReviewServiceImpl implements TrackReviewService {
 
     @Transactional
     @Override
-    public void updateReview(TrackReviewDto trackReviewDto) {
+    public void update(TrackReviewDto trackReviewDto) {
         if (trackReviewDto != null) {
             trackReviewRepository.update(mapToEntity(trackReviewDto));
             log.debug(LoggingUtils.TRACK_REVIEW_WAS_UPDATED_SERVICE, trackReviewDto);
@@ -110,7 +110,7 @@ public class TrackReviewServiceImpl implements TrackReviewService {
     }
 
     @Override
-    public List<TrackReviewDto> listReviews(int limit, int offset) {
+    public List<TrackReviewDto> list(int limit, int offset) {
         return trackReviewRepository.findAll(limit, offset).stream()
                 .map(this::buildTrackReviewDtoFromEntity)
                 .toList();
@@ -119,6 +119,7 @@ public class TrackReviewServiceImpl implements TrackReviewService {
     private TrackReview mapToEntity(TrackReviewDto trackReviewDto) {
         User user = User.builder()
                 .login(trackReviewDto.getUser().getLogin())
+                .email(trackReviewDto.getUser().getEmail())
                 .build();
         user.setId(trackReviewDto.getUser().getId());
         Album album = Album.builder()
@@ -131,11 +132,13 @@ public class TrackReviewServiceImpl implements TrackReviewService {
                 .album(album)
                 .build();
         track.setId(trackReviewDto.getTrack().getId());
-        return TrackReview.builder()
+        TrackReview trackReview = TrackReview.builder()
                 .reviewText(trackReviewDto.getReviewText())
                 .user(user)
                 .track(track)
                 .build();
+        trackReview.setId(trackReviewDto.getId());
+        return trackReview;
     }
 
     private TrackReviewDto buildTrackReviewDtoFromEntity(TrackReview trackReview) {

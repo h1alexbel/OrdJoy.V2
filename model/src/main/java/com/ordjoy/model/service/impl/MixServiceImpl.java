@@ -37,7 +37,7 @@ public class MixServiceImpl implements MixService {
     }
 
     @Override
-    public List<MixDto> listMixes(int limit, int offset) {
+    public List<MixDto> list(int limit, int offset) {
         return mixRepository.findAll(limit, offset).stream()
                 .map(mix -> MixDto.builder()
                         .id(mix.getId())
@@ -49,7 +49,7 @@ public class MixServiceImpl implements MixService {
 
     @Transactional
     @Override
-    public MixDto saveMix(MixDto mixDto) {
+    public MixDto save(MixDto mixDto) {
         Mix mix = Mix.builder()
                 .title(mixDto.getTitle())
                 .description(mixDto.getDescription())
@@ -82,7 +82,7 @@ public class MixServiceImpl implements MixService {
     }
 
     @Override
-    public Optional<MixDto> findMixById(Long id) {
+    public Optional<MixDto> findById(Long id) {
         if (id != null) {
             return mixRepository.findById(id).stream()
                     .map(mix -> MixDto.builder()
@@ -136,10 +136,12 @@ public class MixServiceImpl implements MixService {
                             .user(UserDto.builder()
                                     .id(mixReview.getUser().getId())
                                     .login(mixReview.getUser().getLogin())
+                                    .email(mixReview.getUser().getEmail())
                                     .build())
                             .mix(MixDto.builder()
                                     .id(mixReview.getMix().getId())
                                     .title(mixReview.getMix().getTitle())
+                                    .description(mixReview.getMix().getDescription())
                                     .build())
                             .build())
                     .toList();
@@ -157,10 +159,12 @@ public class MixServiceImpl implements MixService {
                             .user(UserDto.builder()
                                     .id(mixReview.getUser().getId())
                                     .login(mixReview.getUser().getLogin())
+                                    .email(mixReview.getUser().getEmail())
                                     .build())
                             .mix(MixDto.builder()
                                     .id(mixReview.getMix().getId())
                                     .title(mixReview.getMix().getTitle())
+                                    .description(mixReview.getMix().getDescription())
                                     .build())
                             .build())
                     .toList();
@@ -170,7 +174,7 @@ public class MixServiceImpl implements MixService {
 
     @Transactional
     @Override
-    public void updateMix(MixDto mixDto) {
+    public void update(MixDto mixDto) {
         if (mixDto != null) {
             mixRepository.update(mapEntityFromDto(mixDto));
             log.debug(LoggingUtils.MIX_WAS_UPDATED_SERVICE, mixDto);
