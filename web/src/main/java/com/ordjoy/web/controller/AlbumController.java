@@ -3,7 +3,7 @@ package com.ordjoy.web.controller;
 import com.ordjoy.model.dto.AlbumDto;
 import com.ordjoy.model.dto.AlbumReviewDto;
 import com.ordjoy.model.dto.TrackDto;
-import com.ordjoy.model.service.album.AlbumService;
+import com.ordjoy.model.service.AlbumService;
 import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.web.util.AttributeUtils;
 import com.ordjoy.web.util.PageUtils;
@@ -39,7 +39,7 @@ public class AlbumController {
     public String getAllAlbums(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
-        List<AlbumDto> albums = albumService.listAlbums(limit, offset);
+        List<AlbumDto> albums = albumService.list(limit, offset);
         model.addAttribute(AttributeUtils.REQUEST_ALBUMS, albums);
         return PageUtils.ALL_ALBUMS_PAGE;
     }
@@ -47,7 +47,7 @@ public class AlbumController {
     @GetMapping("/{id}")
     public String getAlbum(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
                            Model model) {
-        Optional<AlbumDto> maybeAlbum = albumService.findAlbumById(id);
+        Optional<AlbumDto> maybeAlbum = albumService.findById(id);
         if (maybeAlbum.isPresent()) {
             AlbumDto album = maybeAlbum.get();
             model.addAttribute(AttributeUtils.REQUEST_ALBUM, album);
@@ -78,10 +78,10 @@ public class AlbumController {
     @PostMapping("/addAlbum")
     public String addAlbum(AlbumDto albumDto, Model model) {
         if (!albumService.isAlbumTitleExists(albumDto.getTitle())) {
-            AlbumDto savedAlbum = albumService.saveAlbum(albumDto);
+            AlbumDto savedAlbum = albumService.save(albumDto);
             model.addAttribute(AttributeUtils.REQUEST_ALBUM, savedAlbum);
             log.debug(LoggingUtils.ALBUM_WAS_CREATED_IN_CONTROLLER, savedAlbum);
-            return UrlPathUtils.REDIRECT_ALL_ALBUMS;
+            return UrlPathUtils.REDIRECT_ALBUM + savedAlbum.getId();
         } else {
             return PageUtils.ADD_ALBUM_PAGE;
         }
@@ -119,19 +119,28 @@ public class AlbumController {
         return PageUtils.ALBUM_REVIEWS_PAGE;
     }
 
-    @PostMapping("/{id}/remove")
+    @GetMapping("/{id}/remove")
     public String deleteAlbum(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId) {
         albumService.deleteAlbum(albumId);
         log.debug(LoggingUtils.ALBUM_WAS_DELETED_IN_CONTROLLER, albumId);
-        return UrlPathUtils.REDIRECT_ALL_ALBUMS;
+        return UrlPathUtils.REDIRECT_ALL_ALBUMS_WITH_DEFAULT_LIMIT_OFFSET;
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateAlbumPage(
+            @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
+            Model model) {
+        Optional<AlbumDto> maybeAlbum = albumService.findById(id);
+        maybeAlbum.ifPresent(albumDto -> model.addAttribute(AttributeUtils.REQUEST_ALBUM, albumDto));
+        return "admin/albumUpdateForm";
     }
 
     @PostMapping("/update")
     public String updateAlbum(AlbumDto albumDto) {
         if (!albumService.isAlbumTitleExists(albumDto.getTitle())) {
-            albumService.updateAlbum(albumDto);
+            albumService.update(albumDto);
             log.debug(LoggingUtils.ALBUM_WAS_UPDATED_IN_CONTROLLER, albumDto);
-            return UrlPathUtils.REDIRECT_ALL_ALBUMS;
+            return UrlPathUtils.REDIRECT_ALL_ALBUMS_WITH_DEFAULT_LIMIT_OFFSET;
         }
         return PageUtils.ALBUM_UPDATE_FORM;
     }
