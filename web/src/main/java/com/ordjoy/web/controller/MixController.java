@@ -3,7 +3,7 @@ package com.ordjoy.web.controller;
 import com.ordjoy.model.dto.MixDto;
 import com.ordjoy.model.dto.MixReviewDto;
 import com.ordjoy.model.dto.TrackDto;
-import com.ordjoy.model.service.mix.MixService;
+import com.ordjoy.model.service.MixService;
 import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.web.util.AttributeUtils;
 import com.ordjoy.web.util.PageUtils;
@@ -39,7 +39,7 @@ public class MixController {
     public String getAllMixes(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
-        List<MixDto> mixList = mixService.listMixes(limit, offset);
+        List<MixDto> mixList = mixService.list(limit, offset);
         model.addAttribute(AttributeUtils.MIXES, mixList);
         return PageUtils.MIXES_PAGE;
     }
@@ -52,10 +52,10 @@ public class MixController {
     @PostMapping("/addMix")
     public String addMix(MixDto mixDto, Model model) {
         if (!mixService.isMixTitleExists(mixDto.getTitle())) {
-            MixDto savedMix = mixService.saveMix(mixDto);
+            MixDto savedMix = mixService.save(mixDto);
             model.addAttribute(AttributeUtils.REQUEST_MIX, savedMix);
             log.debug(LoggingUtils.MIX_WAS_CREATED_IN_CONTROLLER, savedMix);
-            return UrlPathUtils.REDIRECT_MIXES_PAGE;
+            return UrlPathUtils.REDIRECT_MIX + savedMix.getId();
         } else {
             return PageUtils.ADD_MIX_FORM_PAGE;
         }
@@ -64,7 +64,7 @@ public class MixController {
     @GetMapping("/{id}")
     public String getMix(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
                          Model model) {
-        Optional<MixDto> maybeMix = mixService.findMixById(mixId);
+        Optional<MixDto> maybeMix = mixService.findById(mixId);
         if (maybeMix.isPresent()) {
             MixDto mix = maybeMix.get();
             model.addAttribute(AttributeUtils.REQUEST_MIX, mix);
@@ -111,19 +111,28 @@ public class MixController {
         return PageUtils.MIX_REVIEWS_PAGE;
     }
 
-    @PostMapping("/{id}/remove")
+    @GetMapping("/{id}/remove")
     public String deleteMix(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId) {
         mixService.deleteMix(mixId);
         log.debug(LoggingUtils.MIX_WAS_DELETED_IN_CONTROLLER, mixId);
-        return UrlPathUtils.REDIRECT_MIXES_PAGE;
+        return UrlPathUtils.REDIRECT_MIXES_PAGE_WITH_DEFAULT_LIMIT_OFFSET;
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateMixForm(
+            @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
+            Model model) {
+        Optional<MixDto> maybeMix = mixService.findById(mixId);
+        maybeMix.ifPresent(mixDto -> model.addAttribute(AttributeUtils.REQUEST_MIX, mixDto));
+        return PageUtils.MIX_UPDATE_FORM;
     }
 
     @PostMapping("/update")
     public String updateMix(MixDto mixDto) {
         if (!mixService.isMixTitleExists(mixDto.getTitle())) {
-            mixService.updateMix(mixDto);
+            mixService.update(mixDto);
             log.debug(LoggingUtils.MIX_WAS_UPDATED_IN_CONTROLLER, mixDto);
-            return UrlPathUtils.REDIRECT_MIXES_PAGE;
+            return UrlPathUtils.REDIRECT_MIXES_PAGE_WITH_DEFAULT_LIMIT_OFFSET;
         } else {
             return PageUtils.MIX_UPDATE_FORM;
         }
