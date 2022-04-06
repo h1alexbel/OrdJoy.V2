@@ -3,7 +3,8 @@ package com.ordjoy.web.controller;
 import com.ordjoy.model.dto.MixDto;
 import com.ordjoy.model.dto.TrackDto;
 import com.ordjoy.model.dto.TrackReviewDto;
-import com.ordjoy.model.service.track.TrackService;
+import com.ordjoy.model.service.MixService;
+import com.ordjoy.model.service.TrackService;
 import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.web.util.AttributeUtils;
 import com.ordjoy.web.util.PageUtils;
@@ -29,17 +30,19 @@ import java.util.Optional;
 public class TrackController {
 
     private final TrackService trackService;
+    private final MixService mixService;
 
     @Autowired
-    public TrackController(TrackService trackService) {
+    public TrackController(TrackService trackService, MixService mixService) {
         this.trackService = trackService;
+        this.mixService = mixService;
     }
 
     @GetMapping("/all")
     public String getAllTracks(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
-        List<TrackDto> tracks = trackService.listTracks(limit, offset);
+        List<TrackDto> tracks = trackService.list(limit, offset);
         model.addAttribute(AttributeUtils.TRACKS, tracks);
         return PageUtils.TRACKS_PAGE;
     }
@@ -52,7 +55,7 @@ public class TrackController {
     @PostMapping("/addTrack")
     public String addTrack(TrackDto trackDto, Model model) {
         if (!trackService.isTracksTitleExists(trackDto.getTitle())) {
-            TrackDto savedTrack = trackService.saveTrack(trackDto);
+            TrackDto savedTrack = trackService.save(trackDto);
             model.addAttribute(AttributeUtils.REQUEST_TRACK, savedTrack);
             log.debug(LoggingUtils.TRACK_WAS_CREATED_IN_CONTROLLER, trackDto);
             return UrlPathUtils.REDIRECT_TRACKS_PAGE;
@@ -68,15 +71,23 @@ public class TrackController {
 
     @PostMapping("/addTrackToMix")
     public String addTrackToMix(TrackDto trackDto, MixDto mixDto) {
-        trackService.addTrackToMix(trackDto, mixDto);
-        log.debug(LoggingUtils.TRACK_WAS_ADDED_TO_MIX_IN_CONTROLLER, trackDto, mixDto);
-        return UrlPathUtils.REDIRECT_MIXES_PAGE;
+        Optional<TrackDto> maybeTrack = trackService.findTrackByTitle(trackDto.getTitle());
+        Optional<MixDto> maybeMix = mixService.findMixByTitle(mixDto.getTitle());
+        if (maybeTrack.isPresent() && maybeMix.isPresent()) {
+            TrackDto trackToLink = maybeTrack.get();
+            MixDto mixToLink = maybeMix.get();
+            trackService.addTrackToMix(trackToLink, mixToLink);
+            log.debug(LoggingUtils.TRACK_WAS_ADDED_TO_MIX_IN_CONTROLLER, trackDto, mixDto);
+            return UrlPathUtils.REDIRECT_MIXES_PAGE;
+        } else {
+            return "";
+        }
     }
 
     @GetMapping("/{id}")
     public String getTrack(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId,
                            Model model) {
-        Optional<TrackDto> maybeTrack = trackService.findTrackById(trackId);
+        Optional<TrackDto> maybeTrack = trackService.findById(trackId);
         if (maybeTrack.isPresent()) {
             TrackDto track = maybeTrack.get();
             model.addAttribute(AttributeUtils.REQUEST_TRACK, track);
@@ -115,19 +126,28 @@ public class TrackController {
         return PageUtils.TRACK_REVIEWS_PAGE;
     }
 
-    @PostMapping("/{id}/remove")
+    @GetMapping("/{id}/remove")
     public String deleteTrack(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId) {
         trackService.deleteTrack(trackId);
         log.debug(LoggingUtils.TRACK_WAS_DELETED_IN_CONTROLLER, trackId);
-        return UrlPathUtils.REDIRECT_TRACKS_PAGE;
+        return UrlPathUtils.REDIRECT_TRACKS_PAGE_WITH_LIMIT_OFFSET;
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateTrackForm(
+            @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId,
+            Model model) {
+        Optional<TrackDto> maybeTrack = trackService.findById(trackId);
+        maybeTrack.ifPresent(trackDto -> model.addAttribute(AttributeUtils.REQUEST_TRACK, trackDto));
+        return PageUtils.TRACK_UPDATE_FORM;
     }
 
     @PostMapping("/update")
     public String updateTrack(TrackDto trackDto) {
         if (!trackService.isTracksTitleExists(trackDto.getTitle())) {
-            trackService.updateTrack(trackDto);
+            trackService.update(trackDto);
             log.debug(LoggingUtils.TRACK_WAS_UPDATED_IN_CONTROLLER, trackDto);
-            return UrlPathUtils.REDIRECT_TRACKS_PAGE;
+            return UrlPathUtils.REDIRECT_TRACKS_PAGE_WITH_LIMIT_OFFSET;
         } else {
             return PageUtils.TRACK_UPDATE_FORM;
         }

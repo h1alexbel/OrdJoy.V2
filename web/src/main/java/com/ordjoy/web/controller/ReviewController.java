@@ -3,9 +3,9 @@ package com.ordjoy.web.controller;
 import com.ordjoy.model.dto.AlbumReviewDto;
 import com.ordjoy.model.dto.MixReviewDto;
 import com.ordjoy.model.dto.TrackReviewDto;
-import com.ordjoy.model.service.review.AlbumReviewService;
-import com.ordjoy.model.service.review.MixReviewService;
-import com.ordjoy.model.service.review.TrackReviewService;
+import com.ordjoy.model.service.AlbumReviewService;
+import com.ordjoy.model.service.MixReviewService;
+import com.ordjoy.model.service.TrackReviewService;
 import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.web.util.AttributeUtils;
 import com.ordjoy.web.util.PageUtils;
@@ -50,7 +50,7 @@ public class ReviewController {
 
     @PostMapping("/addAlbumReview")
     public String addAlbumReview(AlbumReviewDto albumReviewDto, Model model) {
-        AlbumReviewDto savedAlbum = albumReviewService.saveReview(albumReviewDto);
+        AlbumReviewDto savedAlbum = albumReviewService.save(albumReviewDto);
         model.addAttribute(AttributeUtils.ALBUM_REVIEW, savedAlbum);
         log.debug(LoggingUtils.REVIEW_WAS_CREATED_IN_CONTROLLER, savedAlbum);
         return UrlPathUtils.REDIRECT_ALBUM_REVIEW_MAIN;
@@ -63,7 +63,7 @@ public class ReviewController {
 
     @PostMapping("/addMixReview")
     public String addMixReview(MixReviewDto mixReviewDto, Model model) {
-        MixReviewDto savedMixReview = mixReviewService.saveReview(mixReviewDto);
+        MixReviewDto savedMixReview = mixReviewService.save(mixReviewDto);
         model.addAttribute(AttributeUtils.MIX_REVIEW, savedMixReview);
         log.debug(LoggingUtils.REVIEW_WAS_CREATED_IN_CONTROLLER, savedMixReview);
         return UrlPathUtils.REDIRECT_MIX_REVIEW_MAIN;
@@ -76,7 +76,7 @@ public class ReviewController {
 
     @PostMapping("/addTrackReview")
     public String addTrackReview(TrackReviewDto trackReviewDto, Model model) {
-        TrackReviewDto savedTrackReview = trackReviewService.saveReview(trackReviewDto);
+        TrackReviewDto savedTrackReview = trackReviewService.save(trackReviewDto);
         model.addAttribute(AttributeUtils.TRACK_REVIEW, savedTrackReview);
         log.debug(LoggingUtils.REVIEW_WAS_CREATED_IN_CONTROLLER, savedTrackReview);
         return UrlPathUtils.REDIRECT_TRACK_REVIEW_MAIN;
@@ -85,7 +85,7 @@ public class ReviewController {
     @GetMapping("/album/{id}")
     public String getAlbumReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
                                  Model model) {
-        Optional<AlbumReviewDto> maybeAlbumReview = albumReviewService.findReviewById(id);
+        Optional<AlbumReviewDto> maybeAlbumReview = albumReviewService.findById(id);
         if (maybeAlbumReview.isPresent()) {
             AlbumReviewDto albumReviewDto = maybeAlbumReview.get();
             model.addAttribute(AttributeUtils.ALBUM_REVIEW, albumReviewDto);
@@ -98,7 +98,7 @@ public class ReviewController {
     @GetMapping("/mix/{id}")
     public String getMixReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
                                Model model) {
-        Optional<MixReviewDto> maybeMixReview = mixReviewService.findReviewById(id);
+        Optional<MixReviewDto> maybeMixReview = mixReviewService.findById(id);
         if (maybeMixReview.isPresent()) {
             MixReviewDto mixReviewDto = maybeMixReview.get();
             model.addAttribute(AttributeUtils.MIX_REVIEW, mixReviewDto);
@@ -111,7 +111,7 @@ public class ReviewController {
     @GetMapping("/track/{id}")
     public String getTrackReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
                                  Model model) {
-        Optional<TrackReviewDto> maybeTrackReview = trackReviewService.findReviewById(id);
+        Optional<TrackReviewDto> maybeTrackReview = trackReviewService.findById(id);
         if (maybeTrackReview.isPresent()) {
             TrackReviewDto trackReviewDto = maybeTrackReview.get();
             model.addAttribute(AttributeUtils.TRACK_REVIEW, trackReviewDto);
@@ -121,7 +121,7 @@ public class ReviewController {
         }
     }
 
-    @GetMapping("album/user/")
+    @GetMapping("/album/user/")
     public String getAlbumReviewsByUserLogin(
             @RequestParam(value = UrlPathUtils.USERNAME_PARAM) String login, Model model) {
         List<AlbumReviewDto> reviewsByUserLogin = albumReviewService.findReviewsByUserLogin(login);
@@ -129,7 +129,7 @@ public class ReviewController {
         return PageUtils.ALBUM_REVIEWS_PAGE;
     }
 
-    @GetMapping("album/user/{id}")
+    @GetMapping("/album/user/{id}")
     public String getAlbumReviewsByUserId(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long userId, Model model) {
         List<AlbumReviewDto> reviewsByUserId = albumReviewService.findReviewsByUserId(userId);
@@ -137,7 +137,7 @@ public class ReviewController {
         return PageUtils.ALBUM_REVIEWS_PAGE;
     }
 
-    @GetMapping("mix/user/")
+    @GetMapping("/mix/user/")
     public String getMixReviewsByUserLogin(
             @RequestParam(value = UrlPathUtils.USERNAME_PARAM) String login, Model model) {
         List<MixReviewDto> reviewsByUserLogin = mixReviewService.findReviewsByUserLogin(login);
@@ -145,7 +145,7 @@ public class ReviewController {
         return PageUtils.MIX_REVIEWS_PAGE;
     }
 
-    @GetMapping("mix/user/{id}")
+    @GetMapping("/mix/user/{id}")
     public String getMixReviewsByUserId(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long userId, Model model) {
         List<MixReviewDto> reviewsByUserId = mixReviewService.findReviewsByUserId(userId);
@@ -153,7 +153,7 @@ public class ReviewController {
         return PageUtils.MIX_REVIEWS_PAGE;
     }
 
-    @GetMapping("track/user/")
+    @GetMapping("/track/user/")
     public String getTrackReviewsByUserLogin(
             @RequestParam(value = UrlPathUtils.USERNAME_PARAM) String login, Model model) {
         List<TrackReviewDto> reviewsByUserLogin = trackReviewService.findReviewsByUserLogin(login);
@@ -161,7 +161,7 @@ public class ReviewController {
         return PageUtils.TRACK_REVIEWS_PAGE;
     }
 
-    @GetMapping("track/user/{id}")
+    @GetMapping("/track/user/{id}")
     public String getTrackReviewsByUserId(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long userId, Model model) {
         List<TrackReviewDto> reviewsByUserId = trackReviewService.findReviewsByUserId(userId);
@@ -173,7 +173,7 @@ public class ReviewController {
     public String getAllAlbumReviews(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
-        List<AlbumReviewDto> albumReviews = albumReviewService.listReviews(limit, offset);
+        List<AlbumReviewDto> albumReviews = albumReviewService.list(limit, offset);
         model.addAttribute(AttributeUtils.ALBUM_REVIEWS, albumReviews);
         return PageUtils.ALBUM_REVIEWS_PAGE;
     }
@@ -182,7 +182,7 @@ public class ReviewController {
     public String getAllMixReviews(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
-        List<MixReviewDto> mixReviews = mixReviewService.listReviews(limit, offset);
+        List<MixReviewDto> mixReviews = mixReviewService.list(limit, offset);
         model.addAttribute(AttributeUtils.MIX_REVIEWS, mixReviews);
         return PageUtils.MIX_REVIEWS_PAGE;
     }
@@ -191,50 +191,29 @@ public class ReviewController {
     public String getAllTrackReviews(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
-        List<TrackReviewDto> trackReviews = trackReviewService.listReviews(limit, offset);
+        List<TrackReviewDto> trackReviews = trackReviewService.list(limit, offset);
         model.addAttribute(AttributeUtils.TRACK_REVIEWS, trackReviews);
         return PageUtils.TRACK_REVIEWS_PAGE;
     }
 
-    @PostMapping("/album/update")
-    public String updateAlbumReview(AlbumReviewDto albumReviewDto) {
-        albumReviewService.updateReview(albumReviewDto);
-        log.debug(LoggingUtils.REVIEW_WAS_UPDATED_IN_CONTROLLER, albumReviewDto);
-        return UrlPathUtils.REDIRECT_ALBUM_REVIEWS;
-    }
-
-    @PostMapping("/mix/update")
-    public String updateMixReview(MixReviewDto mixReviewDto) {
-        mixReviewService.updateReview(mixReviewDto);
-        log.debug(LoggingUtils.REVIEW_WAS_UPDATED_IN_CONTROLLER, mixReviewDto);
-        return UrlPathUtils.REDIRECT_MIX_REVIEWS;
-    }
-
-    @PostMapping("/track/update")
-    public String updateTrackReview(TrackReviewDto trackReviewDto) {
-        trackReviewService.updateReview(trackReviewDto);
-        log.debug(LoggingUtils.REVIEW_WAS_UPDATED_IN_CONTROLLER, trackReviewDto);
-        return UrlPathUtils.REDIRECT_TRACK_REVIEWS;
-    }
-
-    @PostMapping("/album/{id}/remove")
+    @GetMapping("/album/{id}/remove")
     public String deleteAlbumReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumReviewId) {
         albumReviewService.deleteReview(albumReviewId);
         log.debug(LoggingUtils.REVIEW_WAS_DELETED_IN_CONTROLLER, albumReviewId);
-        return UrlPathUtils.REDIRECT_ALBUM_REVIEWS;
+        return UrlPathUtils.REDIRECT_ALBUM_REVIEWS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
-    @PostMapping("/mix/{id}/remove")
+    @GetMapping("/mix/{id}/remove")
     public String deleteMixReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixReviewId) {
         mixReviewService.deleteReview(mixReviewId);
         log.debug(LoggingUtils.REVIEW_WAS_DELETED_IN_CONTROLLER, mixReviewId);
-        return UrlPathUtils.REDIRECT_MIX_REVIEWS;
+        return UrlPathUtils.REDIRECT_MIX_REVIEWS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
-    @PostMapping("/track/{id}/remove")
+    @GetMapping("/track/{id}/remove")
     public String deleteTrackReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackReviewId) {
         trackReviewService.deleteReview(trackReviewId);
         log.debug(LoggingUtils.REVIEW_WAS_DELETED_IN_CONTROLLER, trackReviewId);
-        return UrlPathUtils.REDIRECT_TRACK_REVIEWS;
+        return UrlPathUtils.REDIRECT_TRACK_REVIEWS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 }
