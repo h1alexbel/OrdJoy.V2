@@ -38,7 +38,7 @@ public class TrackController {
         this.mixService = mixService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/auth/all")
     public String getAllTracks(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
@@ -47,12 +47,12 @@ public class TrackController {
         return PageUtils.TRACKS_PAGE;
     }
 
-    @GetMapping("/addTrack")
+    @GetMapping("/admin/addTrack")
     public String addTrackPage() {
         return PageUtils.ADD_TRACK_FORM;
     }
 
-    @PostMapping("/addTrack")
+    @PostMapping("/admin/addTrack")
     public String addTrack(TrackDto trackDto, Model model) {
         if (!trackService.isTracksTitleExists(trackDto.getTitle())) {
             TrackDto savedTrack = trackService.save(trackDto);
@@ -64,12 +64,12 @@ public class TrackController {
         }
     }
 
-    @GetMapping("/addTrackToMix")
+    @GetMapping("/admin/addTrackToMix")
     public String addTrackToMixPage() {
         return PageUtils.ADD_TRACK_TO_MIX_FORM;
     }
 
-    @PostMapping("/addTrackToMix")
+    @PostMapping("/admin/addTrackToMix")
     public String addTrackToMix(TrackDto trackDto, MixDto mixDto) {
         Optional<TrackDto> maybeTrack = trackService.findTrackByTitle(trackDto.getTitle());
         Optional<MixDto> maybeMix = mixService.findMixByTitle(mixDto.getTitle());
@@ -84,7 +84,7 @@ public class TrackController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/auth/{id}")
     public String getTrack(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId,
                            Model model) {
         Optional<TrackDto> maybeTrack = trackService.findById(trackId);
@@ -97,7 +97,7 @@ public class TrackController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/auth/")
     public String getTrack(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String trackTitle,
                            Model model) {
         Optional<TrackDto> maybeTrack = trackService.findTrackByTitle(trackTitle);
@@ -110,7 +110,7 @@ public class TrackController {
         }
     }
 
-    @GetMapping("/{id}/reviews")
+    @GetMapping("/auth/{id}/reviews")
     public String getTrackReviews(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId,
                                   Model model) {
         List<TrackReviewDto> trackReviews = trackService.findTrackReviewsByTrackId(trackId);
@@ -118,7 +118,7 @@ public class TrackController {
         return PageUtils.TRACK_REVIEWS_PAGE;
     }
 
-    @GetMapping("/reviews/")
+    @GetMapping("/auth/reviews/")
     public String getTrackReviews(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String trackTitle,
                                   Model model) {
         List<TrackReviewDto> trackReviews = trackService.findTrackReviewsByTrackTitle(trackTitle);
@@ -126,14 +126,14 @@ public class TrackController {
         return PageUtils.TRACK_REVIEWS_PAGE;
     }
 
-    @GetMapping("/{id}/remove")
+    @GetMapping("/admin/{id}/remove")
     public String deleteTrack(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId) {
         trackService.deleteTrack(trackId);
         log.debug(LoggingUtils.TRACK_WAS_DELETED_IN_CONTROLLER, trackId);
         return UrlPathUtils.REDIRECT_TRACKS_PAGE_WITH_LIMIT_OFFSET;
     }
 
-    @GetMapping("/update/{id}")
+    @GetMapping("/admin/update/{id}")
     public String updateTrackForm(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId,
             Model model) {
@@ -142,7 +142,7 @@ public class TrackController {
         return PageUtils.TRACK_UPDATE_FORM;
     }
 
-    @PostMapping("/update")
+    @PostMapping("/admin/update")
     public String updateTrack(TrackDto trackDto) {
         if (!trackService.isTracksTitleExists(trackDto.getTitle())) {
             trackService.update(trackDto);

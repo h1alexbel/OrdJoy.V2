@@ -35,7 +35,7 @@ public class MixController {
         this.mixService = mixService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/auth/all")
     public String getAllMixes(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
@@ -44,12 +44,12 @@ public class MixController {
         return PageUtils.MIXES_PAGE;
     }
 
-    @GetMapping("/addMix")
+    @GetMapping("/admin/addMix")
     public String addMixPage() {
         return PageUtils.ADD_MIX_FORM_PAGE;
     }
 
-    @PostMapping("/addMix")
+    @PostMapping("/admin/addMix")
     public String addMix(MixDto mixDto, Model model) {
         if (!mixService.isMixTitleExists(mixDto.getTitle())) {
             MixDto savedMix = mixService.save(mixDto);
@@ -61,7 +61,7 @@ public class MixController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/auth/{id}")
     public String getMix(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
                          Model model) {
         Optional<MixDto> maybeMix = mixService.findById(mixId);
@@ -74,7 +74,7 @@ public class MixController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/auth/")
     public String getMix(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
                          Model model) {
         Optional<MixDto> maybeMix = mixService.findMixByTitle(mixTitle);
@@ -87,7 +87,7 @@ public class MixController {
         }
     }
 
-    @GetMapping("/tracks/")
+    @GetMapping("/auth/tracks/")
     public String getMixTracks(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
                                Model model) {
         List<TrackDto> mixTracks = mixService.findTracksByMixTitle(mixTitle);
@@ -95,7 +95,7 @@ public class MixController {
         return PageUtils.TRACKS_PAGE;
     }
 
-    @GetMapping("/{id}/reviews")
+    @GetMapping("/auth/{id}/reviews")
     public String getMixReviews(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
                                 Model model) {
         List<MixReviewDto> mixReviews = mixService.findMixReviewsByMixId(mixId);
@@ -103,7 +103,7 @@ public class MixController {
         return PageUtils.TRACKS_PAGE;
     }
 
-    @GetMapping("/reviews/")
+    @GetMapping("/auth/reviews/")
     public String getMixReviews(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
                                 Model model) {
         List<MixReviewDto> mixReviews = mixService.findMixReviewsByMixTitle(mixTitle);
@@ -111,14 +111,14 @@ public class MixController {
         return PageUtils.MIX_REVIEWS_PAGE;
     }
 
-    @GetMapping("/{id}/remove")
+    @GetMapping("/admin/{id}/remove")
     public String deleteMix(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId) {
         mixService.deleteMix(mixId);
         log.debug(LoggingUtils.MIX_WAS_DELETED_IN_CONTROLLER, mixId);
         return UrlPathUtils.REDIRECT_MIXES_PAGE_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
-    @GetMapping("/update/{id}")
+    @GetMapping("/admin/update/{id}")
     public String updateMixForm(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
             Model model) {
@@ -127,7 +127,7 @@ public class MixController {
         return PageUtils.MIX_UPDATE_FORM;
     }
 
-    @PostMapping("/update")
+    @PostMapping("/admin/update")
     public String updateMix(MixDto mixDto) {
         if (!mixService.isMixTitleExists(mixDto.getTitle())) {
             mixService.update(mixDto);
