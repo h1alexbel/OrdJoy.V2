@@ -9,7 +9,7 @@
 <body>
 <div th:replace="~{fragments/locale::locale}"></div>
 <div class="center">
-    <form action="#" th:action="@{/album/update}" th:object="${requestAlbum}" method="post">
+    <form action="#" th:action="@{/album/admin/update}" th:object="${requestAlbum}" method="post">
         <h1 th:text="#{album.edit}"></h1>
         <div class="txt_field">
             <input id="id" type="number" required readonly th:field="*{id}">

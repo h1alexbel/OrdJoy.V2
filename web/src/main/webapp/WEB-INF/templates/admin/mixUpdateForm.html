@@ -9,7 +9,7 @@
 <body>
 <div th:replace="~{fragments/locale::locale}"></div>
 <div class="center">
-    <form action="#" th:action="@{/mix/update}" th:object="${mix}" method="post">
+    <form action="#" th:action="@{/mix/admin/update}" th:object="${mix}" method="post">
         <h1 th:text="#{mix.edit}"></h1>
         <div class="txt_field">
             <input id="id" type="number" required readonly th:field="*{id}">
