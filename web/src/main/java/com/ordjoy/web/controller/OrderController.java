@@ -1,8 +1,9 @@
 package com.ordjoy.web.controller;
 
+import com.ordjoy.model.dto.UserDto;
 import com.ordjoy.model.dto.UserTrackOrderDto;
 import com.ordjoy.model.entity.order.OrderStatus;
-import com.ordjoy.model.service.order.OrderService;
+import com.ordjoy.model.service.OrderService;
 import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.web.util.AttributeUtils;
 import com.ordjoy.web.util.PageUtils;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -42,12 +44,21 @@ public class OrderController {
     public String getAllOrders(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
-        List<UserTrackOrderDto> orders = orderService.listOrders(limit, offset);
+        List<UserTrackOrderDto> orders = orderService.list(limit, offset);
         model.addAttribute(AttributeUtils.ORDERS, orders);
         return PageUtils.ORDERS_PAGE;
     }
 
-    @GetMapping("/completed")
+    @GetMapping("/user/all")
+    public String getUserOrders(
+            @SessionAttribute(AttributeUtils.SESSION_USER) UserDto userDto,
+            Model model) {
+        List<UserTrackOrderDto> userOrders = orderService.findOrdersByUserId(userDto.getId());
+        model.addAttribute(AttributeUtils.ORDERS, userOrders);
+        return PageUtils.USER_ORDERS;
+    }
+
+    @GetMapping("/admin/completed")
     public String getCompletedOrders(Model model) {
         List<UserTrackOrderDto> completedOrders = orderService
                 .findOrdersByStatus(OrderStatus.COMPLETED);
@@ -55,7 +66,7 @@ public class OrderController {
         return PageUtils.ORDERS_PAGE;
     }
 
-    @GetMapping("/cancelled")
+    @GetMapping("/admin/cancelled")
     public String getCancelledOrders(Model model) {
         List<UserTrackOrderDto> cancelledOrders = orderService
                 .findOrdersByStatus(OrderStatus.CANCELLED);
@@ -63,7 +74,7 @@ public class OrderController {
         return PageUtils.ORDERS_PAGE;
     }
 
-    @GetMapping("/accepted")
+    @GetMapping("/admin/accepted")
     public String getAcceptedOrders(Model model) {
         List<UserTrackOrderDto> acceptedOrders = orderService
                 .findOrdersByStatus(OrderStatus.ACCEPTED);
@@ -71,38 +82,37 @@ public class OrderController {
         return PageUtils.ORDERS_PAGE;
     }
 
-    @GetMapping("/inProgress")
+    @GetMapping("/admin/inProgress")
     public String getInProgressOrders(Model model) {
         List<UserTrackOrderDto> inProgressOrders = orderService
-                .findOrdersByStatus(OrderStatus.IN_PROGRESS);
+                .findOrdersByStatus(OrderStatus.PROCESSING);
         model.addAttribute(AttributeUtils.ORDERS, inProgressOrders);
         return PageUtils.ORDERS_PAGE;
     }
 
-    @GetMapping("/makeOrder")
+    @GetMapping("/user/makeOrder")
     public String makeOrderPage() {
         return PageUtils.CREATE_ORDER_FORM;
     }
 
-    @PostMapping("/makeOrder")
+    @PostMapping("/user/makeOrder")
     public String makeOrder(UserTrackOrderDto orderDto, Model model) {
-        UserTrackOrderDto savedOrder = orderService.makeOrder(orderDto);
+        UserTrackOrderDto savedOrder = orderService.save(orderDto);
         log.debug(LoggingUtils.ORDER_WAS_CREATED_IN_CONTROLLER, savedOrder);
         BigDecimal priceAfterDiscount = orderService.calculateOrderPrice(orderDto.getId());
         log.debug(LoggingUtils.ORDER_PRICE_WAS_CALCULATED_IN_CONTROLLER, priceAfterDiscount);
         savedOrder.setPrice(priceAfterDiscount);
-        orderService.updateOrder(savedOrder);
+        orderService.update(savedOrder);
         log.debug(LoggingUtils.ORDER_WAS_UPDATED_IN_CONTROLLER, savedOrder);
         model.addAttribute(AttributeUtils.SESSION_ORDER, savedOrder);
-        orderService.subtractBalanceFromUser(savedOrder.getPrice(), savedOrder.getUser().getId());
         log.debug(LoggingUtils.USER_BALANCE_WAS_SUBTRACTED_IN_CONTROLLER, savedOrder, savedOrder.getUser());
         return UrlPathUtils.REDIRECT_USER_ORDERS_PAGE;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/{id}")
     public String getOrder(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long orderId, Model model) {
-        Optional<UserTrackOrderDto> maybeOrder = orderService.findOrderById(orderId);
+        Optional<UserTrackOrderDto> maybeOrder = orderService.findById(orderId);
         if (maybeOrder.isPresent()) {
             UserTrackOrderDto order = maybeOrder.get();
             model.addAttribute(AttributeUtils.REQUEST_ORDER, order);
@@ -112,7 +122,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/admin/account/{id}")
     public String getOrdersByUserId(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long userId, Model model) {
         List<UserTrackOrderDto> ordersByUserId = orderService.findOrdersByUserId(userId);
@@ -120,7 +130,7 @@ public class OrderController {
         return PageUtils.ORDERS_PAGE;
     }
 
-    @GetMapping("/user/")
+    @GetMapping("/admin/account/")
     public String getOrdersByUserLogin(
             @RequestParam(value = UrlPathUtils.USERNAME_PARAM) String login, Model model) {
         List<UserTrackOrderDto> ordersByUserLogin = orderService.findOrdersByUserLogin(login);
@@ -128,7 +138,7 @@ public class OrderController {
         return PageUtils.ORDERS_PAGE;
     }
 
-    @GetMapping("/track/{id}")
+    @GetMapping("/admin/track/{id}")
     public String getOrdersByTrackId(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId, Model model) {
         List<UserTrackOrderDto> ordersByTrackId = orderService.findOrdersByTrackId(trackId);
@@ -136,7 +146,7 @@ public class OrderController {
         return PageUtils.ORDERS_PAGE;
     }
 
-    @GetMapping("/track/")
+    @GetMapping("/admin/track/")
     public String getOrdersByTrackTitle(
             @RequestParam(UrlPathUtils.TITLE_PARAM) String trackTitle, Model model) {
         List<UserTrackOrderDto> ordersByTrackTitle = orderService.findOrdersByTrackTitle(trackTitle);
@@ -144,29 +154,31 @@ public class OrderController {
         return PageUtils.ORDERS_PAGE;
     }
 
-    @PostMapping("/{id}/status/update")
-    public String updateOrderStatus(
-            OrderStatus status,
-            @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long orderId) {
-        orderService.updateOrderStatus(status, orderId);
-        log.debug(LoggingUtils.ORDER_STATUS_WAS_UPDATED_IN_CONTROLLER, status, orderId);
-        return UrlPathUtils.REDIRECT_ORDER_MAIN_PAGE + orderId;
+    @GetMapping("/admin/updateStatus/{id}")
+    public String updateStatusForm(
+            @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
+            Model model) {
+        Optional<UserTrackOrderDto> maybeOrder = orderService.findById(id);
+        maybeOrder.ifPresent(orderDto -> model.addAttribute(AttributeUtils.REQUEST_ORDER, orderDto));
+        return PageUtils.UPDATE_STATUS_FORM;
     }
 
-    @PostMapping("/{id}/remove")
+    @PostMapping("/admin/updateStatus")
+    public String updateOrderStatus(
+            UserTrackOrderDto orderDto,
+            OrderStatus status) {
+        orderService.updateOrderStatus(status, orderDto.getId());
+        log.debug(LoggingUtils.ORDER_STATUS_WAS_UPDATED_IN_CONTROLLER, status, orderDto);
+        return UrlPathUtils.REDIRECT_ORDER_MAIN_PAGE + orderDto.getId();
+    }
+
+    @GetMapping("/admin/{id}/remove")
     public String deleteOrder(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long orderId,
             SessionStatus status) {
         orderService.deleteOrder(orderId);
         status.setComplete();
         log.debug(LoggingUtils.ORDER_WAS_DELETED_IN_CONTROLLER, orderId);
-        return UrlPathUtils.REDIRECT_ORDERS_PAGE;
-    }
-
-    @PostMapping("/update")
-    public String updateOrder(UserTrackOrderDto orderDto) {
-        orderService.updateOrder(orderDto);
-        log.debug(LoggingUtils.ORDER_WAS_UPDATED_IN_CONTROLLER, orderDto);
-        return UrlPathUtils.REDIRECT_ORDER_MAIN_PAGE + orderDto.getId();
+        return UrlPathUtils.REDIRECT_ORDERS_PAGE_WITH_DEFAULT_LIMIT_OFFSET;
     }
 }
