@@ -35,7 +35,7 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/auth/all")
     public String getAllAlbums(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
@@ -44,7 +44,7 @@ public class AlbumController {
         return PageUtils.ALL_ALBUMS_PAGE;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/auth/{id}")
     public String getAlbum(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
                            Model model) {
         Optional<AlbumDto> maybeAlbum = albumService.findById(id);
@@ -57,7 +57,7 @@ public class AlbumController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/auth/")
     public String getAlbum(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String title,
                            Model model) {
         Optional<AlbumDto> maybeAlbum = albumService.findAlbumByTitle(title);
@@ -70,12 +70,12 @@ public class AlbumController {
         }
     }
 
-    @GetMapping("/addAlbum")
+    @GetMapping("/admin/addAlbum")
     public String addAlbumPage() {
         return PageUtils.ADD_ALBUM_PAGE;
     }
 
-    @PostMapping("/addAlbum")
+    @PostMapping("/admin/addAlbum")
     public String addAlbum(AlbumDto albumDto, Model model) {
         if (!albumService.isAlbumTitleExists(albumDto.getTitle())) {
             AlbumDto savedAlbum = albumService.save(albumDto);
@@ -87,7 +87,7 @@ public class AlbumController {
         }
     }
 
-    @GetMapping("/{id}/tracks")
+    @GetMapping("/auth/{id}/tracks")
     public String getAlbumTracks(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId,
                                  Model model) {
         List<TrackDto> albumTracks = albumService.findTracksByAlbumId(albumId);
@@ -95,7 +95,7 @@ public class AlbumController {
         return PageUtils.TRACKS_PAGE;
     }
 
-    @GetMapping("/tracks/")
+    @GetMapping("/auth/tracks/")
     public String getAlbumTracks(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String albumTitle,
                                  Model model) {
         List<TrackDto> albumTracks = albumService.findTracksByAlbumTitle(albumTitle);
@@ -103,7 +103,7 @@ public class AlbumController {
         return PageUtils.TRACKS_PAGE;
     }
 
-    @GetMapping("/{id}/reviews")
+    @GetMapping("/auth/{id}/reviews")
     public String getAlbumReviews(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId,
                                   Model model) {
         List<AlbumReviewDto> albumReviews = albumService.findAlbumReviewsByAlbumId(albumId);
@@ -111,7 +111,7 @@ public class AlbumController {
         return PageUtils.ALBUM_REVIEWS_PAGE;
     }
 
-    @GetMapping("/reviews/")
+    @GetMapping("/auth/reviews/")
     public String getAlbumReviews(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String title,
                                   Model model) {
         List<AlbumReviewDto> albumReviews = albumService.findAlbumReviewsByAlbumTitle(title);
@@ -119,14 +119,14 @@ public class AlbumController {
         return PageUtils.ALBUM_REVIEWS_PAGE;
     }
 
-    @GetMapping("/{id}/remove")
+    @GetMapping("/admin/{id}/remove")
     public String deleteAlbum(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId) {
         albumService.deleteAlbum(albumId);
         log.debug(LoggingUtils.ALBUM_WAS_DELETED_IN_CONTROLLER, albumId);
         return UrlPathUtils.REDIRECT_ALL_ALBUMS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
-    @GetMapping("/update/{id}")
+    @GetMapping("/admin/update/{id}")
     public String updateAlbumPage(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
             Model model) {
@@ -135,7 +135,7 @@ public class AlbumController {
         return PageUtils.ALBUM_UPDATE_PAGE;
     }
 
-    @PostMapping("/update")
+    @PostMapping("/admin/update")
     public String updateAlbum(AlbumDto albumDto) {
         if (!albumService.isAlbumTitleExists(albumDto.getTitle())) {
             albumService.update(albumDto);
