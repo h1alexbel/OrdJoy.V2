@@ -26,11 +26,11 @@
         <td th:text="${album.title}">
             Album title
         </td>
-        <td><a th:href="@{/album/{id}/remove(id = ${album.id})}" role="button" class="btn btn-danger"
+        <td><a th:href="@{/album/admin/{id}/remove(id = ${album.id})}" role="button" class="btn btn-danger"
                th:text="#{album.delete}">
         </a>
         </td>
-        <td><a th:href="@{/album/update/{id}(id = ${album.id})}" role="button"
+        <td><a th:href="@{/album/admin/update/{id}(id = ${album.id})}" role="button"
                class="btn btn-warning" th:text="#{album.edit}">
         </a></td>
         <td><a th:href="@{/}" role="button"

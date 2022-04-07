@@ -32,10 +32,10 @@
             </div>
         </div>
     </a>
-    <a th:href="@{/album/{id}/tracks(id = ${requestAlbum.id})}" class="btn btn-outline-success"
+    <a th:href="@{/album/auth/{id}/tracks(id = ${requestAlbum.id})}" class="btn btn-outline-success"
        th:text="#{album.tracks}">
     </a>
-    <a th:href="@{/album/reviews/(title = ${requestAlbum.title})}" class="btn btn-outline-success"
+    <a th:href="@{/album/auth/reviews/(title = ${requestAlbum.title})}" class="btn btn-outline-success"
        th:text="#{album.reviews}">
     </a>
 </div>
