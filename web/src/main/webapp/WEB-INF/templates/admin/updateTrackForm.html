@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Track</title>
+    <link rel="stylesheet" th:href="@{/resources/css/design.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/locale::locale}"></div>
+<div class="center">
+    <form action="#" th:action="@{/track/admin/update}" th:object="${track}" method="post">
+        <h1 th:text="#{track.edit}"></h1>
+        <div class="txt_field">
+            <input id="id" type="number" required readonly th:field="*{id}">
+            <span></span>
+            <label for="id" th:text="#{track.id}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input id="albumId" type="number" required readonly th:field="*{album.id}">
+            <span></span>
+            <label for="id" th:text="#{album.id}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input id="albumTitle" type="text" required readonly th:field="*{album.title}">
+            <span></span>
+            <label for="id" th:text="#{album.title}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input id="title" type="text" required th:field="*{title}">
+            <span></span>
+            <label for="title" th:text="#{track.title}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input id="url" type="text" required th:field="*{url}">
+            <span></span>
+            <label for="title" th:text="#{track.url}">
+            </label>
+        </div>
+        <input type="submit" th:value="#{track.edit}">
+    </form>
+</div>
+</body>
+</html>
