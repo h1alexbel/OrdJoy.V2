@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new Admin</title>
+    <link rel="stylesheet" th:href="@{/resources/css/design.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/locale::locale}"></div>
+<div class="center">
+    <h1 th:text="#{admin.addNewAdmin}">
+    </h1>
+    <form th:method="post" th:action="@{/account/admin/addAdmin}" th:object="${admin}"
+          enctype="application/x-www-form-urlencoded">
+        <div class="txt_field">
+            <input th:field="*{email}" type="email"
+                   required pattern="^[A-Za-z.]+\w+@[A-Za-z]{2,}\.(com|org)$">
+            <span></span>
+            <label th:text="#{user.info.email}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input th:field="*{login}" type="text" required pattern="^[A-Za-zА-Яа-я1-9]{3,20}$">
+            <span></span>
+            <label th:text="#{user.info.login}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input th:field="*{password}" type="password" required pattern="^\w{2,64}$">
+            <span></span>
+            <label th:text="#{login.password}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input type="date" id="start" th:field="*{personalInfo.birthDate}"
+                   min="1945-01-01" max="2022-01-01">
+            <label th:text="#{user.info.birthdate}"></label>
+        </div>
+        <div class="txt_field">
+            <input th:field="*{personalInfo.firstName}" type="text" pattern="^[A-Za-zА-Яа-я]{2,20}$">
+            <span></span>
+            <label th:text="#{register.firstName}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input th:field="*{personalInfo.lastName}" type="text" pattern="^[A-Za-zА-Яа-я]{2,20}$">
+            <span></span>
+            <label th:text="#{register.lastName}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input th:field="*{personalInfo.cardNumber}" type="text" pattern="^\d{16}$">
+            <span></span>
+            <label th:text="#{register.cardNumber}">
+            </label>
+        </div>
+        <input type="submit" th:value="#{admin.addNewAdmin}">
+    </form>
+</div>
+</body>
+</html>
