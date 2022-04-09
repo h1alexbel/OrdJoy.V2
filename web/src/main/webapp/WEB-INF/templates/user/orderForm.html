@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Make Order</title>
+    <link rel="stylesheet" th:href="@{/resources/css/design.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/locale::locale}"></div>
+<div class="center">
+    <h1 th:text="#{user.makeOrder}">
+    </h1>
+    <form th:method="post" th:action="@{/order/user/makeOrder}" th:object="${order}"
+          enctype="application/x-www-form-urlencoded">
+        <div class="txt_field">
+            <input th:field="*{track.title}" name="trackTitle" type="text" required>
+            <span></span>
+            <label th:text="#{track.title}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input th:field="*{price}" name="price" type="text" required>
+            <span></span>
+            <label th:text="#{order.price}">
+            </label>
+        </div>
+        <input type="submit" th:value="#{user.makeOrder}">
+    </form>
+</div>
+</body>
+</html>
