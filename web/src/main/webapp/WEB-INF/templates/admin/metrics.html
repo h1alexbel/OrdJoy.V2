@@ -48,7 +48,8 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page"
                            th:href="@{/account/adminMain}">
-                            <span data-feather="home" th:text="#{metrics.home}">
+                            <span data-feather="home">
+                                <span th:text="#{metrics.home}"></span>
                             </span>
                         </a>
                     </li>
@@ -61,26 +62,26 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           th:href="@{/track/all?limit=20&offset=0}">
-                            <span data-feather="file" th:text="#{user.tracks}"></span>
+                           th:href="@{/track/all?limit=20&offset=0}"
+                           th:text="#{user.tracks}">
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           th:href="@{/album/all?limit=20&offset=0}">
-                            <span data-feather="file" th:text="#{user.albums}"></span>
+                           th:href="@{/album/all?limit=20&offset=0}"
+                           th:text="#{user.albums}">
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           th:href="@{/mix/all?limit=20&offset=0}">
-                            <span data-feather="file" th:text="#{user.mixes}"></span>
+                           th:href="@{/mix/all?limit=20&offset=0}"
+                           th:text="#{user.mixes}">
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           th:href="@{/account/admin/all?limit=20&offset=0}" th:text="#{admin.customers}">
-                            <span data-feather="file" th:text="#{admin.customers}"></span>
+                           th:href="@{/account/admin/all?limit=20&offset=0}"
+                           th:text="#{admin.customers}">
                         </a>
                     </li>
                 </ul>
@@ -93,20 +94,20 @@
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
                         <a class="nav-link"
-                           th:href="@{/review/mix/all?limit=20&offset=0}">
-                            <span data-feather="file" th:text="#{mix.reviews}"></span>
+                           th:href="@{/review/mix/all?limit=20&offset=0}"
+                           th:text="#{mix.reviews}">
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           th:href="@{/review/album/all?limit=20&offset=0}">
-                            <span data-feather="file" th:text="#{album.reviews}"></span>
+                           th:href="@{/review/album/all?limit=20&offset=0}"
+                           th:text="#{album.reviews}">
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           th:href="@{/review/track/all?limit=20&offset=0}">
-                            <span data-feather="file" th:text="#{track.reviews}"></span>
+                           th:href="@{/review/track/all?limit=20&offset=0}"
+                           th:text="#{track.reviews}">
                         </a>
                     </li>
                 </ul>
