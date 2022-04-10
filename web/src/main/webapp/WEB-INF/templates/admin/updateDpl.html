@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User Discount</title>
+    <link rel="stylesheet" th:href="@{/resources/css/design.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/locale::locale}"></div>
+<div class="center">
+    <form action="#" th:action="@{/account/admin/info/updateDiscountLevel}"
+          th:object="${requestUser}" method="post">
+        <h1 th:text="#{dpl.edit}"></h1>
+        <div class="txt_field">
+            <input id="id" type="number" required readonly th:field="*{id}">
+            <span></span>
+            <label for="id" th:text="#{album.id}">
+            </label>
+        </div>
+        <div class="txt_field">
+            <input id="discountPercentageLevel" type="number"
+                   required th:field="*{personalInfo.discountPercentageLevel}">
+            <span></span>
+            <label for="discountPercentageLevel" th:text="#{user.info.discountPercentageLevel}">
+            </label>
+        </div>
+        <input type="submit" th:value="#{dpl.edit}">
+    </form>
+</div>
+</body>
+</html>
