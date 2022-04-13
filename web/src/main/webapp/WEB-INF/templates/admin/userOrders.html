@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Orders</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+
+<div th:replace="~{fragments/adminHeader.html}"></div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{order.id}">
+            </th>
+            <th scope="col" th:text="#{order.price}">
+            </th>
+            <th scope="col" th:text="#{order.status}">
+            </th>
+            <th scope="col" th:text="#{review.user}">
+            </th>
+            <th scope="col" th:text="#{review.track}">
+            </th>
+        </tr>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">Order id</td>
+            <td th:text="${order.price} + #{user.balance.sign}">Order price</td>
+            <td th:text="${#strings.capitalize(order.status.toString().toLowerCase())}">Order status</td>
+            <td th:text="${order.user.login}">User login</td>
+            <td th:text="${order.track.title}">Track title</td>
+        </tr>
+        </thead>
+    </table>
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
+                <a th:href="@{'?username=' + ${order.user.login} + '&limit=5&offset='+ ${page * 5}}"
+                   role="button"
+                   class="btn btn-primary" th:text="${page + 1}">
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div th:replace="~{fragments/footer.html}"></div>
+</body>
+</html>
