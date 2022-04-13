@@ -2,41 +2,42 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>My Orders</title>
+    <title>Orders by Track Title</title>
     <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
 <body>
 
-<div th:replace="~{fragments/userHeader.html}"></div>
+<div th:replace="~{fragments/adminHeader.html}"></div>
 
 <div class="container">
     <table class="table">
-        <h1 class="text-center" th:text="#{user.orders}"></h1>
         <thead>
         <tr>
+            <th scope="col" th:text="#{order.id}">
+            </th>
             <th scope="col" th:text="#{order.price}">
             </th>
             <th scope="col" th:text="#{order.status}">
+            </th>
+            <th scope="col" th:text="#{review.user}">
             </th>
             <th scope="col" th:text="#{review.track}">
             </th>
         </tr>
         <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">Order id</td>
             <td th:text="${order.price} + #{user.balance.sign}">Order price</td>
             <td th:text="${#strings.capitalize(order.status.toString().toLowerCase())}">Order status</td>
+            <td th:text="${order.user.login}">User login</td>
             <td th:text="${order.track.title}">Track title</td>
-            <td th:if="${order.status.name() ne 'COMPLETED'}">
-                <a th:href="@{/user/pay-order/{id}(id = ${order.id})}" role="button"
-                   class="btn btn-info" th:text="#{order.pay}">
-                </a></td>
         </tr>
         </thead>
     </table>
     <nav aria-label="Pagination">
         <ul class="pagination">
             <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
-                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                <a th:href="@{'?title=' + ${order.track.title} + '&limit=5&offset='+ ${page * 5}}"
                    role="button"
                    class="btn btn-primary" th:text="${page + 1}">
                 </a>

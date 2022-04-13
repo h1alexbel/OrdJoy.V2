@@ -10,38 +10,46 @@
 
 <div th:replace="~{fragments/adminHeader.html}"></div>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col" th:text="#{order.id}">
-        </th>
-        <th scope="col" th:text="#{order.price}">
-        </th>
-        <th scope="col" th:text="#{order.status}">
-        </th>
-        <th scope="col" th:text="#{review.user}">
-        </th>
-        <th scope="col" th:text="#{review.track}">
-        </th>
-    </tr>
-    <tr th:each="order : ${orders}">
-        <td th:text="${order.id}">Order id</td>
-        <td th:text="${order.price} + #{user.balance.sign}">Order price</td>
-        <td th:text="${#strings.capitalize(order.status.toString().toLowerCase())}">Order status</td>
-        <td th:text="${order.user.login}">User login</td>
-        <td th:text="${order.track.title}">Track title</td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-danger" th:text="#{order.decline}">
-        </a></td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-warning" th:text="#{order.run}">
-        </a></td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-success" th:text="#{order.complete}">
-        </a></td>
-    </tr>
-    </thead>
-</table>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{order.id}">
+            </th>
+            <th scope="col" th:text="#{order.price}">
+            </th>
+            <th scope="col" th:text="#{order.status}">
+            </th>
+            <th scope="col" th:text="#{review.user}">
+            </th>
+            <th scope="col" th:text="#{review.track}">
+            </th>
+        </tr>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">Order id</td>
+            <td th:text="${order.price} + #{user.balance.sign}">Order price</td>
+            <td th:text="${#strings.capitalize(order.status.toString().toLowerCase())}">Order status</td>
+            <td th:text="${order.user.login}">User login</td>
+            <td th:text="${order.track.title}">Track title</td>
+            <td><a th:href="@{/admin/order/cancel/{id}(id = ${order.id})}" role="button"
+                   class="btn btn-danger" th:text="#{order.decline}">
+            </a></td>
+            <td><a th:href="@{/admin/order/complete/{id}(id = ${order.id})}" role="button"
+                   class="btn btn-success" th:text="#{order.complete}">
+            </a></td>
+        </tr>
+        </thead>
+    </table>
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
+                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                   role="button"
+                   class="btn btn-primary" th:text="${page + 1}"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
 <div th:replace="~{fragments/footer.html}"></div>
 </body>
 </html>

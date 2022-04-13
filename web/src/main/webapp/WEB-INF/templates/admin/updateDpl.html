@@ -9,7 +9,7 @@
 <body>
 <div th:replace="~{fragments/locale::locale}"></div>
 <div class="center">
-    <form action="#" th:action="@{/account/admin/info/updateDiscountLevel}"
+    <form action="#" th:action="@{/admin/info/update-discount-level}"
           th:object="${requestUser}" method="post">
         <h1 th:text="#{dpl.edit}"></h1>
         <div class="txt_field">
@@ -20,6 +20,7 @@
         </div>
         <div class="txt_field">
             <input id="discountPercentageLevel" type="number"
+                   pattern="^[1-9][0-9]?$|^100$"
                    required th:field="*{personalInfo.discountPercentageLevel}">
             <span></span>
             <label for="discountPercentageLevel" th:text="#{user.info.discountPercentageLevel}">

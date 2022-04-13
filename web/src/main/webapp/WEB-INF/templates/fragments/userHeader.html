@@ -22,14 +22,14 @@
                 <div th:replace="~{fragments/locale::locale}">
                 </div>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a th:href="@{/album/all?limit=20&offset=0}"
+                    <li><a th:href="@{/auth/album/all?limit=5&offset=0}"
                            class="nav-link px-2 text-white" th:text="#{user.albums}">
                     </a></li>
-                    <li><a th:href="@{/track/all?limit=20&offset=0}"
+                    <li><a th:href="@{/auth/track/all?limit=5&offset=0}"
                            class="nav-link px-2 text-white" th:text="#{user.tracks}">
                     </a>
                     </li>
-                    <li><a th:href="@{/mix/all?limit=20&offset=0}"
+                    <li><a th:href="@{/auth/mix/all?limit=5&offset=0}"
                            class="nav-link px-2 text-white" th:text="#{user.mixes}">
                     </a>
                     </li>
@@ -38,20 +38,20 @@
                     </a></li>
                 </ul>
                 <div class="text-end">
-                    <a th:href="@{/account/info}"
+                    <a th:href="@{/user/account/info}"
                        class="btn btn-outline-light me-2"
                        role="button" th:text="#{user.accountInfo}">
                     </a>
-                    <a th:href="@{/order/makeOrder}"
+                    <a th:href="@{/user/order/make-order}"
                        class="btn btn-outline-primary" role="button" th:text="#{user.makeOrder}">
                     </a>
 
-                    <a th:href="@{/account/info/depositForm}"
+                    <a th:href="@{/user/account/info/deposit-form}"
                        class="btn btn-outline-success" role="button" th:text="#{user.updateBalance}">
                     </a>
 
                     <div class="text-xxl-center">
-                        <form method="post" th:action="@{/account/logout}" th:method="post"
+                        <form method="post" th:action="@{/logout}" th:method="post"
                               th:value="#{logout}"
                               enctype="application/x-www-form-urlencoded">
                             <input type="submit" class="btn btn-info" th:value="#{logout}">

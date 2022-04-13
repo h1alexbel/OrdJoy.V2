@@ -11,16 +11,17 @@
 <div class="center">
     <h1 th:text="#{addReview}">
     </h1>
-    <form th:method="post" th:action="@{/review/user/addTrackReview}" th:object="${trackReview}"
+    <form th:method="post" th:action="@{/user/review/add-track-review}" th:object="${trackReview}"
           enctype="application/x-www-form-urlencoded">
         <div class="txt_field">
-            <input th:field="*{reviewText}" type="text" required pattern="^[A-Za-zА-Яа-я].{1,512}.$">
+            <input th:field="*{reviewText}" type="text" required pattern="^[A-Za-zА-Яа-я].{2,512}">
             <span></span>
             <label th:text="#{review.track.text}">
             </label>
         </div>
         <div class="txt_field">
-            <input th:field="*{track.title}" name="trackTitle" type="text" required>
+            <input th:field="*{track.title}" name="trackTitle" type="text" required
+                   pattern="^[A-Za-zА-Яа-я].{1,512}.$">
             <span></span>
             <label th:text="#{track.title}">
             </label>

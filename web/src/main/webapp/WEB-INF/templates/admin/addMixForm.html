@@ -11,10 +11,10 @@
 <div class="center">
     <h1 th:text="#{mix.add}">
     </h1>
-    <form th:method="post" th:action="@{/mix/admin/addMix}"
+    <form th:method="post" th:action="@{/admin/mix/add-mix}"
           enctype="application/x-www-form-urlencoded">
         <div class="txt_field">
-            <input name="title" type="text" required pattern="^[A-Za-zА-Яа-я].{1,512}.$">
+            <input name="title" type="text" required pattern="^[A-Za-zА-Яа-я].{1,128}.$">
             <span></span>
             <label th:text="#{mix.title}">
             </label>
