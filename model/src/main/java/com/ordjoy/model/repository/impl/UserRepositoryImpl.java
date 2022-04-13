@@ -71,20 +71,4 @@ public class UserRepositoryImpl extends AbstractGenericCRUDRepository<User, Long
                 .stream()
                 .findFirst();
     }
-
-    @Override
-    public Optional<User> findByLoginAndPassword(String login, String password) {
-        Session session = sessionFactory.getCurrentSession();
-        Optional<User> user = session
-                .createQuery("select u from User u where u.login = :login and u.password = :password",
-                        User.class)
-                .setParameter(LOGIN_PARAM, login)
-                .setParameter(PASSWORD_PARAM, password)
-                .setMaxResults(1)
-                .getResultList()
-                .stream()
-                .findFirst();
-        log.debug(LoggingUtils.USER_WAS_FOUND_BY_LOGIN_AND_PASSWORD_REPO, user);
-        return user;
-    }
 }

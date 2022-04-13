@@ -64,7 +64,8 @@ class TrackRepositoryImplTest {
     @Test
     @DisplayName("find track reviews by track title test case")
     void findTrackReviewsByTrackTitle() {
-        List<TrackReview> reviews = trackRepository.findTrackReviewsByTrackTitle("Paranoid");
+        List<TrackReview> reviews = trackRepository
+                .findTrackReviewsByTrackTitle("Paranoid", 20, 0);
         assertThat(reviews).isNotEmpty();
     }
 

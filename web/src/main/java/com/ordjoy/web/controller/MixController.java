@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,7 +24,6 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("/mix")
 public class MixController {
 
     private final MixService mixService;
@@ -35,21 +33,23 @@ public class MixController {
         this.mixService = mixService;
     }
 
-    @GetMapping("/auth/all")
+    @GetMapping("/auth/mix/all")
     public String getAllMixes(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
         List<MixDto> mixList = mixService.list(limit, offset);
+        Long pages = mixService.getAllPages();
+        model.addAttribute(AttributeUtils.PAGES, pages);
         model.addAttribute(AttributeUtils.MIXES, mixList);
         return PageUtils.MIXES_PAGE;
     }
 
-    @GetMapping("/admin/addMix")
+    @GetMapping("/admin/mix/add-mix")
     public String addMixPage() {
         return PageUtils.ADD_MIX_FORM_PAGE;
     }
 
-    @PostMapping("/admin/addMix")
+    @PostMapping("/admin/mix/add-mix")
     public String addMix(MixDto mixDto, Model model) {
         if (!mixService.isMixTitleExists(mixDto.getTitle())) {
             MixDto savedMix = mixService.save(mixDto);
@@ -61,9 +61,10 @@ public class MixController {
         }
     }
 
-    @GetMapping("/auth/{id}")
-    public String getMix(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
-                         Model model) {
+    @GetMapping("/auth/mix/{id}")
+    public String getMix(
+            @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
+            Model model) {
         Optional<MixDto> maybeMix = mixService.findById(mixId);
         if (maybeMix.isPresent()) {
             MixDto mix = maybeMix.get();
@@ -74,9 +75,10 @@ public class MixController {
         }
     }
 
-    @GetMapping("/auth/")
-    public String getMix(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
-                         Model model) {
+    @GetMapping("/auth/mix")
+    public String getMix(
+            @RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
+            Model model) {
         Optional<MixDto> maybeMix = mixService.findMixByTitle(mixTitle);
         if (maybeMix.isPresent()) {
             MixDto mix = maybeMix.get();
@@ -87,38 +89,48 @@ public class MixController {
         }
     }
 
-    @GetMapping("/auth/tracks/")
-    public String getMixTracks(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
-                               Model model) {
-        List<TrackDto> mixTracks = mixService.findTracksByMixTitle(mixTitle);
+    @GetMapping("/auth/mix/tracks")
+    public String getMixTracks(
+            @RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset,
+            Model model) {
+        List<TrackDto> mixTracks = mixService
+                .findTracksByMixTitle(mixTitle, limit, offset);
+        Long pages = mixService.getTrackWithMixTitlePredicatePages(mixTitle);
+        for (TrackDto mixTrack : mixTracks) {
+            model.addAttribute(AttributeUtils.REQUEST_TRACK, mixTrack);
+        }
+        model.addAttribute(AttributeUtils.PAGES, pages);
         model.addAttribute(AttributeUtils.TRACKS, mixTracks);
-        return PageUtils.TRACKS_PAGE;
+        return PageUtils.MIX_TRACKS_PAGE;
     }
 
-    @GetMapping("/auth/{id}/reviews")
-    public String getMixReviews(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
-                                Model model) {
-        List<MixReviewDto> mixReviews = mixService.findMixReviewsByMixId(mixId);
-        model.addAttribute(AttributeUtils.TRACKS, mixReviews);
-        return PageUtils.TRACKS_PAGE;
-    }
-
-    @GetMapping("/auth/reviews/")
-    public String getMixReviews(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
-                                Model model) {
-        List<MixReviewDto> mixReviews = mixService.findMixReviewsByMixTitle(mixTitle);
+    @GetMapping("/auth/mix/reviews")
+    public String getMixReviews(
+            @RequestParam(value = UrlPathUtils.TITLE_PARAM) String mixTitle,
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset,
+            Model model) {
+        List<MixReviewDto> mixReviews = mixService
+                .findMixReviewsByMixTitle(mixTitle, limit, offset);
+        Long pages = mixService.getMixReviewWithMixTitlePredicatePages(mixTitle);
+        for (MixReviewDto mixReview : mixReviews) {
+            model.addAttribute(AttributeUtils.MIX_REVIEW, mixReview);
+        }
+        model.addAttribute(AttributeUtils.PAGES, pages);
         model.addAttribute(AttributeUtils.MIX_REVIEWS, mixReviews);
-        return PageUtils.MIX_REVIEWS_PAGE;
+        return PageUtils.CONCRETE_MIX_REVIEWS_PAGE;
     }
 
-    @GetMapping("/admin/{id}/remove")
+    @GetMapping("/admin/mix/{id}/remove")
     public String deleteMix(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId) {
         mixService.deleteMix(mixId);
         log.debug(LoggingUtils.MIX_WAS_DELETED_IN_CONTROLLER, mixId);
         return UrlPathUtils.REDIRECT_MIXES_PAGE_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
-    @GetMapping("/admin/update/{id}")
+    @GetMapping("/admin/mix/update/{id}")
     public String updateMixForm(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId,
             Model model) {
@@ -127,7 +139,7 @@ public class MixController {
         return PageUtils.MIX_UPDATE_FORM;
     }
 
-    @PostMapping("/admin/update")
+    @PostMapping("/admin/mix/update")
     public String updateMix(MixDto mixDto) {
         if (!mixService.isMixTitleExists(mixDto.getTitle())) {
             mixService.update(mixDto);

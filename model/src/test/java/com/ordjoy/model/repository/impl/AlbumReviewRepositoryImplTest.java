@@ -41,7 +41,8 @@ class AlbumReviewRepositoryImplTest {
     @Test
     @DisplayName("find album reviews by user's login test case")
     void findAlbumReviewsByUserLogin() {
-        List<AlbumReview> reviews = albumReviewRepository.findAlbumReviewsByUserLogin("johnyy66");
+        List<AlbumReview> reviews = albumReviewRepository
+                .findAlbumReviewsByUserLogin("johnyy66", 20, 0);
         assertThat(reviews).isNotEmpty();
     }
 

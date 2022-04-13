@@ -16,6 +16,7 @@ import com.ordjoy.model.repository.TrackReviewRepository;
 import com.ordjoy.model.repository.UserRepository;
 import com.ordjoy.model.service.UserService;
 import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.util.PaginationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -207,32 +208,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> findUserByLoginAndPassword(String login, String password) {
-        if (login != null && password != null) {
-            return userRepository.findByLoginAndPassword(login, password).stream()
-                    .map(user -> {
-                        UserDto userDto = UserDto.builder()
-                                .id(user.getId())
-                                .login(user.getLogin())
-                                .email(user.getEmail())
-                                .role(user.getRole())
-                                .personalInfo(UserPersonalInfo.builder()
-                                        .birthDate(user.getUserData().getBirthDate())
-                                        .accountBalance(user.getUserData().getAccountBalance())
-                                        .discountPercentageLevel(user.getUserData()
-                                                .getDiscountPercentageLevel())
-                                        .build())
-                                .build();
-                        setOptionalInfoToUserDto(user, userDto);
-                        log.debug(LoggingUtils.USER_WAS_FOUND_BY_LOGIN_AND_PASSWORD_SERVICE, userDto);
-                        return userDto;
-                    })
-                    .findFirst();
-        }
-        return Optional.empty();
-    }
-
-    @Override
     public Optional<UserDto> findById(Long id) {
         if (id != null) {
             return userRepository.findById(id).stream()
@@ -243,7 +218,6 @@ public class UserServiceImpl implements UserService {
                                 .email(user.getEmail())
                                 .role(user.getRole())
                                 .personalInfo(UserPersonalInfo.builder()
-                                        .birthDate(user.getUserData().getBirthDate())
                                         .accountBalance(user.getUserData().getAccountBalance())
                                         .discountPercentageLevel(user.getUserData()
                                                 .getDiscountPercentageLevel())
@@ -272,6 +246,31 @@ public class UserServiceImpl implements UserService {
                                     .accountBalance(user.getUserData().getAccountBalance())
                                     .build())
                             .build())
+                    .findFirst();
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserDto> getSynchronizedUser(Long id) {
+        if (id != null) {
+            return userRepository.findById(id).stream()
+                    .map(user -> {
+                        UserDto userDto = UserDto.builder()
+                                .id(user.getId())
+                                .login(user.getLogin())
+                                .email(user.getEmail())
+                                .role(user.getRole())
+                                .personalInfo(UserPersonalInfo.builder()
+                                        .birthDate(user.getUserData().getBirthDate())
+                                        .accountBalance(user.getUserData().getAccountBalance())
+                                        .discountPercentageLevel(user.getUserData()
+                                                .getDiscountPercentageLevel())
+                                        .build())
+                                .build();
+                        setOptionalInfoToUserDto(user, userDto);
+                        return userDto;
+                    })
                     .findFirst();
         }
         return Optional.empty();
@@ -358,6 +357,11 @@ public class UserServiceImpl implements UserService {
                 log.debug(LoggingUtils.USER_WAS_DELETED_SERVICE, user);
             });
         }
+    }
+
+    @Override
+    public Long getAllPages() {
+        return PaginationUtils.collectToPages(userRepository.getAllRecords());
     }
 
     private User mapEntityFromDto(UserDto userDto) {

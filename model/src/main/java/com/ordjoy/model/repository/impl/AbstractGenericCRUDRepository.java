@@ -1,6 +1,7 @@
 package com.ordjoy.model.repository.impl;
 
 import com.ordjoy.model.entity.BaseEntity;
+import com.ordjoy.model.entity.BaseEntity_;
 import com.ordjoy.model.entity.EntityState;
 import com.ordjoy.model.repository.GenericCRUDRepository;
 import com.ordjoy.model.util.LoggingUtils;
@@ -37,7 +38,8 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<E> criteria = cb.createQuery(clazz);
         Root<E> root = criteria.from(clazz);
-        return session.createQuery(criteria.select(root))
+        return session.createQuery(criteria.select(root)
+                        .orderBy(cb.desc(root.get(BaseEntity_.id))))
                 .setMaxResults(limit)
                 .setFirstResult(offset)
                 .getResultList();
@@ -71,5 +73,15 @@ public abstract class AbstractGenericCRUDRepository<E extends BaseEntity<K>, K e
         session.delete(entity);
         session.flush();
         log.debug(LoggingUtils.ENTITY_WAS_DELETED_REPO, entity);
+    }
+
+    @Override
+    public Long getAllRecords() {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+        Root<E> root = criteria.from(clazz);
+        return session.createQuery(criteria.select(cb.count(root)))
+                .getSingleResult();
     }
 }

@@ -39,13 +39,15 @@ public class TrackRepositoryImpl extends AbstractGenericCRUDRepository<Track, Lo
     }
 
     @Override
-    public List<TrackReview> findTrackReviewsByTrackTitle(String title) {
+    public List<TrackReview> findTrackReviewsByTrackTitle(String title, int limit, int offset) {
         Session session = sessionFactory.getCurrentSession();
         List<TrackReview> trackReviews = session
                 .createQuery("select tr from TrackReview tr join tr.track t" +
-                             " where t.title = :title",
+                             " where t.title = :title order by tr.id desc",
                         TrackReview.class)
                 .setParameter(TITLE_PARAM, title)
+                .setMaxResults(limit)
+                .setFirstResult(offset)
                 .getResultList();
         log.debug(LoggingUtils.REVIEWS_BY_TRACK_TITLE_REPO, trackReviews, title);
         return trackReviews;
@@ -61,5 +63,14 @@ public class TrackRepositoryImpl extends AbstractGenericCRUDRepository<Track, Lo
                 .getResultList();
         log.debug(LoggingUtils.REVIEWS_BY_TRACK_ID_REPO, trackReviews, trackId);
         return trackReviews;
+    }
+
+    @Override
+    public Long getTrackReviewWithTrackTitlePredicateRecords(String title) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select count(tr) from TrackReview tr" +
+                                   " join tr.track t where t.title =:title", Long.class)
+                .setParameter(TITLE_PARAM, title)
+                .getSingleResult();
     }
 }

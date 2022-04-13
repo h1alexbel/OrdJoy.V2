@@ -12,6 +12,7 @@ import com.ordjoy.model.repository.AlbumReviewRepository;
 import com.ordjoy.model.repository.TrackRepository;
 import com.ordjoy.model.service.AlbumService;
 import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.util.PaginationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,10 +108,11 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<AlbumReviewDto> findAlbumReviewsByAlbumTitle(String albumTitle) {
+    public List<AlbumReviewDto> findAlbumReviewsByAlbumTitle(
+            String albumTitle, int limit, int offset) {
         if (albumTitle != null) {
             List<AlbumReviewDto> albumReviews = albumRepository
-                    .findAlbumReviewsByAlbumTitle(albumTitle).stream()
+                    .findAlbumReviewsByAlbumTitle(albumTitle, limit, offset).stream()
                     .map(albumReview -> AlbumReviewDto.builder()
                             .id(albumReview.getId())
                             .reviewText(albumReview.getReviewText())
@@ -154,9 +156,11 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<TrackDto> findTracksByAlbumTitle(String albumTitle) {
+    public List<TrackDto> findTracksByAlbumTitle(
+            String albumTitle, int limit, int offset) {
         if (albumTitle != null) {
-            List<TrackDto> tracks = albumRepository.findTracksByAlbumTitle(albumTitle).stream()
+            List<TrackDto> tracks = albumRepository.
+                    findTracksByAlbumTitle(albumTitle, limit, offset).stream()
                     .map(track -> TrackDto.builder()
                             .id(track.getId())
                             .title(track.getTitle())
@@ -200,6 +204,25 @@ public class AlbumServiceImpl implements AlbumService {
             albumRepository.update(mapEntityFromDto(albumDto));
             log.debug(LoggingUtils.ALBUM_WAS_UPDATED_IN_SERVICE, albumDto);
         }
+    }
+
+    @Override
+    public Long getAllPages() {
+        return PaginationUtils.collectToPages(albumRepository.getAllRecords());
+    }
+
+    @Override
+    public Long getAlbumReviewWithAlbumTitlePredicatePages(String albumTitle) {
+        return PaginationUtils
+                .collectToPages(albumRepository
+                        .getAlbumReviewWithAlbumTitlePredicateRecords(albumTitle));
+    }
+
+    @Override
+    public Long getTrackWithAlbumTitlePredicatePages(String albumTitle) {
+        return PaginationUtils
+                .collectToPages(albumRepository
+                        .getTrackWithAlbumTitlePredicateRecords(albumTitle));
     }
 
     @Transactional

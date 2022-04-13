@@ -74,7 +74,8 @@ class TrackServiceImplTest {
             MixDto mixDto = maybeMix.get();
             TrackDto trackDto = maybeTrack.get();
             trackService.addTrackToMix(trackDto, mixDto);
-            List<TrackDto> tracksByMixTitle = mixService.findTracksByMixTitle("Hip-Hop");
+            List<TrackDto> tracksByMixTitle = mixService
+                    .findTracksByMixTitle("Hip-Hop", 20, 0);
             assertThat(tracksByMixTitle).hasSize(1);
         }
     }
@@ -95,7 +96,8 @@ class TrackServiceImplTest {
     @Test
     @DisplayName("find track reviews by track title")
     void findTrackReviewsByTrackTitle() {
-        List<TrackReviewDto> reviews = trackService.findTrackReviewsByTrackTitle("Paranoid");
+        List<TrackReviewDto> reviews = trackService
+                .findTrackReviewsByTrackTitle("Paranoid", 20, 0);
         assertThat(reviews).hasSize(1);
     }
 

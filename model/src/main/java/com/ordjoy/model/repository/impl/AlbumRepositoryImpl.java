@@ -40,15 +40,19 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
     }
 
     @Override
-    public List<AlbumReview> findAlbumReviewsByAlbumTitle(String title) {
+    public List<AlbumReview> findAlbumReviewsByAlbumTitle(String title, int limit, int offset) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<AlbumReview> criteria = cb.createQuery(AlbumReview.class);
         Root<AlbumReview> root = criteria.from(AlbumReview.class);
         Join<AlbumReview, Album> albumJoin = root.join(AlbumReview_.album);
         criteria.select(root)
-                .where(cb.equal(albumJoin.get(Album_.title), title));
-        List<AlbumReview> albumReviews = session.createQuery(criteria).getResultList();
+                .where(cb.equal(albumJoin.get(Album_.title), title))
+                .orderBy(cb.desc(root.get(BaseEntity_.id)));
+        List<AlbumReview> albumReviews = session.createQuery(criteria)
+                .setMaxResults(limit)
+                .setFirstResult(offset)
+                .getResultList();
         log.debug(LoggingUtils.REVIEWS_BY_ALBUM_TITLE_REPO, albumReviews, title);
         return albumReviews;
     }
@@ -80,14 +84,35 @@ public class AlbumRepositoryImpl extends AbstractGenericCRUDRepository<Album, Lo
     }
 
     @Override
-    public List<Track> findTracksByAlbumTitle(String albumTitle) {
+    public List<Track> findTracksByAlbumTitle(String albumTitle, int limit, int offset) {
         Session session = sessionFactory.getCurrentSession();
         List<Track> tracks = session
-                .createQuery("select t from Track t join t.album a where a.title = :albumName",
+                .createQuery("select t from Track t join t.album a where a.title = :albumName" +
+                             " order by t.id desc",
                         Track.class)
                 .setParameter(ALBUM_NAME_PARAM, albumTitle)
+                .setMaxResults(limit)
+                .setFirstResult(offset)
                 .getResultList();
         log.debug(LoggingUtils.TRACKS_BY_ALBUM_TITLE_REPO, tracks, albumTitle);
         return tracks;
+    }
+
+    @Override
+    public Long getAlbumReviewWithAlbumTitlePredicateRecords(String albumTitle) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select count(ar) from AlbumReview ar" +
+                                   " join ar.album a where a.title =:albumName", Long.class)
+                .setParameter(ALBUM_NAME_PARAM, albumTitle)
+                .getSingleResult();
+    }
+
+    @Override
+    public Long getTrackWithAlbumTitlePredicateRecords(String albumTitle) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select count(t) from Track t" +
+                                   " join t.album a where a.title =:albumName", Long.class)
+                .setParameter(ALBUM_NAME_PARAM, albumTitle)
+                .getSingleResult();
     }
 }

@@ -48,7 +48,8 @@ class MixRepositoryImplTest {
     @Test
     @DisplayName("find tracks by mix title test case")
     void findTracksByMixTitle() {
-        List<Track> tracksByMixTitle = mixRepository.findTracksByMixTitle("Jazz hits");
+        List<Track> tracksByMixTitle = mixRepository
+                .findTracksByMixTitle("Jazz hits", 20, 0);
         assertThat(tracksByMixTitle).hasSize(1).isNotEmpty();
     }
 
@@ -56,7 +57,8 @@ class MixRepositoryImplTest {
     @DisplayName("find mix reviews by mix name test case")
     void findMixReviewsByMixName() {
         List<MixReview> mixReviewsByMixName =
-                mixRepository.findMixReviewsByMixTitle("Travis scott hits");
+                mixRepository
+                        .findMixReviewsByMixTitle("Travis scott hits", 20, 0);
         assertThat(mixReviewsByMixName).isNotEmpty();
     }
 

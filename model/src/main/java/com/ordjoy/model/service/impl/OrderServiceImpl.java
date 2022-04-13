@@ -14,6 +14,7 @@ import com.ordjoy.model.entity.user.UserData;
 import com.ordjoy.model.repository.OrderRepository;
 import com.ordjoy.model.service.OrderService;
 import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.util.PaginationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -165,9 +166,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<UserTrackOrderDto> findOrdersByUserEmail(String email) {
+    public List<UserTrackOrderDto> findOrdersByUserEmail(
+            String email, int limit, int offset) {
         if (email != null) {
-            return orderRepository.findOrdersByUserEmail(email).stream()
+            return orderRepository
+                    .findOrdersByUserEmail(email, limit, offset).stream()
                     .map(this::mapOrderToDto)
                     .toList();
         }
@@ -175,9 +178,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<UserTrackOrderDto> findOrdersByUserLogin(String login) {
+    public List<UserTrackOrderDto> findOrdersByUserLogin(
+            String login, int limit, int offset) {
         if (login != null) {
-            return orderRepository.findOrdersByUserLogin(login).stream()
+            return orderRepository
+                    .findOrdersByUserLogin(login, limit, offset).stream()
                     .map(this::mapOrderToDto)
                     .toList();
         }
@@ -195,9 +200,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<UserTrackOrderDto> findOrdersByTrackTitle(String title) {
+    public List<UserTrackOrderDto> findOrdersByTrackTitle(
+            String title, int limit, int offset) {
         if (title != null) {
-            return orderRepository.findOrdersByTrackTitle(title).stream()
+            return orderRepository
+                    .findOrdersByTrackTitle(title, limit, offset).stream()
                     .map(this::mapOrderToDto)
                     .toList();
         }
@@ -205,13 +212,48 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<UserTrackOrderDto> findOrdersByStatus(OrderStatus status) {
+    public List<UserTrackOrderDto> findOrdersByStatus(
+            OrderStatus status, int limit, int offset) {
         if (status != null) {
-            return orderRepository.findOrdersByStatus(status).stream()
+            return orderRepository
+                    .findOrdersByStatus(status, limit, offset).stream()
                     .map(this::mapOrderToDto)
                     .toList();
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public Long getAllPages() {
+        return PaginationUtils.collectToPages(orderRepository.getAllRecords());
+    }
+
+    @Override
+    public Long getOrderWithUserEmailPredicatePages(String email) {
+        return PaginationUtils
+                .collectToPages(orderRepository
+                        .getOrderWithUserEmailPredicateRecords(email));
+    }
+
+    @Override
+    public Long getOrderWithUserLoginPredicatePages(String login) {
+        return PaginationUtils
+                .collectToPages(orderRepository
+                        .getOrderWithUserLoginPredicateRecords(login));
+    }
+
+    @Override
+    public Long getOrderWithTrackTitlePredicatePages(String trackTitle) {
+        return PaginationUtils
+                .collectToPages(orderRepository
+                        .getOrderWithTrackTitlePredicateRecords(trackTitle));
+    }
+
+    @Override
+    public Long getOrderWithStatusPredicatePages(OrderStatus status) {
+        return PaginationUtils
+                .collectToPages(orderRepository
+                        .getOrderWithStatusPredicateRecords(status));
     }
 
     private UserTrackOrderDto mapOrderToDto(UserTrackOrder order) {

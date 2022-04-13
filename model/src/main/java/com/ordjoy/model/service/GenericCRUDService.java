@@ -13,4 +13,6 @@ public interface GenericCRUDService<D extends Serializable, K extends Serializab
     List<D> list(int limit, int offset);
 
     void update(D dto);
+
+    Long getAllPages();
 }

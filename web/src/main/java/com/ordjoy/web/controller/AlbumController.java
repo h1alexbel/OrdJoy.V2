@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,7 +24,6 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("/album")
 public class AlbumController {
 
     private final AlbumService albumService;
@@ -35,18 +33,21 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
-    @GetMapping("/auth/all")
+    @GetMapping("/auth/album/all")
     public String getAllAlbums(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
             @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset, Model model) {
         List<AlbumDto> albums = albumService.list(limit, offset);
+        Long pages = albumService.getAllPages();
         model.addAttribute(AttributeUtils.REQUEST_ALBUMS, albums);
+        model.addAttribute(AttributeUtils.PAGES, pages);
         return PageUtils.ALL_ALBUMS_PAGE;
     }
 
-    @GetMapping("/auth/{id}")
-    public String getAlbum(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
-                           Model model) {
+    @GetMapping("/auth/album/{id}")
+    public String getAlbum(
+            @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
+            Model model) {
         Optional<AlbumDto> maybeAlbum = albumService.findById(id);
         if (maybeAlbum.isPresent()) {
             AlbumDto album = maybeAlbum.get();
@@ -57,9 +58,10 @@ public class AlbumController {
         }
     }
 
-    @GetMapping("/auth/")
-    public String getAlbum(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String title,
-                           Model model) {
+    @GetMapping("/auth/album")
+    public String getAlbum(
+            @RequestParam(value = UrlPathUtils.TITLE_PARAM) String title,
+            Model model) {
         Optional<AlbumDto> maybeAlbum = albumService.findAlbumByTitle(title);
         if (maybeAlbum.isPresent()) {
             AlbumDto album = maybeAlbum.get();
@@ -70,12 +72,12 @@ public class AlbumController {
         }
     }
 
-    @GetMapping("/admin/addAlbum")
+    @GetMapping("/admin/album/add-album")
     public String addAlbumPage() {
         return PageUtils.ADD_ALBUM_PAGE;
     }
 
-    @PostMapping("/admin/addAlbum")
+    @PostMapping("/admin/album/add-album")
     public String addAlbum(AlbumDto albumDto, Model model) {
         if (!albumService.isAlbumTitleExists(albumDto.getTitle())) {
             AlbumDto savedAlbum = albumService.save(albumDto);
@@ -87,46 +89,48 @@ public class AlbumController {
         }
     }
 
-    @GetMapping("/auth/{id}/tracks")
-    public String getAlbumTracks(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId,
-                                 Model model) {
-        List<TrackDto> albumTracks = albumService.findTracksByAlbumId(albumId);
+    @GetMapping("/auth/album/tracks")
+    public String getAlbumTracks(
+            @RequestParam(value = UrlPathUtils.TITLE_PARAM) String albumTitle,
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset,
+            Model model) {
+        List<TrackDto> albumTracks = albumService
+                .findTracksByAlbumTitle(albumTitle, limit, offset);
+        Long pages = albumService.getTrackWithAlbumTitlePredicatePages(albumTitle);
+        for (TrackDto albumTrack : albumTracks) {
+            model.addAttribute(AttributeUtils.REQUEST_TRACK, albumTrack);
+        }
+        model.addAttribute(AttributeUtils.PAGES, pages);
         model.addAttribute(AttributeUtils.TRACKS, albumTracks);
-        return PageUtils.TRACKS_PAGE;
+        return PageUtils.ALBUM_TRACKS_PAGE;
     }
 
-    @GetMapping("/auth/tracks/")
-    public String getAlbumTracks(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String albumTitle,
-                                 Model model) {
-        List<TrackDto> albumTracks = albumService.findTracksByAlbumTitle(albumTitle);
-        model.addAttribute(AttributeUtils.TRACKS, albumTracks);
-        return PageUtils.TRACKS_PAGE;
-    }
-
-    @GetMapping("/auth/{id}/reviews")
-    public String getAlbumReviews(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId,
-                                  Model model) {
-        List<AlbumReviewDto> albumReviews = albumService.findAlbumReviewsByAlbumId(albumId);
+    @GetMapping("/auth/album/reviews")
+    public String getAlbumReviews(
+            @RequestParam(value = UrlPathUtils.TITLE_PARAM) String title,
+            @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
+            @RequestParam(value = UrlPathUtils.OFFSET_PARAM) int offset,
+            Model model) {
+        List<AlbumReviewDto> albumReviews = albumService
+                .findAlbumReviewsByAlbumTitle(title, limit, offset);
+        Long pages = albumService.getAlbumReviewWithAlbumTitlePredicatePages(title);
+        for (AlbumReviewDto albumReview : albumReviews) {
+            model.addAttribute(AttributeUtils.ALBUM_REVIEW, albumReview);
+        }
+        model.addAttribute(AttributeUtils.PAGES, pages);
         model.addAttribute(AttributeUtils.ALBUM_REVIEWS, albumReviews);
-        return PageUtils.ALBUM_REVIEWS_PAGE;
+        return PageUtils.CONCRETE_ALBUM_REVIEWS_PAGE;
     }
 
-    @GetMapping("/auth/reviews/")
-    public String getAlbumReviews(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String title,
-                                  Model model) {
-        List<AlbumReviewDto> albumReviews = albumService.findAlbumReviewsByAlbumTitle(title);
-        model.addAttribute(AttributeUtils.ALBUM_REVIEWS, albumReviews);
-        return PageUtils.ALBUM_REVIEWS_PAGE;
-    }
-
-    @GetMapping("/admin/{id}/remove")
+    @GetMapping("/admin/album/{id}/remove")
     public String deleteAlbum(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId) {
         albumService.deleteAlbum(albumId);
         log.debug(LoggingUtils.ALBUM_WAS_DELETED_IN_CONTROLLER, albumId);
         return UrlPathUtils.REDIRECT_ALL_ALBUMS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
-    @GetMapping("/admin/update/{id}")
+    @GetMapping("/admin/album/update/{id}")
     public String updateAlbumPage(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
             Model model) {
@@ -135,13 +139,14 @@ public class AlbumController {
         return PageUtils.ALBUM_UPDATE_PAGE;
     }
 
-    @PostMapping("/admin/update")
+    @PostMapping("/admin/album/update")
     public String updateAlbum(AlbumDto albumDto) {
         if (!albumService.isAlbumTitleExists(albumDto.getTitle())) {
             albumService.update(albumDto);
             log.debug(LoggingUtils.ALBUM_WAS_UPDATED_IN_CONTROLLER, albumDto);
             return UrlPathUtils.REDIRECT_ALL_ALBUMS_WITH_DEFAULT_LIMIT_OFFSET;
+        } else {
+            return UrlPathUtils.REDIRECT_ALBUM_UPDATE_FORM + albumDto.getId();
         }
-        return PageUtils.ALBUM_UPDATE_FORM;
     }
 }

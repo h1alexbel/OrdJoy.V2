@@ -18,12 +18,15 @@ public class AlbumReviewRepositoryImpl extends AbstractGenericCRUDRepository<Alb
     private static final String ID_PARAM = "id";
 
     @Override
-    public List<AlbumReview> findAlbumReviewsByUserLogin(String login) {
+    public List<AlbumReview> findAlbumReviewsByUserLogin(String login, int limit, int offset) {
         Session session = sessionFactory.getCurrentSession();
         List<AlbumReview> reviews = session
-                .createQuery("select ar from AlbumReview ar join ar.user u where u.login = :login",
+                .createQuery("select ar from AlbumReview ar join ar.user u " +
+                             "where u.login = :login order by ar.id desc",
                         AlbumReview.class)
                 .setParameter(LOGIN_PARAM, login)
+                .setMaxResults(limit)
+                .setFirstResult(offset)
                 .getResultList();
         log.debug(LoggingUtils.REVIEWS_BY_USER_LOGIN_REPO, reviews, login);
         return reviews;
@@ -39,5 +42,14 @@ public class AlbumReviewRepositoryImpl extends AbstractGenericCRUDRepository<Alb
                 .getResultList();
         log.debug(LoggingUtils.REVIEWS_BY_USER_ID_REPO, albumReviews, userId);
         return albumReviews;
+    }
+
+    @Override
+    public Long getAlbumReviewWithUserLoginPredicateRecords(String login) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select count(ar) from AlbumReview ar" +
+                                   " join ar.user u where u.login =:login", Long.class)
+                .setParameter(LOGIN_PARAM, login)
+                .getSingleResult();
     }
 }

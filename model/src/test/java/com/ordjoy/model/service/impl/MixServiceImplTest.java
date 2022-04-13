@@ -72,7 +72,7 @@ class MixServiceImplTest {
     @DisplayName("find mix tracks by mix title test case")
     void findTracksByMixTitle() {
         List<TrackDto> tracksByMixTitle = mixService
-                .findTracksByMixTitle("Jazz hits");
+                .findTracksByMixTitle("Jazz hits", 20, 0);
         assertThat(tracksByMixTitle).hasSize(1);
     }
 
@@ -80,7 +80,7 @@ class MixServiceImplTest {
     @DisplayName("find mix reviews by mix title test case")
     void findMixReviewsByMixTitle() {
         List<MixReviewDto> reviewsByMixTitle = mixService
-                .findMixReviewsByMixTitle("Travis scott hits");
+                .findMixReviewsByMixTitle("Travis scott hits", 20, 0);
         assertThat(reviewsByMixTitle).hasSize(1);
     }
 

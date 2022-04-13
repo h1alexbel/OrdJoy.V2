@@ -18,9 +18,9 @@ public interface UserService extends UserDetailsService, GenericCRUDService<User
 
     void updateUserBalanceAmount(BigDecimal amountToAdd, Long userId);
 
-    Optional<UserDto> findUserByLoginAndPassword(String login, String password);
-
     Optional<UserDto> findUserByEmail(String email);
+
+    Optional<UserDto> getSynchronizedUser(Long id);
 
     Optional<UserDto> findUserByLogin(String login);
 

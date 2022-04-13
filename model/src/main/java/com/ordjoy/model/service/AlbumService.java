@@ -13,13 +13,17 @@ public interface AlbumService extends GenericCRUDService<AlbumDto, Long> {
 
     boolean isAlbumTitleExists(String title);
 
-    List<AlbumReviewDto> findAlbumReviewsByAlbumTitle(String albumTitle);
+    List<AlbumReviewDto> findAlbumReviewsByAlbumTitle(String albumTitle, int limit, int offset);
 
     List<AlbumReviewDto> findAlbumReviewsByAlbumId(Long albumId);
 
-    List<TrackDto> findTracksByAlbumTitle(String albumTitle);
+    List<TrackDto> findTracksByAlbumTitle(String albumTitle, int limit, int offset);
 
     List<TrackDto> findTracksByAlbumId(Long albumId);
 
     void deleteAlbum(Long albumId);
+
+    Long getAlbumReviewWithAlbumTitlePredicatePages(String albumTitle);
+
+    Long getTrackWithAlbumTitlePredicatePages(String albumTitle);
 }

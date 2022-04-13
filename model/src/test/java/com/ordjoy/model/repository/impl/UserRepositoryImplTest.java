@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
@@ -80,15 +79,5 @@ class UserRepositoryImplTest {
         User user = maybeUser.get();
         assertNotNull(user);
         assertThat(user.getEmail()).isEqualTo("johndow@gmail.com");
-    }
-
-    @Test
-    @DisplayName("find user by login and password test case")
-    void findByLoginAndPassword() {
-        Optional<User> maybeUser =
-                userRepository.findByLoginAndPassword("alex_0921", "1231bkjg");
-        assertAll(() -> maybeUser.ifPresent(user -> assertThat(user.getLogin()).isEqualTo("alex_0921")),
-                () -> maybeUser.ifPresent(user -> assertThat(user.getPassword()).isEqualTo("1231bkjg"))
-        );
     }
 }
