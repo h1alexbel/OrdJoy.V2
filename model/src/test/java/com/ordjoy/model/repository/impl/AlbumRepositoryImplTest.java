@@ -49,7 +49,8 @@ class AlbumRepositoryImplTest {
     @DisplayName("find album reviews by album title test case")
     void findAlbumReviewsByAlbumTitle() {
         List<AlbumReview> reviewsByAlbumTitle =
-                albumRepository.findAlbumReviewsByAlbumTitle("Metalica - Black Album");
+                albumRepository
+                        .findAlbumReviewsByAlbumTitle("Metalica - Black Album", 20, 0);
         assertThat(reviewsByAlbumTitle).isNotEmpty();
     }
 
@@ -74,7 +75,8 @@ class AlbumRepositoryImplTest {
     @Test
     @DisplayName("find tracks by album name test case")
     void findTracksByAlbumName() {
-        List<Track> tracks = albumRepository.findTracksByAlbumTitle("Post Malone - Beerbongs & Bentleys");
+        List<Track> tracks = albumRepository
+                .findTracksByAlbumTitle("Post Malone - Beerbongs & Bentleys", 20, 0);
         assertThat(tracks).isNotEmpty();
     }
 }

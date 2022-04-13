@@ -39,7 +39,8 @@ class TrackReviewRepositoryImplTest {
 
     @Test
     void findTrackReviewsByUserLogin() {
-        List<TrackReview> reviews = trackReviewRepository.findTrackReviewsByUserLogin("johnyy66");
+        List<TrackReview> reviews = trackReviewRepository
+                .findTrackReviewsByUserLogin("johnyy66", 20, 0);
         assertThat(reviews).isNotEmpty();
     }
 

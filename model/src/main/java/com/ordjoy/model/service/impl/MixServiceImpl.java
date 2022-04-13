@@ -11,6 +11,7 @@ import com.ordjoy.model.repository.MixRepository;
 import com.ordjoy.model.repository.MixReviewRepository;
 import com.ordjoy.model.service.MixService;
 import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.util.PaginationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,9 +110,10 @@ public class MixServiceImpl implements MixService {
     }
 
     @Override
-    public List<TrackDto> findTracksByMixTitle(String mixTitle) {
+    public List<TrackDto> findTracksByMixTitle(String mixTitle, int limit, int offset) {
         if (mixTitle != null) {
-            return mixRepository.findTracksByMixTitle(mixTitle).stream()
+            return mixRepository
+                    .findTracksByMixTitle(mixTitle, limit, offset).stream()
                     .map(track -> TrackDto.builder()
                             .id(track.getId())
                             .title(track.getTitle())
@@ -127,9 +129,11 @@ public class MixServiceImpl implements MixService {
     }
 
     @Override
-    public List<MixReviewDto> findMixReviewsByMixTitle(String mixTitle) {
+    public List<MixReviewDto> findMixReviewsByMixTitle(
+            String mixTitle, int limit, int offset) {
         if (mixTitle != null) {
-            return mixRepository.findMixReviewsByMixTitle(mixTitle).stream()
+            return mixRepository
+                    .findMixReviewsByMixTitle(mixTitle, limit, offset).stream()
                     .map(mixReview -> MixReviewDto.builder()
                             .id(mixReview.getId())
                             .reviewText(mixReview.getReviewText())
@@ -179,6 +183,25 @@ public class MixServiceImpl implements MixService {
             mixRepository.update(mapEntityFromDto(mixDto));
             log.debug(LoggingUtils.MIX_WAS_UPDATED_SERVICE, mixDto);
         }
+    }
+
+    @Override
+    public Long getAllPages() {
+        return PaginationUtils.collectToPages(mixRepository.getAllRecords());
+    }
+
+    @Override
+    public Long getMixReviewWithMixTitlePredicatePages(String mixTitle) {
+        return PaginationUtils
+                .collectToPages(mixRepository
+                        .getMixReviewWithMixTitlePredicateRecords(mixTitle));
+    }
+
+    @Override
+    public Long getTrackWithMixTitlePredicatePages(String mixTitle) {
+        return PaginationUtils
+                .collectToPages(mixRepository
+                        .getTrackWithMixTitlePredicateRecords(mixTitle));
     }
 
     @Transactional

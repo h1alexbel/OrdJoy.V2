@@ -18,12 +18,15 @@ public class TrackReviewRepositoryImpl extends AbstractGenericCRUDRepository<Tra
     private static final String LOGIN_PARAM = "login";
 
     @Override
-    public List<TrackReview> findTrackReviewsByUserLogin(String login) {
+    public List<TrackReview> findTrackReviewsByUserLogin(String login, int limit, int offset) {
         Session session = sessionFactory.getCurrentSession();
         List<TrackReview> trackReviews = session
-                .createQuery("select tr from TrackReview tr join tr.user u where u.login = :login",
+                .createQuery("select tr from TrackReview tr join tr.user u" +
+                             " where u.login = :login order by tr.id desc",
                         TrackReview.class)
                 .setParameter(LOGIN_PARAM, login)
+                .setMaxResults(limit)
+                .setFirstResult(offset)
                 .getResultList();
         log.debug(LoggingUtils.REVIEWS_BY_USER_LOGIN_REPO, trackReviews, login);
         return trackReviews;
@@ -39,5 +42,14 @@ public class TrackReviewRepositoryImpl extends AbstractGenericCRUDRepository<Tra
                 .getResultList();
         log.debug(LoggingUtils.REVIEWS_BY_USER_ID_REPO, trackReviews, userId);
         return trackReviews;
+    }
+
+    @Override
+    public Long getTrackReviewWithUserLoginPredicateRecords(String login) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select count(tr) from TrackReview tr" +
+                                   " join tr.user u where u.login=:login", Long.class)
+                .setParameter(LOGIN_PARAM, login)
+                .getSingleResult();
     }
 }

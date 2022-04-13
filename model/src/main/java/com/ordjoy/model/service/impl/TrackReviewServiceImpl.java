@@ -11,6 +11,7 @@ import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.repository.TrackReviewRepository;
 import com.ordjoy.model.service.TrackReviewService;
 import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.util.PaginationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,9 +91,11 @@ public class TrackReviewServiceImpl implements TrackReviewService {
     }
 
     @Override
-    public List<TrackReviewDto> findReviewsByUserLogin(String login) {
+    public List<TrackReviewDto> findReviewsByUserLogin(
+            String login, int limit, int offset) {
         if (login != null) {
-            return trackReviewRepository.findTrackReviewsByUserLogin(login).stream()
+            return trackReviewRepository
+                    .findTrackReviewsByUserLogin(login, limit, offset).stream()
                     .map(this::buildTrackReviewDtoFromEntity)
                     .toList();
         }
@@ -114,6 +117,18 @@ public class TrackReviewServiceImpl implements TrackReviewService {
         return trackReviewRepository.findAll(limit, offset).stream()
                 .map(this::buildTrackReviewDtoFromEntity)
                 .toList();
+    }
+
+    @Override
+    public Long getAllPages() {
+        return PaginationUtils.collectToPages(trackReviewRepository.getAllRecords());
+    }
+
+    @Override
+    public Long getTrackReviewWithUserLoginPredicatePages(String login) {
+        return PaginationUtils
+                .collectToPages(trackReviewRepository
+                        .getTrackReviewWithUserLoginPredicateRecords(login));
     }
 
     private TrackReview mapToEntity(TrackReviewDto trackReviewDto) {

@@ -103,7 +103,7 @@ class AlbumServiceImplTest {
         Optional<AlbumDto> maybeAlbumDto = albumService
                 .findAlbumByTitle("Metalica - Black Album");
         maybeAlbumDto.ifPresent(album -> assertThat(albumService.
-                findAlbumReviewsByAlbumTitle(album.getTitle()))
+                findAlbumReviewsByAlbumTitle(album.getTitle(), 20, 0))
                 .isNotEmpty().hasSize(1));
     }
 
@@ -123,7 +123,7 @@ class AlbumServiceImplTest {
         Optional<AlbumDto> maybeAlbumDto = albumService
                 .findAlbumByTitle("Metalica - Black Album");
         maybeAlbumDto.ifPresent(album -> assertThat(albumService.
-                findTracksByAlbumTitle(album.getTitle()))
+                findTracksByAlbumTitle(album.getTitle(), 20, 0))
                 .isNotEmpty().hasSize(2));
     }
 
@@ -131,7 +131,7 @@ class AlbumServiceImplTest {
     @NullAndEmptySource
     @DisplayName("find tracks by album title null and empty case")
     void findTracksByAlbumTitleNullAndEmptyCase(String title) {
-        assertDoesNotThrow(() -> albumService.findTracksByAlbumTitle(title));
+        assertDoesNotThrow(() -> albumService.findTracksByAlbumTitle(title, 20, 0));
     }
 
     @Test

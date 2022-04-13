@@ -11,11 +11,15 @@ public interface AlbumRepository extends GenericCRUDRepository<Album, Long> {
 
     Optional<Album> findByTitle(String title);
 
-    List<AlbumReview> findAlbumReviewsByAlbumTitle(String title);
+    List<AlbumReview> findAlbumReviewsByAlbumTitle(String title, int limit, int offset);
 
     List<AlbumReview> findAlbumReviewsByAlbumId(Long albumId);
 
     List<Track> findTracksByAlbumId(Long albumId);
 
-    List<Track> findTracksByAlbumTitle(String albumTitle);
+    List<Track> findTracksByAlbumTitle(String albumTitle, int limit, int offset);
+
+    Long getAlbumReviewWithAlbumTitlePredicateRecords(String albumTitle);
+
+    Long getTrackWithAlbumTitlePredicateRecords(String albumTitle);
 }

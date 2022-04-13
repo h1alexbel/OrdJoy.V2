@@ -1,6 +1,7 @@
 package com.ordjoy.web.config;
 
 import com.ordjoy.model.config.PersistenceConfig;
+import com.ordjoy.web.security.SecurityConfig;
 import com.ordjoy.web.util.UrlPathUtils;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -8,7 +9,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{PersistenceConfig.class};
+        return new Class[]{PersistenceConfig.class, SecurityConfig.class};
     }
 
     @Override

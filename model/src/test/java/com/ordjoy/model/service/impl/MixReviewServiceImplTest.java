@@ -41,7 +41,8 @@ class MixReviewServiceImplTest {
     @Test
     @DisplayName("find mix reviews by user login test case")
     void findReviewsByUserLogin() {
-        List<MixReviewDto> reviews = mixReviewService.findReviewsByUserLogin("johnyy66");
+        List<MixReviewDto> reviews = mixReviewService
+                .findReviewsByUserLogin("johnyy66", 20, 0);
         assertThat(reviews).hasSize(1);
     }
 

@@ -41,7 +41,8 @@ class MixReviewRepositoryImplTest {
     @Test
     @DisplayName("find mix reviews by user's login test case")
     void findMixReviewsByUserLogin() {
-        List<MixReview> reviews = mixReviewRepository.findMixReviewsByUserLogin("johnyy66");
+        List<MixReview> reviews = mixReviewRepository
+                .findMixReviewsByUserLogin("johnyy66", 20, 0);
         assertThat(reviews).isNotEmpty();
     }
 

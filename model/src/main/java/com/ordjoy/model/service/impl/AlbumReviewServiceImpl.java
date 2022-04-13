@@ -9,6 +9,7 @@ import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.repository.AlbumReviewRepository;
 import com.ordjoy.model.service.AlbumReviewService;
 import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.util.PaginationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,9 +84,23 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
     }
 
     @Override
-    public List<AlbumReviewDto> findReviewsByUserLogin(String login) {
+    public Long getAllPages() {
+        return PaginationUtils.collectToPages(albumReviewRepository.getAllRecords());
+    }
+
+    @Override
+    public Long getAlbumReviewWithUserLoginPredicatePages(String login) {
+        return PaginationUtils
+                .collectToPages(albumReviewRepository
+                        .getAlbumReviewWithUserLoginPredicateRecords(login));
+    }
+
+    @Override
+    public List<AlbumReviewDto> findReviewsByUserLogin(
+            String login, int limit, int offset) {
         if (login != null) {
-            return albumReviewRepository.findAlbumReviewsByUserLogin(login).stream()
+            return albumReviewRepository
+                    .findAlbumReviewsByUserLogin(login, limit, offset).stream()
                     .map(this::buildAlbumReviewDtoFromEntity)
                     .toList();
         }

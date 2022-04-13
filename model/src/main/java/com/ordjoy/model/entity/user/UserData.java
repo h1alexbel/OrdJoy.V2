@@ -26,7 +26,7 @@ public class UserData {
     @Column(name = "birth_date", length = 128, nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "card_number", length = 32)
+    @Column(name = "card_number", length = 16)
     private String cardNumber;
 
     @Column(name = "account_balance", nullable = false)

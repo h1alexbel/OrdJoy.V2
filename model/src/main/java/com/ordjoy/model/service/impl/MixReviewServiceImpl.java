@@ -9,6 +9,7 @@ import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.repository.MixReviewRepository;
 import com.ordjoy.model.service.MixReviewService;
 import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.util.PaginationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,9 +85,23 @@ public class MixReviewServiceImpl implements MixReviewService {
     }
 
     @Override
-    public List<MixReviewDto> findReviewsByUserLogin(String login) {
+    public Long getAllPages() {
+        return PaginationUtils.collectToPages(mixReviewRepository.getAllRecords());
+    }
+
+    @Override
+    public Long getMixReviewWithUserLoginPredicatePages(String login) {
+        return PaginationUtils
+                .collectToPages(mixReviewRepository
+                        .getMixReviewWithUserLoginPredicateRecords(login));
+    }
+
+    @Override
+    public List<MixReviewDto> findReviewsByUserLogin(
+            String login, int limit, int offset) {
         if (login != null) {
-            return mixReviewRepository.findMixReviewsByUserLogin(login).stream()
+            return mixReviewRepository
+                    .findMixReviewsByUserLogin(login, limit, offset).stream()
                     .map(this::buildMixReviewDtoFromEntity)
                     .toList();
         }

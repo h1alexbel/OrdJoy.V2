@@ -16,6 +16,7 @@ import com.ordjoy.model.repository.TrackRepository;
 import com.ordjoy.model.repository.TrackReviewRepository;
 import com.ordjoy.model.service.TrackService;
 import com.ordjoy.model.util.LoggingUtils;
+import com.ordjoy.model.util.PaginationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -157,9 +158,11 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<TrackReviewDto> findTrackReviewsByTrackTitle(String trackTitle) {
+    public List<TrackReviewDto> findTrackReviewsByTrackTitle(
+            String trackTitle, int limit, int offset) {
         if (trackTitle != null) {
-            return trackRepository.findTrackReviewsByTrackTitle(trackTitle).stream()
+            return trackRepository
+                    .findTrackReviewsByTrackTitle(trackTitle, limit, offset).stream()
                     .map(trackReview -> TrackReviewDto.builder()
                             .id(trackReview.getId())
                             .reviewText(trackReview.getReviewText())
@@ -236,6 +239,18 @@ public class TrackServiceImpl implements TrackService {
                 log.debug(LoggingUtils.TRACK_WAS_DELETE_SERVICE, track);
             });
         }
+    }
+
+    @Override
+    public Long getAllPages() {
+        return PaginationUtils.collectToPages(trackRepository.getAllRecords());
+    }
+
+    @Override
+    public Long getTrackReviewWithTrackTitlePredicatePages(String trackTitle) {
+        return PaginationUtils
+                .collectToPages(trackRepository
+                        .getTrackReviewWithTrackTitlePredicateRecords(trackTitle));
     }
 
     private Track mapToEntity(TrackDto trackDto) {

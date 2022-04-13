@@ -114,7 +114,8 @@ class OrderServiceImplTest {
     void findOrdersByUserEmail() {
         Optional<UserDto> maybeUser = userService.findUserByLogin("johnyy66");
         maybeUser.ifPresent(userDto -> {
-            List<UserTrackOrderDto> ordersByUserId = orderService.findOrdersByUserEmail(userDto.getEmail());
+            List<UserTrackOrderDto> ordersByUserId = orderService
+                    .findOrdersByUserEmail(userDto.getEmail(), 20, 0);
             assertThat(ordersByUserId).hasSize(1);
         });
     }

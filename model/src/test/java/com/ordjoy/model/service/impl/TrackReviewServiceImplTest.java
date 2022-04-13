@@ -41,7 +41,8 @@ class TrackReviewServiceImplTest {
     @Test
     @DisplayName("find reviews by user login test case")
     void findReviewsByUserLogin() {
-        List<TrackReviewDto> reviews = trackReviewService.findReviewsByUserLogin("johnyy66");
+        List<TrackReviewDto> reviews = trackReviewService
+                .findReviewsByUserLogin("johnyy66", 20, 0);
         assertThat(reviews).hasSize(1);
     }
 

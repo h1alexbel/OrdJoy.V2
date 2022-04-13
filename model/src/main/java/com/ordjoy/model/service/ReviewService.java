@@ -8,7 +8,7 @@ import java.util.List;
 public interface ReviewService<D extends ReviewDto, K extends Serializable>
         extends GenericCRUDService<D, K> {
 
-    List<D> findReviewsByUserLogin(String login);
+    List<D> findReviewsByUserLogin(String login, int limit, int offset);
 
     List<D> findReviewsByUserId(Long userId);
 

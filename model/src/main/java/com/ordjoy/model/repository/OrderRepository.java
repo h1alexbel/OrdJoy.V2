@@ -14,13 +14,21 @@ public interface OrderRepository extends GenericCRUDRepository<UserTrackOrder, L
 
     List<UserTrackOrder> findOrdersByUserId(Long userId);
 
-    List<UserTrackOrder> findOrdersByUserEmail(String email);
+    List<UserTrackOrder> findOrdersByUserEmail(String email, int limit, int offset);
 
-    List<UserTrackOrder> findOrdersByUserLogin(String login);
+    List<UserTrackOrder> findOrdersByUserLogin(String login, int limit, int offset);
 
     List<UserTrackOrder> findOrdersByTrackId(Long trackId);
 
-    List<UserTrackOrder> findOrdersByTrackTitle(String title);
+    List<UserTrackOrder> findOrdersByTrackTitle(String title, int limit, int offset);
 
-    List<UserTrackOrder> findOrdersByStatus(OrderStatus status);
+    List<UserTrackOrder> findOrdersByStatus(OrderStatus status, int limit, int offset);
+
+    Long getOrderWithUserEmailPredicateRecords(String email);
+
+    Long getOrderWithUserLoginPredicateRecords(String login);
+
+    Long getOrderWithTrackTitlePredicateRecords(String trackTitle);
+
+    Long getOrderWithStatusPredicateRecords(OrderStatus status);
 }

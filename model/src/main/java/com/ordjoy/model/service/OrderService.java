@@ -18,13 +18,21 @@ public interface OrderService extends GenericCRUDService<UserTrackOrderDto, Long
 
     List<UserTrackOrderDto> findOrdersByUserId(Long userId);
 
-    List<UserTrackOrderDto> findOrdersByUserEmail(String email);
+    List<UserTrackOrderDto> findOrdersByUserEmail(String email, int limit, int offset);
 
-    List<UserTrackOrderDto> findOrdersByUserLogin(String login);
+    List<UserTrackOrderDto> findOrdersByUserLogin(String login, int limit, int offset);
 
     List<UserTrackOrderDto> findOrdersByTrackId(Long trackId);
 
-    List<UserTrackOrderDto> findOrdersByTrackTitle(String title);
+    List<UserTrackOrderDto> findOrdersByTrackTitle(String title, int limit, int offset);
 
-    List<UserTrackOrderDto> findOrdersByStatus(OrderStatus status);
+    List<UserTrackOrderDto> findOrdersByStatus(OrderStatus status, int limit, int offset);
+
+    Long getOrderWithUserEmailPredicatePages(String email);
+
+    Long getOrderWithUserLoginPredicatePages(String login);
+
+    Long getOrderWithTrackTitlePredicatePages(String trackTitle);
+
+    Long getOrderWithStatusPredicatePages(OrderStatus status);
 }

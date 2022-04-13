@@ -18,12 +18,15 @@ public class MixReviewRepositoryImpl extends AbstractGenericCRUDRepository<MixRe
     private static final String ID_PARAM = "id";
 
     @Override
-    public List<MixReview> findMixReviewsByUserLogin(String login) {
+    public List<MixReview> findMixReviewsByUserLogin(String login, int limit, int offset) {
         Session session = sessionFactory.getCurrentSession();
         List<MixReview> mixReviews = session
-                .createQuery("select mr from MixReview mr join mr.user u where u.login = :login",
+                .createQuery("select mr from MixReview mr join mr.user u" +
+                             " where u.login = :login order by mr.id desc",
                         MixReview.class)
                 .setParameter(LOGIN_PARAM, login)
+                .setMaxResults(limit)
+                .setFirstResult(offset)
                 .getResultList();
         log.debug(LoggingUtils.REVIEWS_BY_USER_LOGIN_REPO, mixReviews, login);
         return mixReviews;
@@ -39,5 +42,14 @@ public class MixReviewRepositoryImpl extends AbstractGenericCRUDRepository<MixRe
                 .getResultList();
         log.debug(LoggingUtils.REVIEWS_BY_USER_ID_REPO, mixReviews, userId);
         return mixReviews;
+    }
+
+    @Override
+    public Long getMixReviewWithUserLoginPredicateRecords(String login) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select count(mr) from MixReview mr" +
+                                   " join mr.user u where u.login=:login", Long.class)
+                .setParameter(LOGIN_PARAM, login)
+                .getSingleResult();
     }
 }

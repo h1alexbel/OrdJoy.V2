@@ -11,9 +11,13 @@ public interface MixRepository extends GenericCRUDRepository<Mix, Long> {
 
     Optional<Mix> findByTitle(String title);
 
-    List<Track> findTracksByMixTitle(String mixTitle);
+    List<Track> findTracksByMixTitle(String mixTitle, int limit, int offset);
 
-    List<MixReview> findMixReviewsByMixTitle(String mixTitle);
+    List<MixReview> findMixReviewsByMixTitle(String mixTitle, int limit, int offset);
 
     List<MixReview> findMixReviewsByMixId(Long mixId);
+
+    Long getMixReviewWithMixTitlePredicateRecords(String mixTitle);
+
+    Long getTrackWithMixTitlePredicateRecords(String mixTitle);
 }

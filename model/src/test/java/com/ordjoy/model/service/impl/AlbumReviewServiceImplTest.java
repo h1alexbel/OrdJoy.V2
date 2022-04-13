@@ -41,7 +41,8 @@ class AlbumReviewServiceImplTest {
     @Test
     @DisplayName("find album reviews by user login")
     void findReviewsByUserLogin() {
-        List<AlbumReviewDto> reviews = albumReviewService.findReviewsByUserLogin("johnyy66");
+        List<AlbumReviewDto> reviews = albumReviewService
+                .findReviewsByUserLogin("johnyy66", 20, 0);
         assertThat(reviews).hasSize(2);
     }
 

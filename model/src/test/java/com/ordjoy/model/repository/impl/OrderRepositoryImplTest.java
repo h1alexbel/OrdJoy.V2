@@ -63,14 +63,16 @@ class OrderRepositoryImplTest {
     @Test
     @DisplayName("find orders by user's email test case")
     void findOrdersByUserEmail() {
-        List<UserTrackOrder> ordersByUserEmail = orderRepository.findOrdersByUserEmail("alex@gmail.com");
+        List<UserTrackOrder> ordersByUserEmail = orderRepository
+                .findOrdersByUserEmail("alex@gmail.com", 20, 0);
         assertThat(ordersByUserEmail).isNotEmpty().hasSize(2);
     }
 
     @Test
     @DisplayName("find orders by user's login test case")
     void findOrdersByUserLogin() {
-        List<UserTrackOrder> ordersByUserEmail = orderRepository.findOrdersByUserLogin("alex_0921");
+        List<UserTrackOrder> ordersByUserEmail = orderRepository
+                .findOrdersByUserLogin("alex_0921", 20, 0);
         assertThat(ordersByUserEmail).isNotEmpty().hasSize(2);
     }
 
@@ -85,14 +87,16 @@ class OrderRepositoryImplTest {
     @Test
     @DisplayName("find orders by track title")
     void findOrdersByTrackTitle() {
-        List<UserTrackOrder> byTrackTitle = orderRepository.findOrdersByTrackTitle("Jail");
+        List<UserTrackOrder> byTrackTitle = orderRepository
+                .findOrdersByTrackTitle("Jail", 20, 0);
         assertThat(byTrackTitle).hasSize(1);
     }
 
     @Test
     @DisplayName("find orders by status test case")
     void findOrdersByStatus() {
-        List<UserTrackOrder> byStatus = orderRepository.findOrdersByStatus(OrderStatus.ACCEPTED);
+        List<UserTrackOrder> byStatus = orderRepository
+                .findOrdersByStatus(OrderStatus.ACCEPTED, 20, 0);
         assertThat(byStatus).hasSize(3);
     }
 }
