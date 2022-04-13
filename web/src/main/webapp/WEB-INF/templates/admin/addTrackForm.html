@@ -11,7 +11,7 @@
 <div class="center">
     <h1 th:text="#{track.add}">
     </h1>
-    <form th:method="post" th:action="@{/track/admin/addTrack}" th:object="${track}"
+    <form th:method="post" th:action="@{/admin/track/add-track}" th:object="${track}"
           enctype="application/x-www-form-urlencoded">
         <div class="txt_field">
             <input th:field="*{title}" type="text" required pattern="^[A-Za-zА-Яа-я].{1,512}.$">
@@ -26,7 +26,8 @@
             </label>
         </div>
         <div class="txt_field">
-            <input th:field="*{album.title}" name="albumTitle" type="text" required>
+            <input th:field="*{album.title}" name="albumTitle" type="text" required
+            pattern="^[A-Za-zА-Яа-я].{1,128}.$">
             <span></span>
             <label th:text="#{album.title}">
             </label>

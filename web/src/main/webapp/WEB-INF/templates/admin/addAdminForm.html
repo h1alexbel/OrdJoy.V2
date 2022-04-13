@@ -12,7 +12,7 @@
 <div class="center">
     <h1 th:text="#{admin.addNewAdmin}">
     </h1>
-    <form th:method="post" th:action="@{/account/admin/addAdmin}" th:object="${admin}"
+    <form th:method="post" th:action="@{/admin/account/add-admin}" th:object="${admin}"
           enctype="application/x-www-form-urlencoded">
         <div class="txt_field">
             <input th:field="*{email}" type="email"
@@ -22,13 +22,13 @@
             </label>
         </div>
         <div class="txt_field">
-            <input th:field="*{login}" type="text" required pattern="^[A-Za-zА-Яа-я1-9]{3,20}$">
+            <input th:field="*{login}" type="text" required pattern="^[A-Za-zА-Яа-я1-9]{3,128}$">
             <span></span>
             <label th:text="#{user.info.login}">
             </label>
         </div>
         <div class="txt_field">
-            <input th:field="*{password}" type="password" required pattern="^\w{2,64}$">
+            <input th:field="*{password}" type="password" required pattern="^\w{2,128}$">
             <span></span>
             <label th:text="#{login.password}">
             </label>
@@ -39,13 +39,13 @@
             <label th:text="#{user.info.birthdate}"></label>
         </div>
         <div class="txt_field">
-            <input th:field="*{personalInfo.firstName}" type="text" pattern="^[A-Za-zА-Яа-я]{2,20}$">
+            <input th:field="*{personalInfo.firstName}" type="text" pattern="^[A-Za-zА-Яа-я]{2,64}$">
             <span></span>
             <label th:text="#{register.firstName}">
             </label>
         </div>
         <div class="txt_field">
-            <input th:field="*{personalInfo.lastName}" type="text" pattern="^[A-Za-zА-Яа-я]{2,20}$">
+            <input th:field="*{personalInfo.lastName}" type="text" pattern="^[A-Za-zА-Яа-я]{2,64}$">
             <span></span>
             <label th:text="#{register.lastName}">
             </label>

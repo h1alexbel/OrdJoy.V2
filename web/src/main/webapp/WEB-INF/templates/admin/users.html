@@ -10,43 +10,51 @@
 
 <div th:replace="~{fragments/adminHeader.html}"></div>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col" th:text="#{user.id}">
-        </th>
-        <th scope="col" th:text="#{login.username}">
-        </th>
-        <th scope="col" th:text="#{user.info.email}">
-        </th>
-        <th scope="col" th:text="#{user.role}">
-        </th>
-        <th scope="col" th:text="#{user.info.birthdate}">
-        </th>
-        <th scope="col" th:text="#{user.info.discountPercentageLevel}">
-        </th>
-    </tr>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}">User id</td>
-        <td th:text="${user.login}">User login</td>
-        <td th:text="${user.email}">User email</td>
-        <td th:text="${#strings.capitalize(user.role.toString().toLowerCase())}">User role</td>
-        <td th:text="${user.personalInfo.birthDate}">User birthDate</td>
-        <td th:text="${user.personalInfo.discountPercentageLevel} + #{user.info.discount.sign}">
-            User discount level
-        </td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-danger" th:text="#{user.delete}">
-        </a></td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-warning" th:text="#{user.edit}">
-        </a></td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-warning" th:text="#{dpl.edit}">
-        </a></td>
-    </tr>
-    </thead>
-</table>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{user.id}">
+            </th>
+            <th scope="col" th:text="#{login.username}">
+            </th>
+            <th scope="col" th:text="#{user.info.email}">
+            </th>
+            <th scope="col" th:text="#{user.role}">
+            </th>
+            <th scope="col" th:text="#{user.info.birthdate}">
+            </th>
+            <th scope="col" th:text="#{user.info.discountPercentageLevel}">
+            </th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">User id</td>
+            <td th:text="${user.login}">User login</td>
+            <td th:text="${user.email}">User email</td>
+            <td th:text="${#strings.capitalize(user.role.toString().toLowerCase())}">User role</td>
+            <td th:text="${user.personalInfo.birthDate}">User birthDate</td>
+            <td th:text="${user.personalInfo.discountPercentageLevel} + #{user.info.discount.sign}">
+                User discount level
+            </td>
+            <td><a th:href="@{/admin/account/{id}/remove(id = ${user.id})}" role="button"
+                   class="btn btn-danger" th:text="#{user.delete}">
+            </a></td>
+            <td><a th:href="@{/admin/info/update-discount-level/{id}(id = ${user.id})}" role="button"
+                   class="btn btn-warning" th:text="#{dpl.edit}">
+            </a></td>
+        </tr>
+        </thead>
+    </table>
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
+                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                   role="button"
+                   class="btn btn-primary" th:text="${page + 1}"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
 <div th:replace="~{fragments/footer.html}"></div>
 </body>
 </html>

@@ -11,16 +11,18 @@
 <div class="center">
     <h1 th:text="#{user.makeOrder}">
     </h1>
-    <form th:method="post" th:action="@{/order/user/makeOrder}" th:object="${order}"
+    <form th:method="post" th:action="@{/user/order/make-order}" th:object="${order}"
           enctype="application/x-www-form-urlencoded">
         <div class="txt_field">
-            <input th:field="*{track.title}" name="trackTitle" type="text" required>
+            <input th:field="*{track.title}" name="trackTitle" type="text" required
+            pattern="^[A-Za-zА-Яа-я].{1,512}.$">
             <span></span>
             <label th:text="#{track.title}">
             </label>
         </div>
         <div class="txt_field">
-            <input th:field="*{price}" name="price" type="text" required>
+            <input th:field="*{price}" name="price" type="text" required
+            pattern="^[1-9]+[0-9]*$">
             <span></span>
             <label th:text="#{order.price}">
             </label>

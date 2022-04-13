@@ -9,7 +9,7 @@
 <body>
 <div th:replace="~{fragments/locale::locale}"></div>
 <div class="center">
-    <form action="#" th:action="@{/mix/admin/update}" th:object="${mix}" method="post">
+    <form action="#" th:action="@{/admin/mix/update}" th:object="${mix}" method="post">
         <h1 th:text="#{mix.edit}"></h1>
         <div class="txt_field">
             <input id="id" type="number" required readonly th:field="*{id}">
@@ -18,13 +18,15 @@
             </label>
         </div>
         <div class="txt_field">
-            <input id="title" type="text" required th:field="*{title}">
+            <input id="title" type="text" required th:field="*{title}"
+            pattern="^[A-Za-zА-Яа-я].{1,128}.$">
             <span></span>
-            <label for="title" th:text="#{album.title}">
+            <label for="title" th:text="#{mix.title}">
             </label>
         </div>
         <div class="txt_field">
-            <input id="description" type="text" required th:field="*{description}">
+            <input id="description" type="text" required th:field="*{description}"
+            pattern="[A-Za-zА-Яа-я].{2,512}">
             <span></span>
             <label for="description" th:text="#{mix.description}">
             </label>

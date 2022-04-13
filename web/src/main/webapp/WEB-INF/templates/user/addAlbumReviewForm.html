@@ -11,16 +11,17 @@
 <div class="center">
     <h1 th:text="#{addReview}">
     </h1>
-    <form th:method="post" th:action="@{/review/user/addAlbumReview}" th:object="${albumReview}"
+    <form th:method="post" th:action="@{/user/review/add-album-review}" th:object="${albumReview}"
           enctype="application/x-www-form-urlencoded">
         <div class="txt_field">
-            <input th:field="*{reviewText}" type="text" required pattern="^[A-Za-zА-Яа-я].{1,512}.$">
+            <input th:field="*{reviewText}" type="text" required pattern="^[A-Za-zА-Яа-я].{2,512}">
             <span></span>
             <label th:text="#{review.album.text}">
             </label>
         </div>
         <div class="txt_field">
-            <input th:field="*{album.title}" name="albumTitle" type="text" required>
+            <input th:field="*{album.title}" name="albumTitle" type="text" required
+            pattern="^[A-Za-zА-Яа-я].{1,128}.$">
             <span></span>
             <label th:text="#{album.title}">
             </label>

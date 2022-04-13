@@ -11,16 +11,16 @@
 <div class="center">
     <h1 th:text="#{login.message}">
     </h1>
-    <form th:method="post" th:action="@{/account/login}"
+    <form th:method="post" th:action="@{/login}"
           enctype="application/x-www-form-urlencoded">
         <div class="txt_field">
-            <input name="login" type="text" required pattern="^[A-Za-zА-Яа-я1-9]{3,20}$">
+            <input name="username" type="text" required pattern="^[A-Za-zА-Яа-я1-9]{3,128}$">
             <span></span>
             <label th:text="#{login.username}">
             </label>
         </div>
         <div class="txt_field">
-            <input name="password" type="password" required pattern="^\w{2,64}$">
+            <input name="password" type="password" required pattern="^\w{2,128}$">
             <span></span>
             <label th:text="#{login.password}">
             </label>
@@ -29,7 +29,7 @@
         <div class="signup_link">
             <span th:text="#{login.notAMember}">
             </span>
-            <a th:href="@{/account/register}">
+            <a th:href="@{/register}">
                 <span th:text="#{login.register}">
                 </span>
             </a>
