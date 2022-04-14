@@ -8,40 +8,60 @@
 </head>
 <body>
 
-<header>
-    <div th:if="${session.sessionUser.role eq 'USER'}">
-        <div th:replace="~{fragments/userHeader.html}"></div>
+<div th:if="${session.sessionUser.role.name() eq 'USER'}">
+    <div th:replace="~{fragments/userHeader.html}">
     </div>
-    <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
-        <div th:replace="~{fragments/adminHeader.html}"></div>
+</div>
+<div th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+    <div th:replace="~{fragments/adminHeader.html}">
     </div>
-</header>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col" th:text="#{track.title}">
-        </th>
-        <th scope="col" th:text="#{track.url}">
-        </th>
-        <th scope="col" th:text="#{review.album}">
-        </th>
-    </tr>
-    <tr th:each="track : ${tracks}">
-        <td th:text="${track.title}">Track title</td>
-        <td th:text="${track.url}">Track Url</td>
-        <td th:text="${track.album.title}">Album</td>
-        <td><a th:href="@{/track/{id}/remove(id = ${track.id})}" role="button" class="btn btn-danger"
-               th:text="#{track.delete}">
-        </a>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-warning" th:text="#{track.edit}">
-        </a></td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-success" th:text="#{addReview}">
-        </a></td>
-    </tr>
-    </thead>
-</table>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{track.title}">
+            </th>
+            <th scope="col" th:text="#{track.url}">
+            </th>
+            <th scope="col" th:text="#{album.title}">
+            </th>
+        </tr>
+        <tr th:each="track : ${tracks}">
+            <td th:text="${track.title}">Track title</td>
+            <td th:text="${track.url}">Track url</td>
+            <td th:text="${track.album.title}">Album title</td>
+
+            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+                <a th:href="@{/admin/track/{id}/remove(id = ${track.id})}"
+                   role="button" class="btn btn-danger"
+                   th:text="#{track.delete}">
+                </a></td>
+
+            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+                <a th:href="@{/admin/track/update/{id}(id = ${track.id})}"
+                   role="button" class="btn btn-warning"
+                   th:text="#{track.edit}">
+                </a></td>
+
+            <td th:if="${session.sessionUser.role.name() eq 'USER'}">
+                <a th:href="@{/user/review/add-track-review}"
+                   role="button" class="btn btn-success"
+                   th:text="#{addReview}">
+                </a></td>
+        </tr>
+        </thead>
+    </table>
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
+                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                   role="button"
+                   class="btn btn-primary" th:text="${page + 1}"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
 <div th:replace="~{fragments/footer.html}"></div>
 </body>
 </html>

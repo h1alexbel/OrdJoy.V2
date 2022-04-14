@@ -2,11 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Track Reviews</title>
+    <title>Mixes</title>
     <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
 <body>
+
 <div th:if="${session.sessionUser.role.name() eq 'USER'}">
     <div th:replace="~{fragments/userHeader.html}">
     </div>
@@ -15,31 +16,36 @@
     <div th:replace="~{fragments/adminHeader.html}">
     </div>
 </div>
+
 <div class="container">
     <table class="table">
         <thead>
         <tr>
-            <th scope="col" th:text="#{review.track}">
+            <th scope="col" th:text="#{mix.title}">
             </th>
-            <th scope="col" th:text="#{review.track.text}">
-            </th>
-            <th scope="col" th:text="#{review.user}">
+            <th scope="col" th:text="#{mix.description}">
             </th>
         </tr>
-        <tr th:each="trackReview : ${trackReviews}">
-            <td th:text="${trackReview.track.title}">
-                Track title
-            </td>
-            <td th:text="${trackReview.reviewText}">
-                Review text
-            </td>
-            <td th:text="${trackReview.user.login}">
-                User login
-            </td>
+        <tr th:each="mix : ${mixes}">
+            <td th:text="${mix.title}">Mix title</td>
+            <td th:text="${mix.description}">Mix Description</td>
+
             <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
-                <a th:href="@{/admin/review/track/{id}/remove(id = ${trackReview.id})}"
+                <a th:href="@{/admin/mix/{id}/remove(id = ${mix.id})}"
                    role="button" class="btn btn-danger"
-                   th:text="#{review.delete}">
+                   th:text="#{mix.delete}">
+                </a></td>
+
+            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+                <a th:href="@{/admin/mix/update/{id}(id = ${mix.id})}"
+                   role="button" class="btn btn-warning"
+                   th:text="#{mix.edit}">
+                </a></td>
+
+            <td th:if="${session.sessionUser.role.name() eq 'USER'}">
+                <a th:href="@{/user/review/add-mix-review}"
+                   role="button" class="btn btn-success"
+                   th:text="#{addReview}">
                 </a></td>
         </tr>
         </thead>

@@ -7,14 +7,14 @@
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
 <body>
-<header>
-    <div th:if="${session.sessionUser.role eq 'USER'}">
-        <div th:replace="~{fragments/userHeader.html}"></div>
+<div th:if="${session.sessionUser.role.name() eq 'USER'}">
+    <div th:replace="~{fragments/userHeader.html}">
     </div>
-    <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
-        <div th:replace="~{fragments/adminHeader.html}"></div>
+</div>
+<div th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+    <div th:replace="~{fragments/adminHeader.html}">
     </div>
-</header>
+</div>
 <div th:class="list-group">
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
@@ -51,13 +51,16 @@
             </div>
         </div>
     </a>
-    <a th:href="@{/review/track/user/(username = ${requestUser.login})}" class="btn btn-outline-success"
+    <a th:href="@{/auth/review/track/account(username = ${requestUser.login}, limit = 5, offset = 0)}"
+       class="btn btn-outline-success"
        th:text="#{user.profile.trackReviews}">
     </a>
-    <a th:href="@{/review/mix/user/(username = ${requestUser.login})}" class="btn btn-outline-success"
+    <a th:href="@{/auth/review/mix/account(username = ${requestUser.login}, limit = 5, offset = 0)}"
+       class="btn btn-outline-success"
        th:text="#{user.profile.mixReviews}">
     </a>
-    <a th:href="@{/review/album/user/(username = ${requestUser.login})}" class="btn btn-outline-success"
+    <a th:href="@{/auth/review/album/account(username = ${requestUser.login}, limit = 5, offset = 0)}"
+       class="btn btn-outline-success"
        th:text="#{user.profile.albumReviews}">
     </a>
 </div>

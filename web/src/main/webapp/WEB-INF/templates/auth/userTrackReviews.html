@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Track Reviews</title>
+    <title>User Track Reviews</title>
     <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
@@ -36,20 +36,16 @@
             <td th:text="${trackReview.user.login}">
                 User login
             </td>
-            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
-                <a th:href="@{/admin/review/track/{id}/remove(id = ${trackReview.id})}"
-                   role="button" class="btn btn-danger"
-                   th:text="#{review.delete}">
-                </a></td>
         </tr>
         </thead>
     </table>
     <nav aria-label="Pagination">
         <ul class="pagination">
             <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
-                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                <a th:href="@{'?username=' + ${trackReview.user.login} + '&limit=5&offset='+ ${page * 5}}"
                    role="button"
-                   class="btn btn-primary" th:text="${page + 1}"></a>
+                   class="btn btn-primary" th:text="${page + 1}">
+                </a>
             </li>
         </ul>
     </nav>

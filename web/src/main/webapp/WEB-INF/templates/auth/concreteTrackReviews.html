@@ -36,20 +36,16 @@
             <td th:text="${trackReview.user.login}">
                 User login
             </td>
-            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
-                <a th:href="@{/admin/review/track/{id}/remove(id = ${trackReview.id})}"
-                   role="button" class="btn btn-danger"
-                   th:text="#{review.delete}">
-                </a></td>
         </tr>
         </thead>
     </table>
     <nav aria-label="Pagination">
         <ul class="pagination">
             <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
-                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                <a th:href="@{'?title=' + ${trackReview.track.title} + '&limit=5&offset='+ ${page * 5}}"
                    role="button"
-                   class="btn btn-primary" th:text="${page + 1}"></a>
+                   class="btn btn-primary" th:text="${page + 1}">
+                </a>
             </li>
         </ul>
     </nav>

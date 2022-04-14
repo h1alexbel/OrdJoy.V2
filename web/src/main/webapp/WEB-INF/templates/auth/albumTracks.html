@@ -2,11 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Track Reviews</title>
+    <title>Album Tracks</title>
     <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
 <body>
+
 <div th:if="${session.sessionUser.role.name() eq 'USER'}">
     <div th:replace="~{fragments/userHeader.html}">
     </div>
@@ -19,37 +20,27 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col" th:text="#{review.track}">
+            <th scope="col" th:text="#{track.title}">
             </th>
-            <th scope="col" th:text="#{review.track.text}">
+            <th scope="col" th:text="#{track.url}">
             </th>
-            <th scope="col" th:text="#{review.user}">
+            <th scope="col" th:text="#{album.title}">
             </th>
         </tr>
-        <tr th:each="trackReview : ${trackReviews}">
-            <td th:text="${trackReview.track.title}">
-                Track title
-            </td>
-            <td th:text="${trackReview.reviewText}">
-                Review text
-            </td>
-            <td th:text="${trackReview.user.login}">
-                User login
-            </td>
-            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
-                <a th:href="@{/admin/review/track/{id}/remove(id = ${trackReview.id})}"
-                   role="button" class="btn btn-danger"
-                   th:text="#{review.delete}">
-                </a></td>
+        <tr th:each="track : ${tracks}">
+            <td th:text="${track.title}">Track title</td>
+            <td th:text="${track.url}">Track url</td>
+            <td th:text="${track.album.title}">Album title</td>
         </tr>
         </thead>
     </table>
     <nav aria-label="Pagination">
         <ul class="pagination">
             <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
-                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                <a th:href="@{'?title=' + ${track.album.title} + '&limit=5&offset='+ ${page * 5}}"
                    role="button"
-                   class="btn btn-primary" th:text="${page + 1}"></a>
+                   class="btn btn-primary" th:text="${page + 1}">
+                </a>
             </li>
         </ul>
     </nav>
