@@ -158,6 +158,20 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
+    public boolean isTracksUrlExists(String url) {
+        AtomicBoolean isTracksUrlExistsResult = new AtomicBoolean(false);
+        if (url != null) {
+            trackRepository.findByUrl(url)
+                    .ifPresent(track -> {
+                        isTracksUrlExistsResult.set(true);
+                        log.debug(LoggingUtils.IS_TRACK_EXISTS,
+                                track, url, isTracksUrlExistsResult);
+                    });
+        }
+        return isTracksUrlExistsResult.get();
+    }
+
+    @Override
     public List<TrackReviewDto> findTrackReviewsByTrackTitle(
             String trackTitle, int limit, int offset) {
         if (trackTitle != null) {

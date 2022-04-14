@@ -14,13 +14,12 @@ public class UrlPathUtils {
     public static final String LIMIT_PARAM = "limit";
     public static final String OFFSET_PARAM = "offset";
     public static final String REDIRECT_ALBUM = "redirect:/auth/album/";
-    public static final String REDIRECT_MIX = "redirect:/mix/";
+    public static final String REDIRECT_MIX = "redirect:/auth/mix/";
     public static final String REDIRECT_TRACK_UPDATE_FORM = "redirect:/admin/track/update/";
     public static final String REDIRECT_MIXES_PAGE = "redirect:/auth/mix/all?limit=5&offset=0";
-    public static final String REDIRECT_TRACKS_PAGE = "redirect:/user/tracks";
+    public static final String REDIRECT_TRACKS_PAGE = "redirect:/auth/track/all?limit=5&offset=0";
     public static final String REDIRECT_USER_ORDERS_PAGE = "redirect:/user/order/all?limit=5&offset=0";
     public static final String REDIRECT_ORDER_MAIN_PAGE = "redirect:/admin/order/";
-    public static final String REDIRECT_LOGIN_PAGE = "redirect:/account/login";
     public static final String REDIRECT_USERS_PAGE = "redirect:/admin/account/all?limit=5&offset=0";
     public static final String REDIRECT_ACCOUNT_INFO = "redirect:/user/account/info";
     public static final String REDIRECT_ALL_ALBUMS_WITH_DEFAULT_LIMIT_OFFSET = "redirect:/auth/album/all?limit=5&offset=0";
@@ -39,4 +38,10 @@ public class UrlPathUtils {
     public static final String REDIRECT_LOGIN = "redirect:/login";
     public static final String REDIRECT_USER_MAIN_PAGE = "redirect:/user/account/welcome";
     public static final String REDIRECT_ADMIN_MAIN_PAGE = "redirect:/admin/account/admin-main";
+    public static final String REDIRECT_ADD_TRACK_FORM = "redirect:/admin/track/add-track";
+    public static final String REDIRECT_ADD_ADMIN_FORM = "redirect:/admin/account/add-admin";
+    public static final String REDIRECT_REGISTRATION_PAGE = "redirect:/register";
+    public static final String REDIRECT_ADD_MIX_FORM_PAGE = "redirect:/admin/mix/add-mix";
+    public static final String REDIRECT_MIX_UPDATE_FORM = "redirect:/admin/mix/update/";
+    public static final String REDIRECT_ADD_ALBUM_PAGE = "redirect:/admin/album/add-album";
 }

@@ -65,16 +65,17 @@ public class TrackController {
         if (maybeAlbum.isPresent()) {
             AlbumDto albumDto = maybeAlbum.get();
             trackDto.setAlbum(albumDto);
-            if (!trackService.isTracksTitleExists(trackDto.getTitle())) {
+            if (!trackService.isTracksTitleExists(trackDto.getTitle()) &&
+                !trackService.isTracksUrlExists(trackDto.getUrl())) {
                 TrackDto savedTrack = trackService.save(trackDto);
                 model.addAttribute(AttributeUtils.REQUEST_TRACK, savedTrack);
                 log.debug(LoggingUtils.TRACK_WAS_CREATED_IN_CONTROLLER, trackDto);
                 return UrlPathUtils.REDIRECT_TRACKS_PAGE;
             } else {
-                return PageUtils.ADD_TRACK_FORM;
+                return UrlPathUtils.REDIRECT_ADD_TRACK_FORM;
             }
         } else {
-            return PageUtils.ADD_TRACK_FORM;
+            return UrlPathUtils.REDIRECT_ADD_TRACK_FORM;
         }
     }
 
@@ -161,7 +162,8 @@ public class TrackController {
 
     @PostMapping("/admin/track/update")
     public String updateTrack(TrackDto trackDto) {
-        if (!trackService.isTracksTitleExists(trackDto.getTitle())) {
+        if (!trackService.isTracksTitleExists(trackDto.getTitle()) &&
+            !trackService.isTracksUrlExists(trackDto.getUrl())) {
             trackService.update(trackDto);
             log.debug(LoggingUtils.TRACK_WAS_UPDATED_IN_CONTROLLER, trackDto);
             return UrlPathUtils.REDIRECT_TRACKS_PAGE_WITH_LIMIT_OFFSET;

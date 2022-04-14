@@ -19,6 +19,7 @@ public class TrackRepositoryImpl extends AbstractGenericCRUDRepository<Track, Lo
 
     private static final String TITLE_PARAM = "title";
     private static final String TRACK_ID_PARAM = "trackId";
+    private static final String URL_PARAM = "url";
 
     @Override
     public void addTrackToMix(Track track, Mix mix) {
@@ -32,6 +33,18 @@ public class TrackRepositoryImpl extends AbstractGenericCRUDRepository<Track, Lo
         return session.createQuery("select t from Track t where t.title = :title",
                         Track.class)
                 .setParameter(TITLE_PARAM, title)
+                .setMaxResults(1)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    @Override
+    public Optional<Track> findByUrl(String url) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select t from Track t where t.url = :url",
+                        Track.class)
+                .setParameter(URL_PARAM, url)
                 .setMaxResults(1)
                 .getResultList()
                 .stream()

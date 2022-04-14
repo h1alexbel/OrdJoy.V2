@@ -85,7 +85,7 @@ public class AlbumController {
             log.debug(LoggingUtils.ALBUM_WAS_CREATED_IN_CONTROLLER, savedAlbum);
             return UrlPathUtils.REDIRECT_ALBUM + savedAlbum.getId();
         } else {
-            return PageUtils.ADD_ALBUM_PAGE;
+            return UrlPathUtils.REDIRECT_ADD_ALBUM_PAGE;
         }
     }
 
