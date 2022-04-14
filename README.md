@@ -1,4 +1,4 @@
-V1.2 Stack :
+V2 Stack :
 Build system: Maven
 
 Spring Framework 5
