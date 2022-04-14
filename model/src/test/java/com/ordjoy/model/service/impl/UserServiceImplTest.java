@@ -149,7 +149,7 @@ class UserServiceImplTest {
         Optional<UserDto> maybeUser = userService.findUserByLogin("johnyy66");
         if (maybeUser.isPresent()) {
             UserDto userDto = maybeUser.get();
-            userService.deleteUser(userDto.getId());
+            userService.delete(userDto.getId());
             assertThat(userService.findUserByLogin("johnyy66")).isEmpty();
         }
     }
@@ -158,6 +158,6 @@ class UserServiceImplTest {
     @NullSource
     @DisplayName("delete user null case")
     void deleteUserNullCase(Long id) {
-        assertDoesNotThrow(() -> userService.deleteUser(id));
+        assertDoesNotThrow(() -> userService.delete(id));
     }
 }

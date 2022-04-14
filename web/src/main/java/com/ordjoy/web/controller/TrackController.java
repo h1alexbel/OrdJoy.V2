@@ -146,7 +146,7 @@ public class TrackController {
 
     @GetMapping("/admin/track/{id}/remove")
     public String deleteTrack(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId) {
-        trackService.deleteTrack(trackId);
+        trackService.delete(trackId);
         log.debug(LoggingUtils.TRACK_WAS_DELETED_IN_CONTROLLER, trackId);
         return UrlPathUtils.REDIRECT_TRACKS_PAGE_WITH_LIMIT_OFFSET;
     }

@@ -64,7 +64,7 @@ public class MixReviewServiceImpl implements MixReviewService {
 
     @Transactional
     @Override
-    public void deleteReview(Long mixReviewId) {
+    public void delete(Long mixReviewId) {
         if (mixReviewId != null) {
             Optional<MixReview> maybeMixReview = mixReviewRepository
                     .findById(mixReviewId);

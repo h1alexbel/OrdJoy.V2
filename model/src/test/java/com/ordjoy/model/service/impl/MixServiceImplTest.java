@@ -112,7 +112,7 @@ class MixServiceImplTest {
     @NullSource
     @DisplayName("delete mix null case")
     void deleteMixNullCase(Long id) {
-        assertDoesNotThrow(() -> mixService.deleteMix(id));
+        assertDoesNotThrow(() -> mixService.delete(id));
     }
 
     @ParameterizedTest

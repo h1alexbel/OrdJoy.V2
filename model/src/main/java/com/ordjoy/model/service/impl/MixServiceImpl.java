@@ -206,7 +206,7 @@ public class MixServiceImpl implements MixService {
 
     @Transactional
     @Override
-    public void deleteMix(Long mixId) {
+    public void delete(Long mixId) {
         if (mixId != null) {
             Optional<Mix> maybeMix = mixRepository.findById(mixId);
             maybeMix.ifPresent(mix -> {

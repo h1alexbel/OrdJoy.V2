@@ -63,7 +63,7 @@ public class AlbumReviewServiceImpl implements AlbumReviewService {
 
     @Transactional
     @Override
-    public void deleteReview(Long albumReviewId) {
+    public void delete(Long albumReviewId) {
         if (albumReviewId != null) {
             Optional<AlbumReview> maybeAlbumReview = albumReviewRepository
                     .findById(albumReviewId);

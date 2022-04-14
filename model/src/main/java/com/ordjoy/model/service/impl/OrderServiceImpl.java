@@ -135,7 +135,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public void deleteOrder(Long orderId) {
+    public void delete(Long orderId) {
         if (orderId != null) {
             Optional<UserTrackOrder> maybeOrder = orderRepository.findById(orderId);
             maybeOrder.ifPresent(order -> {

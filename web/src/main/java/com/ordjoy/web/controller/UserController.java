@@ -165,7 +165,7 @@ public class UserController {
 
     @GetMapping("/admin/account/{id}/remove")
     public String deleteUser(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id) {
-        userService.deleteUser(id);
+        userService.delete(id);
         log.debug(LoggingUtils.USER_WAS_DELETED_IN_CONTROLLER, id);
         return UrlPathUtils.REDIRECT_USERS_PAGE;
     }

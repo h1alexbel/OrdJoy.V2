@@ -257,21 +257,21 @@ public class ReviewController {
 
     @GetMapping("/admin/review/album/{id}/remove")
     public String deleteAlbumReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumReviewId) {
-        albumReviewService.deleteReview(albumReviewId);
+        albumReviewService.delete(albumReviewId);
         log.debug(LoggingUtils.REVIEW_WAS_DELETED_IN_CONTROLLER, albumReviewId);
         return UrlPathUtils.REDIRECT_ALBUM_REVIEWS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
     @GetMapping("/admin/review/mix/{id}/remove")
     public String deleteMixReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixReviewId) {
-        mixReviewService.deleteReview(mixReviewId);
+        mixReviewService.delete(mixReviewId);
         log.debug(LoggingUtils.REVIEW_WAS_DELETED_IN_CONTROLLER, mixReviewId);
         return UrlPathUtils.REDIRECT_MIX_REVIEWS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
     @GetMapping("/admin/review/track/{id}/remove")
     public String deleteTrackReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackReviewId) {
-        trackReviewService.deleteReview(trackReviewId);
+        trackReviewService.delete(trackReviewId);
         log.debug(LoggingUtils.REVIEW_WAS_DELETED_IN_CONTROLLER, trackReviewId);
         return UrlPathUtils.REDIRECT_TRACK_REVIEWS_WITH_DEFAULT_LIMIT_OFFSET;
     }

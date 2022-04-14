@@ -227,7 +227,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Transactional
     @Override
-    public void deleteAlbum(Long albumId) {
+    public void delete(Long albumId) {
         if (albumId != null) {
             Optional<Album> maybeAlbum = albumRepository.findById(albumId);
             maybeAlbum.ifPresent(album -> {
