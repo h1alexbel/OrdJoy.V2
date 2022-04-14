@@ -57,7 +57,7 @@ public class MixController {
             log.debug(LoggingUtils.MIX_WAS_CREATED_IN_CONTROLLER, savedMix);
             return UrlPathUtils.REDIRECT_MIX + savedMix.getId();
         } else {
-            return PageUtils.ADD_MIX_FORM_PAGE;
+            return UrlPathUtils.REDIRECT_ADD_MIX_FORM_PAGE;
         }
     }
 
@@ -144,7 +144,7 @@ public class MixController {
             log.debug(LoggingUtils.MIX_WAS_UPDATED_IN_CONTROLLER, mixDto);
             return UrlPathUtils.REDIRECT_MIXES_PAGE_WITH_DEFAULT_LIMIT_OFFSET;
         } else {
-            return PageUtils.MIX_UPDATE_FORM;
+            return UrlPathUtils.REDIRECT_MIX_UPDATE_FORM + mixDto.getId();
         }
     }
 }

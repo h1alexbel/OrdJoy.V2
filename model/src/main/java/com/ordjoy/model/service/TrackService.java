@@ -15,6 +15,8 @@ public interface TrackService extends GenericCRUDService<TrackDto, Long> {
 
     boolean isTracksTitleExists(String title);
 
+    boolean isTracksUrlExists(String url);
+
     List<TrackReviewDto> findTrackReviewsByTrackTitle(String trackTitle, int limit, int offset);
 
     List<TrackReviewDto> findTrackReviewsByTrackId(Long trackId);

@@ -160,7 +160,7 @@ public class UserController {
     @PostMapping("/logout")
     public String logout(SessionStatus sessionStatus) {
         sessionStatus.setComplete();
-        return UrlPathUtils.REDIRECT_LOGIN_PAGE;
+        return UrlPathUtils.REDIRECT_LOGIN;
     }
 
     @GetMapping("/admin/account/{id}/remove")
@@ -266,7 +266,7 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return UrlPathUtils.REDIRECT_USER_MAIN_PAGE;
         } else {
-            return PageUtils.REGISTRATION_PAGE;
+            return UrlPathUtils.REDIRECT_REGISTRATION_PAGE;
         }
     }
 
@@ -287,7 +287,7 @@ public class UserController {
             log.debug(LoggingUtils.NEW_ADMIN_WAS_ADDED_CONTROLLER, savedAdmin);
             return UrlPathUtils.REDIRECT_ADMIN_MAIN_PAGE;
         } else {
-            return PageUtils.ADD_ADMIN_FORM;
+            return UrlPathUtils.REDIRECT_ADD_ADMIN_FORM;
         }
     }
 }

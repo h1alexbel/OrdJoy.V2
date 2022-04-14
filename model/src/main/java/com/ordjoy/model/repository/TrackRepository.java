@@ -13,6 +13,8 @@ public interface TrackRepository extends GenericCRUDRepository<Track, Long> {
 
     Optional<Track> findByTitle(String title);
 
+    Optional<Track> findByUrl(String url);
+
     List<TrackReview> findTrackReviewsByTrackTitle(String title, int limit, int offset);
 
     List<TrackReview> findTrackReviewsByTrackId(Long trackId);
