@@ -19,7 +19,9 @@
                         <use xlink:href="#bootstrap"/>
                     </svg>
                 </a>
-                <div th:replace="~{fragments/locale::locale}">
+                <div>
+                    <a class="btn btn-success" th:href="@{/user/account/welcome}" th:text="#{metrics.home}"
+                       role="button"></a>
                 </div>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a th:href="@{/auth/album/all?limit=5&offset=0}"

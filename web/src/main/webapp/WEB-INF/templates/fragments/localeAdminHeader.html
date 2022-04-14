@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>AdminHeader</title>
+  <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+  <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<main>
+  <h1 class="visually-hidden">Headers examples</h1>
+  <div class="b-example-divider"></div>
+
+  <header class="p-3 bg-dark text-white">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+            <use xlink:href="#bootstrap"/>
+          </svg>
+        </a>
+        <div th:replace="~{fragments/locale::locale}">
+        </div>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a th:href="@{/admin/order/all?limit=5&offset=0}"
+                 class="nav-link px-2 text-white" th:text="#{admin.orders}">
+          </a></li>
+          <li><a th:href="@{/admin/account/all?limit=5&offset=0}"
+                 class="nav-link px-2 text-white" th:text="#{admin.customers}">
+          </a>
+          </li>
+        </ul>
+        <div class="text-end">
+          <a th:href="@{/admin/account/add-admin}"
+             class="btn btn-warning" role="button" th:text="#{admin.addNewAdmin}">
+          </a>
+
+          <a th:href="@{/admin/track/add-track-to-mix}"
+             class="btn btn btn-primary" role="button" th:text="#{admin.addTrackToMix}">
+          </a>
+
+          <a th:href="@{/admin/track/add-track}"
+             class="btn btn btn-primary" role="button" th:text="#{admin.addTrack}">
+          </a>
+
+          <a th:href="@{/admin/mix/add-mix}"
+             class="btn btn btn-primary" role="button" th:text="#{admin.addMix}">
+          </a>
+
+          <a th:href="@{/admin/album/add-album}"
+             class="btn btn btn-primary" role="button" th:text="#{admin.addAlbum}">
+          </a>
+
+          <div class="text-xxl-center">
+            <form method="post" th:action="@{/logout}" th:method="post"
+                  th:value="#{logout}"
+                  enctype="application/x-www-form-urlencoded">
+              <input type="submit" class="btn btn-info" th:value="#{logout}">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="b-example-divider"></div>
+</main>
+</body>
+</html>
