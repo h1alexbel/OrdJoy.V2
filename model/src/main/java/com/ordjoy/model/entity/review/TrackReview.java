@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -24,6 +27,9 @@ import java.util.Objects;
 @ToString
 @Entity
 @DiscriminatorValue("track_review")
+@SQLDelete(sql = "UPDATE review_storage.review SET state = 'NOT_ACTIVE' WHERE id = ?",
+        check = ResultCheckStyle.COUNT)
+@Where(clause = "state = 'ACTIVE'")
 public class TrackReview extends Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
