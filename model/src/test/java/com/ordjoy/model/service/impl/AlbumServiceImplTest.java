@@ -175,7 +175,7 @@ class AlbumServiceImplTest {
     @DisplayName("delete album default test case")
     void deleteAlbum() {
         Optional<AlbumDto> albumById = albumService.findById(1L);
-        albumById.ifPresent(albumDto -> albumService.deleteAlbum(albumDto.getId()));
+        albumById.ifPresent(albumDto -> albumService.delete(albumDto.getId()));
         Optional<AlbumDto> albumAfterDelete = albumService.findById(1L);
         assertThat(albumAfterDelete).isEmpty();
     }
@@ -184,6 +184,6 @@ class AlbumServiceImplTest {
     @NullSource
     @DisplayName("delete album null case")
     void deleteAlbumNullCase(Long id) {
-        assertDoesNotThrow(() -> albumService.deleteAlbum(id));
+        assertDoesNotThrow(() -> albumService.delete(id));
     }
 }

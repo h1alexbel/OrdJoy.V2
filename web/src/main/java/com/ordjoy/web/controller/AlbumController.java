@@ -125,7 +125,7 @@ public class AlbumController {
 
     @GetMapping("/admin/album/{id}/remove")
     public String deleteAlbum(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId) {
-        albumService.deleteAlbum(albumId);
+        albumService.delete(albumId);
         log.debug(LoggingUtils.ALBUM_WAS_DELETED_IN_CONTROLLER, albumId);
         return UrlPathUtils.REDIRECT_ALL_ALBUMS_WITH_DEFAULT_LIMIT_OFFSET;
     }

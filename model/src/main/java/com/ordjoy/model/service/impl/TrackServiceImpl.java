@@ -237,7 +237,7 @@ public class TrackServiceImpl implements TrackService {
 
     @Transactional
     @Override
-    public void deleteTrack(Long trackId) {
+    public void delete(Long trackId) {
         if (trackId != null) {
             Optional<Track> maybeTrack = trackRepository.findById(trackId);
             maybeTrack.ifPresent(track -> {

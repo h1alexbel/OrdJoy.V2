@@ -70,7 +70,7 @@ public class TrackReviewServiceImpl implements TrackReviewService {
 
     @Transactional
     @Override
-    public void deleteReview(Long trackReviewId) {
+    public void delete(Long trackReviewId) {
         if (trackReviewId != null) {
             Optional<TrackReview> maybeTrackReview = trackReviewRepository
                     .findById(trackReviewId);

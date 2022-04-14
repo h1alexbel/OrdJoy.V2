@@ -123,7 +123,7 @@ public class MixController {
 
     @GetMapping("/admin/mix/{id}/remove")
     public String deleteMix(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixId) {
-        mixService.deleteMix(mixId);
+        mixService.delete(mixId);
         log.debug(LoggingUtils.MIX_WAS_DELETED_IN_CONTROLLER, mixId);
         return UrlPathUtils.REDIRECT_MIXES_PAGE_WITH_DEFAULT_LIMIT_OFFSET;
     }

@@ -173,7 +173,7 @@ public class OrderController {
     public String deleteOrder(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long orderId,
             SessionStatus status) {
-        orderService.deleteOrder(orderId);
+        orderService.delete(orderId);
         status.setComplete();
         log.debug(LoggingUtils.ORDER_WAS_DELETED_IN_CONTROLLER, orderId);
         return UrlPathUtils.REDIRECT_ORDERS_PAGE_WITH_DEFAULT_LIMIT_OFFSET;
