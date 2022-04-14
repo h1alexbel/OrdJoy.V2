@@ -7,14 +7,14 @@
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
 <body>
-<header>
-    <div th:if="${session.sessionUser.role eq 'USER'}">
-        <div th:replace="~{fragments/userHeader.html}"></div>
+<div th:if="${session.sessionUser.role.name() eq 'USER'}">
+    <div th:replace="~{fragments/userHeader.html}">
     </div>
-    <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
-        <div th:replace="~{fragments/adminHeader.html}"></div>
+</div>
+<div th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+    <div th:replace="~{fragments/adminHeader.html}">
     </div>
-</header>
+</div>
 <div th:class="list-group">
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
@@ -32,7 +32,7 @@
             </div>
         </div>
     </a>
-    <a th:href="@{/account/{id}(id = ${trackReview.user.id})}"
+    <a th:href="@{/auth/account/{id}(id = ${trackReview.user.id})}"
        class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>
@@ -42,7 +42,7 @@
             </div>
         </div>
     </a>
-    <a th:href="@{/track/auth/{id}(id = ${trackReview.track.id})}"
+    <a th:href="@{/auth/track/{id}(id = ${trackReview.track.id})}"
        class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
         <div class="d-flex gap-2 w-100 justify-content-between">
             <div>

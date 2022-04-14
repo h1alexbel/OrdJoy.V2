@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Track Reviews</title>
+    <title>User Album Reviews</title>
     <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
@@ -19,37 +19,33 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col" th:text="#{review.track}">
+            <th scope="col" th:text="#{review.album}">
             </th>
-            <th scope="col" th:text="#{review.track.text}">
+            <th scope="col" th:text="#{review.album.text}">
             </th>
             <th scope="col" th:text="#{review.user}">
             </th>
         </tr>
-        <tr th:each="trackReview : ${trackReviews}">
-            <td th:text="${trackReview.track.title}">
-                Track title
+        <tr th:each="albumReview : ${albumReviews}">
+            <td th:text="${albumReview.album.title}">
+                Album title
             </td>
-            <td th:text="${trackReview.reviewText}">
+            <td th:text="${albumReview.reviewText}">
                 Review text
             </td>
-            <td th:text="${trackReview.user.login}">
+            <td th:text="${albumReview.user.login}">
                 User login
             </td>
-            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
-                <a th:href="@{/admin/review/track/{id}/remove(id = ${trackReview.id})}"
-                   role="button" class="btn btn-danger"
-                   th:text="#{review.delete}">
-                </a></td>
         </tr>
         </thead>
     </table>
     <nav aria-label="Pagination">
         <ul class="pagination">
             <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
-                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                <a th:href="@{'?username=' + ${albumReview.user.login} + '&limit=5&offset='+ ${page * 5}}"
                    role="button"
-                   class="btn btn-primary" th:text="${page + 1}"></a>
+                   class="btn btn-primary" th:text="${page + 1}">
+                </a>
             </li>
         </ul>
     </nav>

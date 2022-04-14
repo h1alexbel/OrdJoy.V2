@@ -8,37 +8,55 @@
 </head>
 <body>
 
-<header>
-    <div th:if="${session.sessionUser.role eq 'USER'}">
-        <div th:replace="~{fragments/userHeader.html}"></div>
+<div th:if="${session.sessionUser.role.name() eq 'USER'}">
+    <div th:replace="~{fragments/userHeader.html}">
     </div>
-    <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
-        <div th:replace="~{fragments/adminHeader.html}"></div>
+</div>
+<div th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+    <div th:replace="~{fragments/adminHeader.html}">
     </div>
-</header>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col" th:text="#{album.title}">
-        </th>
-    </tr>
-    <tr th:each="album : ${albums}">
-        <td th:text="${album.title}">
-            Album title
-        </td>
-        <td><a th:href="@{/album/admin/{id}/remove(id = ${album.id})}" role="button" class="btn btn-danger"
-               th:text="#{album.delete}">
-        </a>
-        </td>
-        <td><a th:href="@{/album/admin/update/{id}(id = ${album.id})}" role="button"
-               class="btn btn-warning" th:text="#{album.edit}">
-        </a></td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-success" th:text="#{addReview}">
-        </a></td>
-    </tr>
-    </thead>
-</table>
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{album.title}">
+            </th>
+        </tr>
+        <tr th:each="album : ${albums}">
+            <td th:text="${album.title}">Album title</td>
+
+            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+                <a th:href="@{/admin/album/{id}/remove(id = ${album.id})}"
+                   role="button" class="btn btn-danger"
+                   th:text="#{album.delete}">
+                </a></td>
+
+            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+                <a th:href="@{/admin/album/update/{id}(id = ${album.id})}"
+                   role="button" class="btn btn-warning"
+                   th:text="#{album.edit}">
+                </a></td>
+
+            <td th:if="${session.sessionUser.role.name() eq 'USER'}">
+                <a th:href="@{/user/review/add-album-review}"
+                   role="button" class="btn btn-success"
+                   th:text="#{addReview}">
+                </a></td>
+        </tr>
+        </thead>
+    </table>
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
+                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                   role="button"
+                   class="btn btn-primary" th:text="${page + 1}"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
 <div th:replace="~{fragments/footer.html}"></div>
 </body>
 </html>

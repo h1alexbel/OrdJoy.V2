@@ -7,40 +7,53 @@
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
 <body>
-<header>
-    <div th:if="${session.sessionUser.role eq 'USER'}">
-        <div th:replace="~{fragments/userHeader.html}"></div>
+<div th:if="${session.sessionUser.role.name() eq 'USER'}">
+    <div th:replace="~{fragments/userHeader.html}">
     </div>
-    <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
-        <div th:replace="~{fragments/adminHeader.html}"></div>
+</div>
+<div th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+    <div th:replace="~{fragments/adminHeader.html}">
     </div>
-</header>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col" th:text="#{review.mix}">
-        </th>
-        <th scope="col" th:text="#{review.mix.text}">
-        </th>
-        <th scope="col" th:text="#{review.user}">
-        </th>
-    </tr>
-    <tr th:each="mixReview : ${mixReviews}">
-        <td th:text="${mixReview.mix.title}">
-            Mix title
-        </td>
-        <td th:text="${mixReview.reviewText}">
-            Review text
-        </td>
-        <td th:text="${mixReview.user.login}">
-            User login
-        </td>
-        <td><a th:href="@{/}" role="button"
-               class="btn btn-danger" th:text="#{review.delete}">
-        </a></td>
-    </tr>
-    </thead>
-</table>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{review.mix}">
+            </th>
+            <th scope="col" th:text="#{review.mix.text}">
+            </th>
+            <th scope="col" th:text="#{review.user}">
+            </th>
+        </tr>
+        <tr th:each="mixReview : ${mixReviews}">
+            <td th:text="${mixReview.mix.title}">
+                Mix title
+            </td>
+            <td th:text="${mixReview.reviewText}">
+                Review text
+            </td>
+            <td th:text="${mixReview.user.login}">
+                User login
+            </td>
+            <td th:if="${session.sessionUser.role.name() eq 'ADMIN'}">
+                <a th:href="@{/admin/review/mix/{id}/remove(id = ${mixReview.id})}"
+                   role="button" class="btn btn-danger"
+                   th:text="#{review.delete}">
+                </a></td>
+        </tr>
+        </thead>
+    </table>
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <li th:block th:each="page : ${#numbers.sequence(0, pages)}">
+                <a th:href="@{'?limit=5&offset='+ ${page * 5}}"
+                   role="button"
+                   class="btn btn-primary" th:text="${page + 1}"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
 <div th:replace="~{fragments/footer.html}"></div>
 </body>
 </html>
