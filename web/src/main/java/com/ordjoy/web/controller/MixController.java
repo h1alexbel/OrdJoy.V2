@@ -98,9 +98,7 @@ public class MixController {
         List<TrackDto> mixTracks = mixService
                 .findTracksByMixTitle(mixTitle, limit, offset);
         Long pages = mixService.getTrackWithMixTitlePredicatePages(mixTitle);
-        for (TrackDto mixTrack : mixTracks) {
-            model.addAttribute(AttributeUtils.REQUEST_TRACK, mixTrack);
-        }
+        model.addAttribute(AttributeUtils.MIX_TITLE, mixTitle);
         model.addAttribute(AttributeUtils.PAGES, pages);
         model.addAttribute(AttributeUtils.TRACKS, mixTracks);
         return PageUtils.MIX_TRACKS_PAGE;
