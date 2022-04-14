@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>AdminHeader</title>
+    <title>UserHeader</title>
     <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
@@ -19,38 +19,35 @@
                         <use xlink:href="#bootstrap"/>
                     </svg>
                 </a>
-                <div>
-                    <a class="btn btn-success" th:href="@{/admin/account/admin-main}" th:text="#{metrics.home}"
-                       role="button"></a>
+                <div th:replace="~{fragments/locale::locale}">
                 </div>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a th:href="@{/admin/order/all?limit=5&offset=0}"
-                           class="nav-link px-2 text-white" th:text="#{admin.orders}">
+                    <li><a th:href="@{/auth/album/all?limit=5&offset=0}"
+                           class="nav-link px-2 text-white" th:text="#{user.albums}">
                     </a></li>
-                    <li><a th:href="@{/admin/account/all?limit=5&offset=0}"
-                           class="nav-link px-2 text-white" th:text="#{admin.customers}">
+                    <li><a th:href="@{/auth/track/all?limit=5&offset=0}"
+                           class="nav-link px-2 text-white" th:text="#{user.tracks}">
                     </a>
                     </li>
+                    <li><a th:href="@{/auth/mix/all?limit=5&offset=0}"
+                           class="nav-link px-2 text-white" th:text="#{user.mixes}">
+                    </a>
+                    </li>
+                    <li><a href="https://github.com/h1alexbel/OrdJoy.V2" class="nav-link px-2 text-white"
+                           th:text="#{user.gitHub}">
+                    </a></li>
                 </ul>
                 <div class="text-end">
-                    <a th:href="@{/admin/account/add-admin}"
-                       class="btn btn-warning" role="button" th:text="#{admin.addNewAdmin}">
+                    <a th:href="@{/user/account/info}"
+                       class="btn btn-outline-light me-2"
+                       role="button" th:text="#{user.accountInfo}">
+                    </a>
+                    <a th:href="@{/user/order/make-order}"
+                       class="btn btn-outline-primary" role="button" th:text="#{user.makeOrder}">
                     </a>
 
-                    <a th:href="@{/admin/track/add-track-to-mix}"
-                       class="btn btn btn-primary" role="button" th:text="#{admin.addTrackToMix}">
-                    </a>
-
-                    <a th:href="@{/admin/track/add-track}"
-                       class="btn btn btn-primary" role="button" th:text="#{admin.addTrack}">
-                    </a>
-
-                    <a th:href="@{/admin/mix/add-mix}"
-                       class="btn btn btn-primary" role="button" th:text="#{admin.addMix}">
-                    </a>
-
-                    <a th:href="@{/admin/album/add-album}"
-                       class="btn btn btn-primary" role="button" th:text="#{admin.addAlbum}">
+                    <a th:href="@{/user/account/info/deposit-form}"
+                       class="btn btn-outline-success" role="button" th:text="#{user.updateBalance}">
                     </a>
 
                     <div class="text-xxl-center">
