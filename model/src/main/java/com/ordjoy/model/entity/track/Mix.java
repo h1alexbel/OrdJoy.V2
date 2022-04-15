@@ -13,7 +13,6 @@ import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -54,7 +53,7 @@ public class Mix extends BaseEntity<Long> {
     @Builder.Default
     private List<Track> tracks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "mix", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "mix")
     @ToString.Exclude
     @Builder.Default
     private List<MixReview> mixReviews = new ArrayList<>();

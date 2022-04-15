@@ -1,7 +1,6 @@
 package com.ordjoy.model.repository.impl;
 
 import com.ordjoy.model.config.PersistenceConfigTest;
-import com.ordjoy.model.entity.order.UserTrackOrder;
 import com.ordjoy.model.entity.user.User;
 import com.ordjoy.model.repository.OrderRepository;
 import com.ordjoy.model.repository.UserRepository;
@@ -49,16 +48,6 @@ class UserRepositoryImplTest {
         Optional<User> updatedByEmail = userRepository.findByEmail("johndow@gmail.com");
         updatedByEmail.ifPresent(it -> assertThat(it.getUserData().getCardNumber())
                 .isEqualTo("12867541892"));
-    }
-
-    @Test
-    @DisplayName("cascade delete user test case")
-    void deleteUser() {
-        Optional<User> maybeUser = userRepository.findByLogin("johnyy66");
-        assertThat(maybeUser).isNotEmpty();
-        maybeUser.ifPresent(user -> userRepository.delete(user));
-        Optional<UserTrackOrder> maybeOrder = orderRepository.findById(2L);
-        assertThat(maybeOrder).isEmpty();
     }
 
     @Test

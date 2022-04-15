@@ -5,11 +5,13 @@ import com.ordjoy.model.dto.AlbumReviewDto;
 import com.ordjoy.model.dto.TrackDto;
 import com.ordjoy.model.dto.UserDto;
 import com.ordjoy.model.entity.review.AlbumReview;
+import com.ordjoy.model.entity.review.TrackReview;
 import com.ordjoy.model.entity.track.Album;
 import com.ordjoy.model.entity.track.Track;
 import com.ordjoy.model.repository.AlbumRepository;
 import com.ordjoy.model.repository.AlbumReviewRepository;
 import com.ordjoy.model.repository.TrackRepository;
+import com.ordjoy.model.repository.TrackReviewRepository;
 import com.ordjoy.model.service.AlbumService;
 import com.ordjoy.model.util.LoggingUtils;
 import com.ordjoy.model.util.PaginationUtils;
@@ -32,14 +34,17 @@ public class AlbumServiceImpl implements AlbumService {
     private final AlbumRepository albumRepository;
     private final TrackRepository trackRepository;
     private final AlbumReviewRepository albumReviewRepository;
+    private final TrackReviewRepository trackReviewRepository;
 
     @Autowired
     public AlbumServiceImpl(AlbumRepository albumRepository,
                             TrackRepository trackRepository,
-                            AlbumReviewRepository albumReviewRepository) {
+                            AlbumReviewRepository albumReviewRepository,
+                            TrackReviewRepository trackReviewRepository) {
         this.albumRepository = albumRepository;
         this.trackRepository = trackRepository;
         this.albumReviewRepository = albumReviewRepository;
+        this.trackReviewRepository = trackReviewRepository;
     }
 
     @Override
@@ -237,6 +242,11 @@ public class AlbumServiceImpl implements AlbumService {
                 }
                 List<Track> tracks = albumRepository.findTracksByAlbumId(albumId);
                 for (Track track : tracks) {
+                    Long id = track.getId();
+                    List<TrackReview> trackReviews = trackRepository.findTrackReviewsByTrackId(id);
+                    for (TrackReview trackReview : trackReviews) {
+                        trackReviewRepository.delete(trackReview);
+                    }
                     trackRepository.delete(track);
                 }
                 albumRepository.delete(album);

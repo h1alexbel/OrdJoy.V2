@@ -41,6 +41,14 @@ public class TrackController {
         this.mixService = mixService;
     }
 
+    /**
+     * Returns html page with all active tracks
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page with all active tracks
+     * @see Model
+     */
     @GetMapping("/auth/track/all")
     public String getAllTracks(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -52,12 +60,24 @@ public class TrackController {
         return PageUtils.TRACKS_PAGE;
     }
 
+    /**
+     * Returns html page that represents form to add new TrackDto
+     *
+     * @return html page that represents form to add new TrackDto
+     */
     @GetMapping("/admin/track/add-track")
     public String addTrackPage(Model model) {
         model.addAttribute(AttributeUtils.REQUEST_TRACK, TrackDto.builder().build());
         return PageUtils.ADD_TRACK_FORM;
     }
 
+    /**
+     * Saves new Track from UI form
+     *
+     * @param trackDto TrackDto from UI form
+     * @return redirect to custom track page
+     * @see Model
+     */
     @PostMapping("/admin/track/add-track")
     public String addTrack(TrackDto trackDto, Model model) {
         String albumTitle = trackDto.getAlbum().getTitle();
@@ -79,11 +99,22 @@ public class TrackController {
         }
     }
 
+    /**
+     * Returns html page that represents form to add existing TrackDto to existing MixDto
+     *
+     * @return html page that represents form to add existing TrackDto to existing MixDto
+     */
     @GetMapping("/admin/track/add-track-to-mix")
     public String addTrackToMixPage() {
         return PageUtils.ADD_TRACK_TO_MIX_FORM;
     }
 
+    /**
+     * Adds existing TrackDto to existing MixDto
+     *
+     * @return redirect to all active mixes pages
+     * @see HttpServletRequest
+     */
     @PostMapping("/admin/track/add-track-to-mix")
     public String addTrackToMix(HttpServletRequest request) {
         String mixTitle = request.getParameter(AttributeUtils.MIX_TITLE);
@@ -101,6 +132,11 @@ public class TrackController {
         }
     }
 
+    /**
+     * @param trackId TrackDto Identifier
+     * @return html page that represents track with some info
+     * @see Model
+     */
     @GetMapping("/auth/track/{id}")
     public String getTrack(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId,
                            Model model) {
@@ -114,6 +150,11 @@ public class TrackController {
         }
     }
 
+    /**
+     * @param trackTitle TrackDto title
+     * @return html page that represents track with some info
+     * @see Model
+     */
     @GetMapping("/auth/track")
     public String getTrack(@RequestParam(value = UrlPathUtils.TITLE_PARAM) String trackTitle,
                            Model model) {
@@ -127,6 +168,16 @@ public class TrackController {
         }
     }
 
+    /**
+     * Finds all TrackReviewDtos with some trackTitle that they have
+     * and return html page that represents album reviews with some info
+     *
+     * @param trackTitle TrackDto title, predicate that must have all reviews
+     * @param limit      for UI pagination
+     * @param offset     for UI pagination
+     * @return html page that represents track reviews with some info
+     * @see Model
+     */
     @GetMapping("/auth/track/reviews")
     public String getTrackReviews(
             @RequestParam(value = UrlPathUtils.TITLE_PARAM) String trackTitle,
@@ -144,6 +195,12 @@ public class TrackController {
         return PageUtils.CONCRETE_TRACK_REVIEWS_PAGE;
     }
 
+    /**
+     * Deletes (sets NOT ACTIVE) TrackDto
+     *
+     * @param trackId TrackDto Identifier
+     * @return html page that represents all active tracks
+     */
     @GetMapping("/admin/track/{id}/remove")
     public String deleteTrack(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId) {
         trackService.delete(trackId);
@@ -151,6 +208,13 @@ public class TrackController {
         return UrlPathUtils.REDIRECT_TRACKS_PAGE_WITH_LIMIT_OFFSET;
     }
 
+    /**
+     * Returns html page that represents form to update existing TrackDto
+     *
+     * @param trackId TrackDto Identifier
+     * @return html page that represents form to update existing TrackDto
+     * @see Model
+     */
     @GetMapping("/admin/track/update/{id}")
     public String updateTrackForm(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackId,
@@ -160,6 +224,12 @@ public class TrackController {
         return PageUtils.TRACK_UPDATE_FORM;
     }
 
+    /**
+     * Updates existing Track
+     *
+     * @param trackDto TrackDto from UI form
+     * @return redirect to custom TrackDto page
+     */
     @PostMapping("/admin/track/update")
     public String updateTrack(TrackDto trackDto) {
         if (!trackService.isTracksTitleExists(trackDto.getTitle()) &&

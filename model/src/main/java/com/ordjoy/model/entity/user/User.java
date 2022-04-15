@@ -14,7 +14,6 @@ import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -55,12 +54,12 @@ public class User extends AuditableEntity<Long> {
     @Embedded
     private UserData userData;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user")
     @Builder.Default
     @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user")
     @Builder.Default
     @ToString.Exclude
     private List<UserTrackOrder> orders = new ArrayList<>();
