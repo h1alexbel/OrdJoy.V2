@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class RuntimeExceptionControllerAdvice {
 
+    /**
+     * Handles any Runtime Exception and redirect to error page
+     *
+     * @param e Runtime Exception
+     * @return html page with context error
+     * @see Model
+     */
     @ExceptionHandler(RuntimeException.class)
     public String handleRuntimeException(Model model, RuntimeException e) {
         handle(e, model);
