@@ -119,6 +119,16 @@ public class AlbumController {
         }
     }
 
+    /**
+     * Finds all TracksDto with some albumTitle that they have
+     * and return html page that represents album tracks with some info
+     *
+     * @param albumTitle AlbumDto title, predicate that must have all tracks
+     * @param limit      for UI pagination
+     * @param offset     for UI pagination
+     * @return html page that represents album tracks with some info
+     * @see Model
+     */
     @GetMapping("/auth/album/tracks")
     public String getAlbumTracks(
             @RequestParam(value = UrlPathUtils.TITLE_PARAM) String albumTitle,
@@ -136,6 +146,16 @@ public class AlbumController {
         return PageUtils.ALBUM_TRACKS_PAGE;
     }
 
+    /**
+     * Finds all AlbumReviewDtos with some albumTitle that they have
+     * and return html page that represents album reviews with some info
+     *
+     * @param title  AlbumDto title, predicate that must have all reviews
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page that represents album reviews with some info
+     * @see Model
+     */
     @GetMapping("/auth/album/reviews")
     public String getAlbumReviews(
             @RequestParam(value = UrlPathUtils.TITLE_PARAM) String title,
