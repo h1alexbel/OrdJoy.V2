@@ -33,6 +33,14 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
+    /**
+     * Returns html page with all active albums
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page with all active albums
+     * @see Model
+     */
     @GetMapping("/auth/album/all")
     public String getAllAlbums(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -44,6 +52,11 @@ public class AlbumController {
         return PageUtils.ALL_ALBUMS_PAGE;
     }
 
+    /**
+     * @param id AlbumDto Identifier
+     * @return html page that represents album with some info
+     * @see Model
+     */
     @GetMapping("/auth/album/{id}")
     public String getAlbum(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
@@ -58,6 +71,11 @@ public class AlbumController {
         }
     }
 
+    /**
+     * @param title AlbumDto title
+     * @return html page that represents album with some info
+     * @see Model
+     */
     @GetMapping("/auth/album")
     public String getAlbum(
             @RequestParam(value = UrlPathUtils.TITLE_PARAM) String title,
@@ -72,11 +90,23 @@ public class AlbumController {
         }
     }
 
+    /**
+     * Returns html page that represents form to add new AlbumDto
+     *
+     * @return html page that represents form to add new AlbumDto
+     */
     @GetMapping("/admin/album/add-album")
     public String addAlbumPage() {
         return PageUtils.ADD_ALBUM_PAGE;
     }
 
+    /**
+     * Saves new Album from UI form
+     *
+     * @param albumDto AlbumDto from UI form
+     * @return redirect to custom album page
+     * @see Model
+     */
     @PostMapping("/admin/album/add-album")
     public String addAlbum(AlbumDto albumDto, Model model) {
         if (!albumService.isAlbumTitleExists(albumDto.getTitle())) {
@@ -123,6 +153,12 @@ public class AlbumController {
         return PageUtils.CONCRETE_ALBUM_REVIEWS_PAGE;
     }
 
+    /**
+     * Deletes (sets NOT ACTIVE) AlbumDto
+     *
+     * @param albumId AlbumDto Identifier
+     * @return html page that represents all active albums
+     */
     @GetMapping("/admin/album/{id}/remove")
     public String deleteAlbum(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumId) {
         albumService.delete(albumId);
@@ -130,6 +166,13 @@ public class AlbumController {
         return UrlPathUtils.REDIRECT_ALL_ALBUMS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
+    /**
+     * Returns html page that represents form to update existing AlbumDto
+     *
+     * @param id AlbumDto Identifier
+     * @return html page that represents form to update existing AlbumDto
+     * @see Model
+     */
     @GetMapping("/admin/album/update/{id}")
     public String updateAlbumPage(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
@@ -139,6 +182,12 @@ public class AlbumController {
         return PageUtils.ALBUM_UPDATE_PAGE;
     }
 
+    /**
+     * Updates existing Album
+     *
+     * @param albumDto AlbumDto from UI form
+     * @return redirect to custom AlbumDto page
+     */
     @PostMapping("/admin/album/update")
     public String updateAlbum(AlbumDto albumDto) {
         if (!albumService.isAlbumTitleExists(albumDto.getTitle())) {
