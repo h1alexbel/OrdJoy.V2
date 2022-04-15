@@ -56,6 +56,14 @@ public class UserController {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * Returns html page with all active users
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page with all active users
+     * @see Model
+     */
     @GetMapping("/admin/account/all")
     public String getAllUsers(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -67,6 +75,11 @@ public class UserController {
         return PageUtils.USERS_PAGE;
     }
 
+    /**
+     * @param userId UserDto Identifier
+     * @return html page that represents user with some info
+     * @see Model
+     */
     @GetMapping("/auth/account/{id}")
     public String getUserById(
             Model model,
@@ -81,6 +94,11 @@ public class UserController {
         }
     }
 
+    /**
+     * @param username User login
+     * @return html page that represents user with some info
+     * @see Model
+     */
     @GetMapping("/auth/account")
     public String getUserByName(
             Model model,
@@ -95,11 +113,25 @@ public class UserController {
         }
     }
 
+    /**
+     * @return login page
+     * @see com.ordjoy.web.security.SecurityConfig
+     * @see AuthenticationPrincipal
+     */
     @GetMapping("/login")
     public String loginPage() {
         return PageUtils.LOGIN_PAGE;
     }
 
+    /**
+     * Success handler for User authority after login
+     *
+     * @param user User from AuthenticationPrincipal(login form)
+     * @return welcome html page depends on user authority
+     * @see Model
+     * @see org.springframework.security.core.GrantedAuthority
+     * @see com.ordjoy.model.entity.user.Role
+     */
     @GetMapping("/success")
     public String success(
             @AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
@@ -130,21 +162,37 @@ public class UserController {
         }
     }
 
+    /**
+     * @return add new Admin form
+     */
     @GetMapping("/admin/account/admin-main")
     public String adminMainPage() {
         return PageUtils.ADMIN_PAGE;
     }
 
+    /**
+     * @return html page that represents application metrics
+     */
     @GetMapping("/admin/system/metrics")
     public String metricsPage() {
         return PageUtils.METRICS_PAGE;
     }
 
+    /**
+     * @return user welcome page
+     */
     @GetMapping("/user/account/welcome")
     public String welcomePage() {
         return PageUtils.USER_WELCOME_PAGE;
     }
 
+    /**
+     * Shows user info page sync with DB to avoid dirty reads & data inconsistency
+     *
+     * @param userDto User from current session
+     * @return user info page
+     * @see Model
+     */
     @GetMapping("/user/account/info")
     public String showUserInfo(
             @SessionAttribute(AttributeUtils.SESSION_USER) UserDto userDto,
@@ -157,12 +205,24 @@ public class UserController {
         return PageUtils.USER_INFO_PAGE;
     }
 
+    /**
+     * logout endpoint
+     *
+     * @return redirect to login page
+     * @see SessionStatus
+     */
     @PostMapping("/logout")
     public String logout(SessionStatus sessionStatus) {
         sessionStatus.setComplete();
         return UrlPathUtils.REDIRECT_LOGIN;
     }
 
+    /**
+     * Deletes user by its id
+     *
+     * @param id UserDto Identifier
+     * @return redirect to all active users page
+     */
     @GetMapping("/admin/account/{id}/remove")
     public String deleteUser(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id) {
         userService.delete(id);
@@ -170,35 +230,57 @@ public class UserController {
         return UrlPathUtils.REDIRECT_USERS_PAGE;
     }
 
+    /**
+     * @return set optional info html form
+     */
     @GetMapping("/user/account/info/set-optional-info")
     public String userOptionalInfoFormPage() {
         return PageUtils.SET_OPTIONAL_INFO_PAGE;
     }
 
+    /**
+     * Sets optional user info
+     *
+     * @param firstName  UserDto firstName to set
+     * @param lastName   UserDto lastName to set
+     * @param cardNumber UserDto cardNumber to set
+     * @param userDto    UserDto from current session
+     * @return redirect to user account info page
+     */
     @PostMapping("/user/account/info/set-optional-info")
     public String setOptionalInfo(
             String firstName,
             String lastName,
             String cardNumber,
             @SessionAttribute(AttributeUtils.SESSION_USER) UserDto userDto) {
-        if (firstName != null && !"".equals(firstName)) {
+        if (firstName != null && !"".equals(firstName) && !firstName.isBlank()) {
             userDto.getPersonalInfo().setFirstName(firstName);
         }
-        if (lastName != null && !"".equals(lastName)) {
+        if (lastName != null && !"".equals(lastName) && !lastName.isBlank()) {
             userDto.getPersonalInfo().setLastName(lastName);
         }
-        if (cardNumber != null && !"".equals(cardNumber)) {
+        if (cardNumber != null && !"".equals(cardNumber) && !cardNumber.isBlank()) {
             userDto.getPersonalInfo().setCardNumber(cardNumber);
         }
         userService.update(userDto);
         return UrlPathUtils.REDIRECT_ACCOUNT_INFO;
     }
 
+    /**
+     * @return user update account balance form page
+     */
     @GetMapping("/user/account/info/deposit-form")
     public String getUserDepositFormPage() {
         return PageUtils.UPDATE_BALANCE_PAGE;
     }
 
+    /**
+     * Updates user account balance
+     *
+     * @param balanceToAdd balance amount that be added to current account balance
+     * @param userId       UserDto Identifier
+     * @return redirect to user account info page
+     */
     @PostMapping("/user/account/info/add-balance/{id}")
     public String updateUserAccountBalance(
             BigDecimal balanceToAdd,
@@ -208,6 +290,13 @@ public class UserController {
         return UrlPathUtils.REDIRECT_ACCOUNT_INFO;
     }
 
+    /**
+     * User pays order by its id
+     *
+     * @param userDto UserDto from current session
+     * @param orderId UserTrackOrderDto Identifier
+     * @return all active user orders
+     */
     @GetMapping("/user/pay-order/{id}")
     public String payOrder(
             @SessionAttribute(AttributeUtils.SESSION_USER) UserDto userDto,
@@ -224,6 +313,9 @@ public class UserController {
         return UrlPathUtils.REDIRECT_USER_ORDERS_PAGE;
     }
 
+    /**
+     * @return user update discount percentage level form page
+     */
     @GetMapping("/admin/info/update-discount-level/{id}")
     public String updateUserDiscountPercentageLevelPage(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
@@ -233,6 +325,12 @@ public class UserController {
         return PageUtils.UPDATE_DPL_PAGE;
     }
 
+    /**
+     * Update users discount percentage level
+     *
+     * @param userDto UserDto whom discount will be updated
+     * @return redirect to all active users page
+     */
     @PostMapping("/admin/info/update-discount-level")
     public String updateUserDiscountPercentageLevel(UserDto userDto) {
         Integer discountPercentageLevel = userDto.getPersonalInfo().getDiscountPercentageLevel();
@@ -243,12 +341,25 @@ public class UserController {
         return UrlPathUtils.REDIRECT_USERS_PAGE;
     }
 
+    /**
+     * @return register form(page)
+     * @see Model
+     */
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute(AttributeUtils.SESSION_USER, UserDto.builder().build());
         return PageUtils.REGISTRATION_PAGE;
     }
 
+    /**
+     * User Registration using UsernamePasswordAuthenticationToken
+     *
+     * @param user UserDto from the UI form
+     * @return redirect to user main page
+     * @see HttpServletRequest
+     * @see org.springframework.security.core.userdetails.UserDetailsService
+     * @see com.ordjoy.web.security.SecurityConfig
+     */
     @PostMapping("/register")
     public String register(UserDto user, Model model, HttpServletRequest request) {
         if (userService.isUserHasRightsToRegister(user) &&
@@ -270,12 +381,22 @@ public class UserController {
         }
     }
 
+    /**
+     * @return add new Admin form(page)
+     * @see Model
+     */
     @GetMapping("/admin/account/add-admin")
     public String addNewAdmin(Model model) {
         model.addAttribute(AttributeUtils.ADMIN, UserDto.builder().build());
         return PageUtils.ADD_ADMIN_FORM;
     }
 
+    /**
+     * Adds new Admin in the system
+     *
+     * @param adminDto AdminDto from UI form
+     * @return default admin page
+     */
     @PostMapping("/admin/account/add-admin")
     public String addNewAdmin(UserDto adminDto) {
         if (userService.isUserHasRightsToRegister(adminDto) &&

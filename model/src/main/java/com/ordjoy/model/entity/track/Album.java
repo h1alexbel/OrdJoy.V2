@@ -13,7 +13,6 @@ import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -38,12 +37,12 @@ public class Album extends BaseEntity<Long> {
     @Column(length = 128, nullable = false, unique = true)
     private String title;
 
-    @OneToMany(mappedBy = "album", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "album")
     @Builder.Default
     @ToString.Exclude
     private List<Track> tracks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "album", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "album")
     @Builder.Default
     @ToString.Exclude
     private List<AlbumReview> albumReviews = new ArrayList<>();

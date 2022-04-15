@@ -14,7 +14,6 @@ import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -51,17 +50,17 @@ public class Track extends BaseEntity<Long> {
     @ToString.Exclude
     private Album album;
 
-    @ManyToMany(mappedBy = "tracks", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(mappedBy = "tracks")
     @Builder.Default
     @ToString.Exclude
     private List<Mix> mixes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "track", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "track")
     @Builder.Default
     @ToString.Exclude
     private List<TrackReview> trackReviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "track", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "track")
     @Builder.Default
     @ToString.Exclude
     private List<UserTrackOrder> orders = new ArrayList<>();

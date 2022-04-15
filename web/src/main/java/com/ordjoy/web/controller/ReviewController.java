@@ -57,12 +57,27 @@ public class ReviewController {
         this.trackService = trackService;
     }
 
+    /**
+     * Returns page that represents form to add AlbumReviewDto
+     *
+     * @return page that represents form to add AlbumReviewDto
+     * @see Model
+     */
     @GetMapping("/user/review/add-album-review")
     public String addAlbumReviewPage(Model model) {
         model.addAttribute(AttributeUtils.ALBUM_REVIEW, AlbumReviewDto.builder().build());
         return PageUtils.ADD_ALBUM_REVIEW_FORM;
     }
 
+    /**
+     * Saves AlbumReviewDto
+     *
+     * @param userDto        UserDto from the current session
+     * @param albumReviewDto AlbumReviewDto from UI form
+     * @return redirect to all active AlbumReviews page
+     * @see Model
+     * @see SessionAttribute
+     */
     @PostMapping("/user/review/add-album-review")
     public String addAlbumReview(
             @SessionAttribute(AttributeUtils.SESSION_USER) UserDto userDto,
@@ -82,12 +97,27 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Returns page that represents form to add MixReviewDto
+     *
+     * @return page that represents form to add MixReviewDto
+     * @see Model
+     */
     @GetMapping("/user/review/add-mix-review")
     public String addMixReviewPage(Model model) {
         model.addAttribute(AttributeUtils.MIX_REVIEW, MixReviewDto.builder().build());
         return PageUtils.ADD_MIX_REVIEW_FORM;
     }
 
+    /**
+     * Saves MixReviewDto
+     *
+     * @param userDto      UserDto from the current session
+     * @param mixReviewDto MixReviewDto from UI form
+     * @return redirect to all active MixReviews page
+     * @see Model
+     * @see SessionAttribute
+     */
     @PostMapping("/user/review/add-mix-review")
     public String addMixReview(
             @SessionAttribute(AttributeUtils.SESSION_USER) UserDto userDto,
@@ -107,12 +137,27 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Returns page that represents form to add TrackReviewDto
+     *
+     * @return page that represents form to add TrackReviewDto
+     * @see Model
+     */
     @GetMapping("/user/review/add-track-review")
     public String addTrackReviewPage(Model model) {
         model.addAttribute(AttributeUtils.TRACK_REVIEW, TrackReviewDto.builder().build());
         return PageUtils.ADD_TRACK_REVIEW_FORM;
     }
 
+    /**
+     * Saves TrackReviewDto
+     *
+     * @param userDto        UserDto from the current session
+     * @param trackReviewDto TrackReviewDto from UI form
+     * @return redirect to all active TrackReviews page
+     * @see Model
+     * @see SessionAttribute
+     */
     @PostMapping("/user/review/add-track-review")
     public String addTrackReview(
             @SessionAttribute(AttributeUtils.SESSION_USER) UserDto userDto,
@@ -132,6 +177,14 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Finds single AlbumReviewDto by its id and
+     * returns custom AlbumReviewDto page with some info
+     *
+     * @param id AlbumReviewDto Identifier
+     * @return custom AlbumReviewDto page with some info
+     * @see Model
+     */
     @GetMapping("/auth/review/album/{id}")
     public String getAlbumReview(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
@@ -146,6 +199,14 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Finds single TrackReviewDto by its id and
+     * returns custom TrackReviewDto page with some info
+     *
+     * @param id TrackReviewDto Identifier
+     * @return custom TrackReviewDto page with some info
+     * @see Model
+     */
     @GetMapping("/auth/review/mix/{id}")
     public String getMixReview(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
@@ -160,6 +221,14 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Finds single MixReviewDto by its id and
+     * returns custom MixReviewDto page with some info
+     *
+     * @param id MixReviewDto Identifier
+     * @return custom MixReviewDto page with some info
+     * @see Model
+     */
     @GetMapping("/auth/review/track/{id}")
     public String getTrackReview(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id,
@@ -174,6 +243,15 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Finds AlbumReviews by User login
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @param login  UserDto login as predicate
+     * @return redirect to all custom user reviews
+     * @see Model
+     */
     @GetMapping("/auth/review/album/account")
     public String getAlbumReviewsByUserLogin(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -190,6 +268,15 @@ public class ReviewController {
         return PageUtils.USER_ALBUM_REVIEWS_PAGE;
     }
 
+    /**
+     * Finds MixReviews by User login
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @param login  UserDto login as predicate
+     * @return redirect to all custom user reviews
+     * @see Model
+     */
     @GetMapping("/auth/review/mix/account")
     public String getMixReviewsByUserLogin(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -206,6 +293,15 @@ public class ReviewController {
         return PageUtils.USER_MIX_REVIEWS_PAGE;
     }
 
+    /**
+     * Finds TrackReviews by User login
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @param login  UserDto login as predicate
+     * @return redirect to all custom user reviews
+     * @see Model
+     */
     @GetMapping("/auth/review/track/account")
     public String getTrackReviewsByUserLogin(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -222,6 +318,14 @@ public class ReviewController {
         return PageUtils.USER_TRACK_REVIEWS_PAGE;
     }
 
+    /**
+     * Finds all active AlbumReviewsDto
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page that represents all active album reviews
+     * @see Model
+     */
     @GetMapping("/auth/review/album/all")
     public String getAllAlbumReviews(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -233,6 +337,14 @@ public class ReviewController {
         return PageUtils.ALBUM_REVIEWS_PAGE;
     }
 
+    /**
+     * Finds all active MixReviewsDto
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page that represents all active mix reviews
+     * @see Model
+     */
     @GetMapping("/auth/review/mix/all")
     public String getAllMixReviews(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -244,6 +356,14 @@ public class ReviewController {
         return PageUtils.MIX_REVIEWS_PAGE;
     }
 
+    /**
+     * Finds all active TrackReviewsDto
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page that represents all active track reviews
+     * @see Model
+     */
     @GetMapping("/auth/review/track/all")
     public String getAllTrackReviews(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -255,6 +375,12 @@ public class ReviewController {
         return PageUtils.TRACK_REVIEWS_PAGE;
     }
 
+    /**
+     * Deletes albumReview by its id
+     *
+     * @param albumReviewId AlbumReviewDto Identifier
+     * @return html page that represents all active album reviews
+     */
     @GetMapping("/admin/review/album/{id}/remove")
     public String deleteAlbumReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long albumReviewId) {
         albumReviewService.delete(albumReviewId);
@@ -262,6 +388,12 @@ public class ReviewController {
         return UrlPathUtils.REDIRECT_ALBUM_REVIEWS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
+    /**
+     * Deletes mixReview by its id
+     *
+     * @param mixReviewId MixReviewDto Identifier
+     * @return html page that represents all active mix reviews
+     */
     @GetMapping("/admin/review/mix/{id}/remove")
     public String deleteMixReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long mixReviewId) {
         mixReviewService.delete(mixReviewId);
@@ -269,6 +401,12 @@ public class ReviewController {
         return UrlPathUtils.REDIRECT_MIX_REVIEWS_WITH_DEFAULT_LIMIT_OFFSET;
     }
 
+    /**
+     * Deletes TrackReview by its id
+     *
+     * @param trackReviewId TrackReviewDto Identifier
+     * @return html page that represents all active track reviews
+     */
     @GetMapping("/admin/review/track/{id}/remove")
     public String deleteTrackReview(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long trackReviewId) {
         trackReviewService.delete(trackReviewId);

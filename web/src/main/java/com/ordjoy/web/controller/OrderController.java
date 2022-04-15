@@ -42,6 +42,14 @@ public class OrderController {
         this.trackService = trackService;
     }
 
+    /**
+     * Returns html page with all active orders
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page with all active orders
+     * @see Model
+     */
     @GetMapping("/admin/order/all")
     public String getAllOrders(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -53,6 +61,17 @@ public class OrderController {
         return PageUtils.ORDERS_PAGE;
     }
 
+    /**
+     * Returns html page with all active orders
+     * with some UserDto predicate that they have
+     *
+     * @param userDto UserDto from the Session
+     * @param limit   for UI pagination
+     * @param offset  for UI pagination
+     * @return html page with all active orders with some UserDto predicate
+     * @see SessionAttribute
+     * @see Model
+     */
     @GetMapping("/user/order/all")
     public String getUserOrders(
             @SessionAttribute(AttributeUtils.SESSION_USER) UserDto userDto,
@@ -67,6 +86,15 @@ public class OrderController {
         return PageUtils.USER_ORDERS;
     }
 
+    /**
+     * Returns html page with all active orders
+     * with cancelled status
+     *
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page with all active orders with cancelled status
+     * @see Model
+     */
     @GetMapping("/admin/order/cancelled")
     public String getCancelledOrders(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -80,12 +108,26 @@ public class OrderController {
         return PageUtils.CANCELLED_ORDERS_PAGE;
     }
 
+    /**
+     * Returns page that represents form to add UserTrackOrderDto
+     *
+     * @return page that represents form to add UserTrackOrderDto
+     * @see Model
+     */
     @GetMapping("/user/order/make-order")
     public String makeOrderPage(Model model) {
         model.addAttribute(AttributeUtils.ORDER, UserTrackOrderDto.builder().build());
         return PageUtils.CREATE_ORDER_FORM;
     }
 
+    /**
+     * Saves order and put it into session
+     *
+     * @param userDto  UserDto from the session
+     * @param orderDto UserTrackOrderDto order from UI form
+     * @return redirect to user orders page
+     * @see Model
+     */
     @PostMapping("/user/order/make-order")
     public String makeOrder(
             @SessionAttribute(AttributeUtils.SESSION_USER) UserDto userDto,
@@ -110,6 +152,11 @@ public class OrderController {
         }
     }
 
+    /**
+     * @param orderId UserTrackOrderDto Identifier
+     * @return html page that represents order with some info
+     * @see Model
+     */
     @GetMapping("/admin/order/{id}")
     public String getOrder(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long orderId, Model model) {
@@ -123,6 +170,16 @@ public class OrderController {
         }
     }
 
+    /**
+     * Returns html page with all active orders
+     * with some UserDto login predicate that they have
+     *
+     * @param login  UserDto login
+     * @param limit  for UI pagination
+     * @param offset for UI pagination
+     * @return html page with all active orders with some UserDto login predicate
+     * @see Model
+     */
     @GetMapping("/admin/order/account")
     public String getOrdersByUserLogin(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -139,6 +196,17 @@ public class OrderController {
         return PageUtils.ADMIN_USER_ORDERS_PAGE;
     }
 
+    /**
+     * Returns html page with all active orders
+     * with some TrackDto title predicate that they have
+     *
+     * @param trackTitle Track title
+     * @param limit      for UI pagination
+     * @param offset     for UI pagination
+     * @return html page with all active orders with some TrackDto title predicate
+     * @see SessionAttribute
+     * @see Model
+     */
     @GetMapping("/admin/order/track")
     public String getOrdersByTrackTitle(
             @RequestParam(value = UrlPathUtils.LIMIT_PARAM) int limit,
@@ -155,6 +223,12 @@ public class OrderController {
         return PageUtils.TRACK_ORDERS_PAGE;
     }
 
+    /**
+     * Sets status cancelled to UserTrackOrderDto by its id
+     *
+     * @param id UserTrackOrderDto Identifier
+     * @return custom html page with some UserTrackOrderDto info
+     */
     @GetMapping("/admin/order/cancel/{id}")
     public String cancelOrder(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id) {
         orderService.updateOrderStatus(OrderStatus.CANCELLED, id);
@@ -162,6 +236,12 @@ public class OrderController {
         return UrlPathUtils.REDIRECT_ORDER_MAIN_PAGE + id;
     }
 
+    /**
+     * Sets status completed to UserTrackOrderDto by its id
+     *
+     * @param id UserTrackOrderDto Identifier
+     * @return custom html page with some UserTrackOrderDto info
+     */
     @GetMapping("/admin/order/complete/{id}")
     public String complete(@PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long id) {
         orderService.updateOrderStatus(OrderStatus.COMPLETED, id);
@@ -169,6 +249,12 @@ public class OrderController {
         return UrlPathUtils.REDIRECT_ORDER_MAIN_PAGE + id;
     }
 
+    /**
+     * Deletes (sets NOT ACTIVE) UserTrackOrderDto
+     *
+     * @param orderId UserTrackOrderDto Identifier
+     * @return html page that represents all active orders
+     */
     @GetMapping("/admin/order/{id}/remove")
     public String deleteOrder(
             @PathVariable(UrlPathUtils.ID_PATH_VARIABLE) Long orderId,
