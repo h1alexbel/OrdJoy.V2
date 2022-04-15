@@ -12,7 +12,8 @@
         <div th:replace="~{fragments/userHeader.html}"></div>
     </div>
     <div th:unless="${session.sessionUser.role eq 'ADMIN'}">
-        <div th:replace="~{fragments/adminHeader.html}"></div>
+        <div th:replace="~{fragments/adminHeader.html}">
+        </div>
     </div>
 </header>
 
