@@ -1,22 +1,4 @@
-V2 Stack :
-Build system: Maven
 
-Spring Framework 5, Spring Boot 2
+The client orders and pays for the audio track(s). Leaves reviews about the audio track. The administrator adds new audio tracks and Albums, forms Mixes, corrects information about existing ones, manages Clients by assigning them bonuses, discounts.
 
-Spring Web MVC
-
-Spring Data JPA(Hibernate)
-
-Spring Security
-
-Spring Boot Actuator
-
-Metrics framework: Grafana, Prometheus
-
-Virtualization: Docker
-
-RDBMS: PostgreSQL
-
-Testing Framework: JUnit 5
-
-Cloud deployment: AWS Beanstalk
+V2: Spring Framework 5(Core, MVC, Test(JUnit 5), ORM(Hibernate), Security), PostgreSQL, Maven, Thymeleaf.
