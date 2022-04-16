@@ -232,8 +232,7 @@ public class TrackController {
      */
     @PostMapping("/admin/track/update")
     public String updateTrack(TrackDto trackDto) {
-        if (!trackService.isTracksTitleExists(trackDto.getTitle()) &&
-            !trackService.isTracksUrlExists(trackDto.getUrl())) {
+        if (!trackService.isTracksTitleExists(trackDto.getTitle())) {
             trackService.update(trackDto);
             log.debug(LoggingUtils.TRACK_WAS_UPDATED_IN_CONTROLLER, trackDto);
             return UrlPathUtils.REDIRECT_TRACKS_PAGE_WITH_LIMIT_OFFSET;
